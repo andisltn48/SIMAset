@@ -1,0 +1,480 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    /* background: yellow; */
+}
+
+html,body {
+    background: rgb(241, 241, 241);
+    min-height: 100vh;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.login-field, .register-field{
+    height: 47.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconitem i {
+    position: absolute;
+    margin-top: 5px;
+    right: 25px;
+    opacity: 0;
+    transition: 0s;
+}
+
+.iconitem.hide i {
+    opacity: 0.6;
+    color: brown;
+}
+
+.dataaset-card {
+    top: -25px;
+}
+/* .card{
+    border-radius: 20px;
+    min-height: 15vh;
+    min-width: 15vw;
+    transition: 0.3s;
+    cursor: pointer;
+} */
+
+#content {
+    width: calc(100% - 337px);
+    padding: 40px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#content.span {
+    width: calc(100% - 110px);
+}
+
+.btn {
+    border-radius: 20px !important;
+    box-shadow: 0px 0px 6px #c7c7c7;
+}
+
+.sidebar {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    bottom: 20px;
+    width: 300px;
+    border-radius: 15px;
+    box-sizing: initial;
+    border-left: 5px solid rgb(59, 59, 219);
+    background: rgb(59, 59, 219);
+    transition: 0.2s;
+    overflow-x: hidden;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: rgba(230, 230, 230, 0.582);
+}
+
+.dataTables_filter {
+    margin-bottom: 20px;
+}
+
+.sidebar.close {
+    width: 75px;
+}
+
+.greetings.hide,
+.sidebar-brand-text.hide {
+    display: none;
+}
+
+.fa-user.hide {
+    font-size: 1.5em;
+}
+
+.sidebar:hover + .toggle,
+.toggle:hover {
+    opacity: 1;
+}
+
+.sidebar ul {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 40px;
+}
+
+.sidebar ul li {
+    position: relative;
+    list-style: none;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+/* Punya Erza */
+.news-image {
+    /* top: 2; */
+    position: relative;
+    cursor: pointer;
+    width: 80%;
+    height: 100%;
+    /* float: r; */
+}
+
+.news-image img {
+    width: 100%;
+    /* display: block; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+figcaption ul {
+    list-style-type: none;
+}
+
+figcaption ul li {
+    color: white;
+}
+
+.title-activity {
+    position: relative;
+    left: -4px !important;
+}
+
+.news-description-text {
+    text-align: justify;
+}
+
+.another-news .card{
+    position: relative;
+    right: -12.4px !important;
+}
+
+.title-location {
+    position: relative;
+    left: -2px !important;
+}
+
+.paginate-pagination ul {
+	
+	margin: 20px 0;
+	padding: 0;
+	list-style: none;
+	
+}
+
+.paginate-pagination ul:after {
+	
+	content: ' ';
+	display: table;
+	clear: both;
+	
+}
+
+.paginate-pagination ul > li {
+	position: relative;
+    left: 67%;
+	float: left;
+	
+}
+
+.paginate-pagination ul > li > a.page {
+	
+	display: block;
+	height: 30px;
+	width: 30px;
+	text-align: center;
+	line-height: 30px;
+	border: 1px solid #ddd;
+	background: white;
+	text-decoration: none;
+	cursor: pointer;
+	
+}
+
+.paginate-pagination ul > li > a.page:hover { opacity: 0.7; }
+.paginate-pagination ul > li > a.page.active { opacity: 0.7; cursor: default; }
+
+.paginate-pagination ul > li > a.page-next.deactive,
+.paginate-pagination ul > li > a.page-prev.deactive { opacity: 0.7; cursor: default; }
+
+.image-description {
+    /* display: block; */
+    width: 80%;
+    background: rgba(0, 0, 0, 0.295);
+    /* float: right; */
+    position: absolute;
+    bottom: 0;
+    margin-left: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.news-image:hover > .image-description {
+    visibility: visible;
+    opacity: 1;
+}
+/* punya erza */
+
+.sidebar ul li.active {
+    background: rgb(241, 241, 241);
+}
+
+.sidebar ul li.active a {
+    color: black;
+}
+
+.sidebar ul li a {
+    position: relative;
+    text-decoration: none;
+    display: flex;
+    color: white;
+}
+
+.sidebar ul li a .icon {
+    position: relative;
+    min-width: 85px;
+    left: -10px;
+    height: 60px;
+    line-height: 65px;
+    text-align: center;
+}
+
+.sidebar ul li a .icon i {
+    font-size: 1.5em;
+}
+
+.sidebar ul li a .titlenavbar {
+    position: relative;
+    height: 60px;
+    line-height: 60px;
+}
+
+.sidebar ul li b:nth-child(1) {
+    position: absolute;
+    top: -15px;
+    height: 15px;
+    width: 100%;
+    background: rgb(241, 241, 241);
+    display: none;
+}
+
+.sidebar ul li b:nth-child(1)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(59, 59, 219);
+    border-bottom-right-radius: 25px;
+}
+
+.sidebar ul li b:nth-child(2) {
+    position: absolute;
+    bottom: -15px;
+    height: 15px;
+    width: 100%;
+    background: rgb(241, 241, 241);
+    display: none;
+}
+
+.fa-sign-out-alt {
+    font-size: 1.5em;
+}
+
+.sidebar ul li b:nth-child(2)::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(59, 59, 219);
+    border-top-right-radius: 25px;
+}
+
+.sidebar ul li.active b:nth-child(1),
+.sidebar ul li.active b:nth-child(2) {
+    display: block;
+}
+
+.toggle {
+    position: fixed;
+    top: 20px;
+    left: 320px;
+    width: 30px;
+    height: 30px;
+    background: rgb(59, 59, 219);
+    border-radius: 25px;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.toggle.active {
+    left: 96px;
+}
+
+.toggle i {
+    position: absolute;
+    display: none;
+}
+
+.toggle i.close,
+.toggle.active i.open {
+    display: block;
+}
+
+.toggle i.open,
+.toggle.active i.close {
+    display: none;
+}
+
+.inventory-prasarana.block{
+    display: block !important;
+}
+
+.menu__icon {
+    height: 20px;
+    width: 30px;
+    margin: 3%;
+    position: fixed;
+    top: 0.2rem;
+    right: 0.3rem;
+    display: inline-block;
+    vertical-align: middle;
+    z-index: 20;
+  }
+  
+  .menu__icon span {
+    display: block;
+    background: rgb(127, 127, 175);
+    width: 100%;
+    height: 4px;
+    margin-top: -2px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+  }
+  
+  .menu__icon:before,
+  .menu__icon:after {
+    content: "";
+    display: block;
+    background: rgb(127, 127, 175);
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    transform-origin: center center;
+    transform: rotate(0deg);
+    transition: all 0.3s ease;
+  }
+  
+  .menu__icon:before {
+    top: 2px;
+    margin-top: -2px;
+  }
+  
+  .menu__icon:after {
+    bottom: 2px;
+    margin-bottom: -2px;
+  }
+  
+  
+  .menu_shown .menu__icon span {
+    background: transparent;
+  }
+  
+  .menu_shown .menu__icon:before {
+    top: 50%;
+    transform: rotate(45deg);
+  }
+  
+  .menu_shown .menu__icon:after {
+    bottom: 50%;
+    transform: rotate(-45deg);
+  }
+  
+  
+  .mobile.menu {
+    list-style-type: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    text-align: center;
+    padding-top: 112px;
+    background: #7eb4e2;
+    z-index: 10;
+    transition: all .4s ease-in-out;
+    transform: translateX(-100%);
+  }
+  
+  .menu_shown .mobile.menu {
+    transform: translateX(0);
+  }
+
+  .mobile .menu__item {
+    text-decoration: none;
+    color: black;
+    display: block;
+    font-size: 1.5rem;
+    line-height: 2;
+    padding: 25px 0;
+  }  
+
+
+@media only screen and (max-width: 488px) {
+    /* For desktop: */
+    .sidebar, .sidebar.close, .toggle {
+        display: none !important;
+    }
+    #content{
+        overflow: hidden !important;
+        width: 100%;
+        padding: 0;
+    }
+
+    .hamburger{
+        display: block !important;
+    }
+
+    .mobile-margin{
+        margin-top: 3rem !important;
+    }
+
+    .header-peminjaman > .title, .button{
+        text-align: center !important;
+    }
+
+    #data-diri-penanggung-jawab, #sarana-prasarana, #penanggung-jawab{
+        margin-top: 17px;
+    }
+
+    #column-mobile{
+        display: flex;
+        flex-direction: column;
+    }
+
+
+  }
