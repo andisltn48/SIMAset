@@ -1,18 +1,5 @@
 <x-app-layout title="Data Aset">
     <div class="row info-data">
-        <div class="col-4">
-            <div id="card" class="card shadow p-3 mb-5 bg-white harga-aset" style="border-radius: 0.7rem">
-                <div class="card-body row">
-                    <div class="col-10">
-                        <h5 class="card-title fw-bolder" id="hargatotal">{{ $hargatotal }}</h5>
-                        <h6 class="card-subtitle mt-2">Total Harga Aset</h6>
-                    </div>
-                    <div class="col text-center iconitem">
-                        <i class="fas fa-money-check-alt fa-3x text-dark"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col">
             <div class="card shadow p-3 mb-5 bg-white jumlah-aset" style="border-radius: 0.7rem">
                 <div class="card-body row">
@@ -27,11 +14,24 @@
             </div>
         </div>
         <div class="col">
+            <div class="card shadow p-3 mb-5 bg-white aset-nonaktif" style="border-radius: 0.7rem">
+                <div class="card-body row">
+                    <div class="col">
+                        <h5 class="card-title fw-bolder" id="baik">{{ $baik }}</h5>
+                        <h6 class="card-subtitle mt-2 text-nowrap">Baik</h6>
+                    </div>
+                    <div class="col text-center iconitem">
+                        <i class="fas fa-times-circle fa-3x text-dark"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
             <div class="card shadow p-3 mb-5 bg-white aset-aktif" style="border-radius: 0.7rem">
                 <div class="card-body row">
                     <div class="col">
                         <h5 class="card-title fw-bolder" id="rusakringan">{{ $rusakringan }}</h5>
-                        <h6 class="card-subtitle mt-2 text-nowrap">Aset Aktif</h6>
+                        <h6 class="card-subtitle mt-2 text-nowrap">Rusak Ringan</h6>
                     </div>
                     <div class="col text-center iconitem">
                         <i class="fas fa-check-circle fa-3x text-dark"></i>
@@ -44,10 +44,25 @@
                 <div class="card-body row">
                     <div class="col">
                         <h5 class="card-title fw-bolder" id="rusakberat">{{ $rusakberat }}</h5>
-                        <h6 class="card-subtitle mt-2 text-nowrap">Aset Non-Aktif</h6>
+                        <h6 class="card-subtitle mt-2 text-nowrap">Rusak Berat</h6>
                     </div>
                     <div class="col text-center iconitem">
                         <i class="fas fa-times-circle fa-3x text-dark"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row info-data2" style="margin-top: -2.4rem !important">
+        <div class="">
+            <div id="card" class="card shadow p-3 mb-5 bg-white harga-aset" style="border-radius: 0.7rem">
+                <div class="card-body row">
+                    <div class="col-10">
+                        <h5 class="card-title fw-bolder" id="hargatotal">{{ $hargatotal }}</h5>
+                        <h6 class="card-subtitle mt-2">Total Harga Aset</h6>
+                    </div>
+                    <div class="col text-center iconitem">
+                        <i class="fas fa-money-check-alt fa-3x text-dark"></i>
                     </div>
                 </div>
             </div>
@@ -86,7 +101,7 @@
                     <p>Unit/Rumpun</p>
                 </div>
                 <div class="form-group">
-                    <select class="form-select" id="filter-unit">
+                    <select class="form-select select2" id="filter-unit">
                         <option value="">Semua</option>
                         @foreach ($unit as $item)
                             <option value="{{ $item->kode_unit }}">{{ $item->nama_unit }}</option>
@@ -99,7 +114,7 @@
                     <p>Kondisi Aset</p>
                 </div>
                 <div class="form-group">
-                    <select class="form-select" id="filter-kondisi">
+                    <select class="form-select select2" id="filter-kondisi">
                         <option value="">Semua</option>
                         <option value="Baik">Baik</option>
                         <option value="Rusak Ringan">Rusak Ringan</option>
@@ -112,7 +127,13 @@
                     <p>Kode Ruangan</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="filter-koderuangan" class="form-control">
+                    <select class="form-select select2" id="filter-koderuangan">
+                        <option value="">Semua</option>
+                        <option value="A102">A102 || Kepegalan</option>
+                        <option value="A103">A103 || Kepegawaian2</option>
+                        <option value="A104">A104 || Kepegawaian3</option>
+                        <option value="A105">A105 || Kepegawaian4</option>
+                    </select>
                 </div>
             </div>
             <div class="col">
@@ -124,8 +145,8 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-center align-items-center mt-3">
-            <div class="me-3">
+        <div class="row mt-3">
+            <div class="col-3">
                 <div class="title-filter">
                     <p>Kode Barang</p>
                 </div>
@@ -133,7 +154,7 @@
                     <input type="text" id="filter-kodebarang" class="ruangan form-control">
                 </div>
             </div>
-            <div class="ms-3">
+            <div class="col-3">
                 <div class="title-filter">
                     <p>NUP</p>
                 </div>
@@ -441,6 +462,7 @@
                         if (response) {
                             $('#hargatotal').html(response.hargatotal);
                             $('#jumlahaset').html(response.jumlahaset);
+                            $('#baik').html(response.baik);
                             $('#rusakringan').html(response.rusakringan);
                             $('#rusakberat').html(response.rusakberat);
                         }

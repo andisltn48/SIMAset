@@ -27,6 +27,7 @@ class DataAsetController extends Controller
             return $res;
         }
 
+
         $dataaset = DataAset::all();
         $hargatotal = 0;
         foreach ($dataaset as $key => $value) {
@@ -36,10 +37,11 @@ class DataAsetController extends Controller
         $hargatotal = 'Rp ' . convert($hargatotal);
         
         $jumlahaset = DataAset::all()->count();
+        $baik = DataAset::where('kondisi', 'Baik')->count();
         $rusakringan = DataAset::where('kondisi', 'Rusak Ringan')->count();
         $rusakberat = DataAset::where('kondisi', 'Rusak Berat')->count();
         $unit = Unit::all();
-        return view('data-aset/index', ['unit'=>$unit], compact('hargatotal', 'jumlahaset', 'rusakringan', 'rusakberat'));
+        return view('data-aset/index', ['unit'=>$unit], compact('hargatotal', 'jumlahaset', 'baik', 'rusakringan', 'rusakberat'));
     }
 
     public function create()
@@ -464,9 +466,21 @@ class DataAsetController extends Controller
         if ($request->kondisi != null) {
             $data = $data->where('kondisi', $request->kondisi);
         }
-        if ($request->status != null) {
-            $data = $data->where('status', $request->status);
-        }
+        // if ($request->status != null) {
+        //     $data = $data->where('status', $request->status);
+        // }
+        // if ($request->input('koderuangan') != null) {
+        //     $dataaset = $data->where('kode_ruangan', $request->koderuangan);
+        // }
+        // if ($request->input('ruangan') != null) {
+        //     $data = $data->where('ruangan', $request->ruangan);
+        // }
+        // if ($request->input('kodebarang') != null) {
+        //     $data = $data->where('kode', $request->kodebarang);
+        // }
+        // if ($request->input('nup') != null) {
+        //     $data = $data->where('nup', $request->nup);
+        // }
         
         function RemoveSpecialChar($str) {
             $res = str_replace( array( '.' ), '', $str);
@@ -481,8 +495,9 @@ class DataAsetController extends Controller
         
         $hargatotal = 'Rp ' . convertharga($hargatotal);
         $jumlahaset = $data->count();
-        $asetaktif = $data->where('status', 'Aktif')->count();
-        $asetnonaktif = $data->where('status', 'Non-aktif')->count();
+        $baik = $data->where('kondisi', 'Baik')->count();
+        $rusakringan = $data->where('kondisi', 'Rusak Ringan')->count();
+        $rusakberat = $data->where('kondisi', 'Rusak Berat')->count();
         
         // $datas = $data->get();
         // $activebill = 0;
@@ -504,8 +519,9 @@ class DataAsetController extends Controller
         return response()->json([
             'hargatotal' => $hargatotal,
             'jumlahaset' => $jumlahaset,
-            'asetaktif' => $asetaktif,
-            'asetnonaktif' => $asetnonaktif,
+            'baik' => $baik,
+            'rusakringan' => $rusakringan,
+            'rusakberat' => $rusakberat,
         ]);
     }
 }
