@@ -95,17 +95,59 @@ class PeminjamanController extends Controller
             'datadiri_penanggungjawab' => 'required',
         ]);
 
+        $no_peminjaman = 1;
+        $DataPeminjaman = DataPeminjaman::all();
+        if ($DataPeminjaman->count() != 0) {
+            $no_peminjaman = $DataPeminjaman->max('no_peminjaman')+1;
+        }
 
-        var_dump(\Session::get('tempo-data'));
+        $file_suratpeminjaman = Request()->surat_peminjaman;
+        $fileName_suratpeminjaman = $file_suratpeminjaman->getClientOriginalName();
+        $file_suratpeminjaman->move(public_path('storage/file-peminjaman/surat-peminjaman'), $fileName_suratpeminjaman);
+
+        $file_data_diri_penanggungjawab = Request()->datadiri_penanggungjawab;
+        $fileName_data_diri_penanggungjawab = $file_data_diri_penanggungjawab->getClientOriginalName();
+        $file_data_diri_penanggungjawab->move(public_path('storage/file-peminjaman/data-diri-penanggungjawab'), $fileName_data_diri_penanggungjawab);
+
+        // dd(\Session::get('tempo-data'));
         if (\Session::get('tempo-data') != NULL) {
             $aset_selected = \Session::get('tempo-data');
             foreach ($aset_selected as $key => $value) {
-                echo $value;
+                $dataaset = DataAset::where('id', $value)->first();
+                $datapeminjaman = DataPeminjaman::create([
+                    'nama_peminjam' => $request->nama_peminjam,
+                    'nama_penanggung_jawab' => $request->penanggung_jawab,
+                    'no_peminjaman' => $no_peminjaman,
+                    'nama_barang' => $dataaset->nama_barang,
+                    'kode_barang' => $dataaset->kode,
+                    'nup_barang' => $dataaset->nup,
+                    'kondisi' => $dataaset->kondisi,
+                    'tanggal_penggunaan' => $date_sp2d = date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)),
+                    'surat_peminjaman' => $fileName_suratpeminjaman,
+                    'surat_balasan' => '', 
+                    'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
+                    'status_peminjaman' => 'Belum Dikonfirmasi'
+                ]);
             }
             \Session::flush();
         } else {
             $validate = $request->validate([
                 'sarana' => 'required'
+            ]);
+            $dataaset = DataAset::where('id', $request->sarana)->first();
+            $datapeminjaman = DataPeminjaman::create([
+                'nama_peminjam' => $request->nama_peminjam,
+                'nama_penanggung_jawab' => $request->penanggung_jawab,
+                'no_peminjaman' => $no_peminjaman,
+                'nama_barang' => $dataaset->nama_barang,
+                'kode_barang' => $dataaset->kode,
+                'nup_barang' => $dataaset->nup,
+                'kondisi' => $dataaset->kondisi,
+                'tanggal_penggunaan' => $date_sp2d = date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)),
+                'surat_peminjaman' => $fileName_suratpeminjaman,
+                'surat_balasan' => '', 
+                'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
+                'status_peminjaman' => 'Belum Dikonfirmasi'
             ]);
         }
         

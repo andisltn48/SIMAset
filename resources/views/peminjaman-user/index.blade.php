@@ -11,7 +11,7 @@
         </div>
         <hr>
         <div>
-            <form action="{{route('peminjaman.store-permintaan')}}" method="POST">
+            <form action="{{route('peminjaman.store-permintaan')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row mt-3 " id="column-mobile">
                     <div class="col">
@@ -51,10 +51,10 @@
 
                         </div>
                         <div class="form-group d-flex">
-                            <select class="form-select me-2" name="sarana" id="select-sarana">
+                            <select class="form-select select2" name="sarana" id="select-sarana">
                                 <option value="">Pilih</option>
                             </select>
-                            <button type="button" onclick="addCode()" class="btn btn-primary">Tambah</button>
+                            <button type="button" onclick="addCode()" class="ms-2 btn btn-primary">Tambah</button>
                             {{-- <input type="text" class="form-control" name="sarana" required value="{{old('sarana')}}"> --}}
                         </div>
                         <div class="text-danger">
@@ -122,6 +122,8 @@
         </div>
     </div>
     <script>
+        $(".select2").select2();
+
         let inventory_prasarana = document.querySelector('.inventory-prasarana');
         $('#tanggalpenggunaan').on('change', function() {
             arr_items = [];
@@ -151,10 +153,12 @@
                     if (response) {
                         // console.log(response.data);
                         response.data.forEach(function(item, index) {
-                            console.log(item['nama_barang']);
+                            // console.log(item['kode']);
+                            var textdata= item['nama_barang']+' || '+item['kode']+' || '+item['nup']; 
                             $('#select-sarana').append($('<option>', {
+
                                 value: item['id'],
-                                text: item['nama_barang']
+                                text: textdata
                             }));
                         });
                     }

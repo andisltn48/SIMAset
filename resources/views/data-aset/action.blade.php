@@ -17,7 +17,7 @@
            data-merk="{{$model->merk}}"
            data-sumberdana="{{$model->sumber_dana}}"
            data-pic="{{$model->pic}}"
-           data-koderuangan="{{$model->koderuangan}}"
+           data-koderuangan="{{$model->kode_ruangan}}"
            data-kondisi="{{$model->kondisi}}"
            data-unit="{{$model->nama_unit}}"
            data-status="{{$model->status}}"

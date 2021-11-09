@@ -89,7 +89,7 @@ class DataAsetController extends Controller
         $nup_akhir = $request->nup_akhir;
 
         if ($request->jumlah_barang > 1) {
-            for ($current_nup; $current_nup <= $nup_akhir ; $current_nup++) { 
+            for ($current_nup; $current_nup <= $request->jumlah_barang ; $current_nup++) { 
                 $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
                 if ($cekdata->count() == 0) {
                     
@@ -114,11 +114,12 @@ class DataAsetController extends Controller
                     'unit' => $request->unit,
                     'status' => 'Aktif',
                     'gedung' => $request->gedung,
+                    'tahun_pengadaan' => $request->tahunpengadaan,
                     'ruangan' => $request->ruangan,
                     'catatan' => $request->catatan,
                 ]);
                 } else {
-                    return redirect(route('data-aset.create'))->with('error','Data Aset dengan Kode barang dan NUP yang sama telah terdaftar');
+                    return redirect(route('data-aset.create'))->with('error','Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!');
                 }
                 
             }
@@ -147,6 +148,7 @@ class DataAsetController extends Controller
                 'unit' => $request->unit,
                 'status' => 'Aktif',
                 'gedung' => $request->gedung,
+                'tahun_pengadaan' => $request->tahunpengadaan,
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
             ]);
@@ -190,10 +192,10 @@ class DataAsetController extends Controller
             'nomor_sp2d' => 'numeric',
             'nup' => 'numeric'
         ]);
+        $current_data = DataAset::where('id', $id)->first();
+        $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup)->first();
 
-        $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup)->get();
-
-        if ($cekdata->count() == 0) {
+        if ($cekdata->kode == $current_data->kode && $cekdata->nup == $current_data->nup) {
             function RemoveSpecialChar($str) {
                 $res = str_replace( array( '.' ), '', $str);
     
@@ -225,6 +227,7 @@ class DataAsetController extends Controller
                 'kondisi' => $request->kondisi,
                 'unit' => $request->unit,
                 'gedung' => $request->gedung,
+                'tahun_pengadaan' => $request->tahunpengadaan,
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
             ]);
@@ -232,8 +235,50 @@ class DataAsetController extends Controller
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
             }
         } else {
-            $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!';
-            return redirect(route('data-aset.edit', $id))->with('error',$message);
+            if ($cekdata->count() == 0) {
+                function RemoveSpecialChar($str) {
+                    $res = str_replace( array( '.' ), '', $str);
+        
+                    return $res;
+                }
+        
+                $harga_satuan = RemoveSpecialChar($request->harga_satuan);
+                $harga_total = RemoveSpecialChar($request->harga_total);
+                $nilai_tagihan = RemoveSpecialChar($request->nilai_tagihan);
+                $date_sp2d = date('d-m-Y H:i:s', strtotime($request->tanggal_sp2d));
+        
+                $dataaset_save = DataAset::where('id',$id)->update([
+                    'nama_barang' => $request->nama_barang,
+                    'kode' => $request->kode_barang,
+                    'nup' => $request->nup,
+                    'uraian_barang' => $request->uraian_barang,
+                    'harga_satuan' => $harga_satuan,
+                    'harga_total' => $harga_total,
+                    'nilai_tagihan' => $nilai_tagihan,
+                    'tanggal_SP2D' => $date_sp2d,
+                    'nomor_SP2D' => $request->nomor_sp2d,
+                    'kelompok_belanja' => $request->kelompok_belanja,
+                    'asal_perolehan' => $request->asal_perolehan,
+                    'nomor_bukti_perolehan' => $request->nomor_bukti_perolehan,
+                    'merk' => $request->merk,
+                    'sumber_dana' => $request->sumber_dana,
+                    'pic' => $request->pic,
+                    'kode_ruangan' => $request->kode_ruangan,
+                    'kondisi' => $request->kondisi,
+                    'unit' => $request->unit,
+                    'gedung' => $request->gedung,
+                    'tahun_pengadaan' => $request->tahunpengadaan,
+                    'ruangan' => $request->ruangan,
+                    'catatan' => $request->catatan,
+                ]);
+                if ($dataaset_save) {
+                    return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
+                }
+            } else {
+                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!';
+                return redirect(route('data-aset.edit', $id))->with('error',$message);
+            }
+
         }
         
 
@@ -289,8 +334,8 @@ class DataAsetController extends Controller
         if ($request->input('koderuangan') != null) {
             $dataaset = $dataaset->where('kode_ruangan', $request->koderuangan);
         }
-        if ($request->input('ruangan') != null) {
-            $dataaset = $dataaset->where('ruangan', $request->ruangan);
+        if ($request->input('tahunpengadaan') != null) {
+            $dataaset = $dataaset->where('tahun_pengadaan', $request->tahunpengadaan);
         }
         if ($request->input('kodebarang') != null) {
             $dataaset = $dataaset->where('kode', $request->kodebarang);
@@ -352,9 +397,9 @@ class DataAsetController extends Controller
         if ($kodebarang==null) {
             $kodebarang = '';
         }
-        $ruangan = request()->ruangan;
-        if ($ruangan==null) {
-            $ruangan = '';
+        $ruangan = request()->tahunpengadaan;
+        if ($tahunpengadaan==null) {
+            $tahunpengadaan = '';
         }
         $koderuangan = request()->koderuangan;
         if ($koderuangan==null) {
@@ -364,7 +409,7 @@ class DataAsetController extends Controller
         if ($nup==null) {
             $nup = '';
         }
-        return (new DataAsetExport($unit,$kondisi,$koderuangan,$ruangan,$kodebarang,$nup))->download('Data-Aset.xlsx');
+        return (new DataAsetExport($unit,$kondisi,$koderuangan,$tahunpengadaan,$kodebarang,$nup))->download('Data-Aset.xlsx');
         // return (new DataAsetExport)->download('app.xls');
     }
 
@@ -466,21 +511,21 @@ class DataAsetController extends Controller
         if ($request->kondisi != null) {
             $data = $data->where('kondisi', $request->kondisi);
         }
-        // if ($request->status != null) {
-        //     $data = $data->where('status', $request->status);
-        // }
-        // if ($request->input('koderuangan') != null) {
-        //     $dataaset = $data->where('kode_ruangan', $request->koderuangan);
-        // }
-        // if ($request->input('ruangan') != null) {
-        //     $data = $data->where('ruangan', $request->ruangan);
-        // }
-        // if ($request->input('kodebarang') != null) {
-        //     $data = $data->where('kode', $request->kodebarang);
-        // }
-        // if ($request->input('nup') != null) {
-        //     $data = $data->where('nup', $request->nup);
-        // }
+        if ($request->status != null) {
+            $data = $data->where('status', $request->status);
+        }
+        if ($request->koderuangan != null) {
+            $dataaset = $data->where('kode_ruangan', $request->koderuangan);
+        }
+        if ($request->tahunpengadaan != null) {
+            $data = $data->where('tahun_pengadaan', $request->ruangan);
+        }
+        if ($request->kodebarang != null) {
+            $data = $data->where('kode', $request->kodebarang);
+        }
+        if ($request->nup != null) {
+            $data = $data->where('nup', $request->nup);
+        }
         
         function RemoveSpecialChar($str) {
             $res = str_replace( array( '.' ), '', $str);

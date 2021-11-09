@@ -33,6 +33,7 @@ class CreateDataAsetTable extends Migration
             $table->string('kode_ruangan')->nullable();
             $table->string('kondisi');
             $table->string('unit');
+            $table->string('tahun_pengadaan');
             $table->string('gedung')->nullable();
             $table->string('ruangan')->nullable();
             $table->string('catatan')->nullable();

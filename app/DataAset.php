@@ -28,6 +28,7 @@ class DataAset extends Model
         'kondisi',
         'unit',
         'gedung',
+        'tahun_pengadaan',
         'ruangan',
         'catatan'
     ];

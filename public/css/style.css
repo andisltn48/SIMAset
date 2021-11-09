@@ -117,7 +117,7 @@ table.dataTable tbody tr:hover {
 }
 
 .select2{
-    width: 100% !important;
+    background: #7eb4e2 !;
 }
 .select2-selection__rendered {
     line-height: 35px !important;

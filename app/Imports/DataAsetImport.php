@@ -28,7 +28,11 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
     {
         if ($row["jumlah"] > 1) {
             $current_nup = $row["nup_awal"];
-            $last_nup = $row["nup_akhir"];
+            $last_nup = 0;
+
+            for ($i=0; $i < $row["jumlah"]; $i++) { 
+                $last_nup = $current_nup + $i;
+            }
 
             for ($current_nup; $current_nup <= $last_nup ; $current_nup++) { 
                 $test_nup = DataAset::where('kode',$row["kode_barang"])->where('nup', $current_nup)->get();
@@ -65,6 +69,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
                         'unit' => $row['unit_rumpun'],
                         'status' => 'Aktif',
                         'gedung' => $row['gedung'],
+                        'tahun_pengadaan' => $row['tahun_pengadaan'],
                         'ruangan' => $row['ruangan'],
                         'catatan' => $row['catatan'],
                     ]);
@@ -116,6 +121,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
                         'unit' => $row['unit_rumpun'],
                         'status' => 'Aktif',
                         'gedung' => $row['gedung'],
+                        'tahun_pengadaan' => $row['tahun_pengadaan'],
                         'ruangan' => $row['ruangan'],
                         'catatan' => $row['catatan'],
                     ]);
@@ -195,6 +201,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
             "*.pic" => ['required'],
             "*.kondisi_barang"=>['required'],
             "*.unit_rumpun" => ['required'],
+            "*.tahun_pengadaan" => ['required']
         ];
     }
 }

@@ -101,7 +101,7 @@
                     <p>Unit/Rumpun</p>
                 </div>
                 <div class="form-group">
-                    <select class="form-select select2" id="filter-unit">
+                    <select class="form-select select2 " id="filter-unit">
                         <option value="">Semua</option>
                         @foreach ($unit as $item)
                             <option value="{{ $item->kode_unit }}">{{ $item->nama_unit }}</option>
@@ -114,7 +114,7 @@
                     <p>Kondisi Aset</p>
                 </div>
                 <div class="form-group">
-                    <select class="form-select select2" id="filter-kondisi">
+                    <select class="form-select select2 " id="filter-kondisi">
                         <option value="">Semua</option>
                         <option value="Baik">Baik</option>
                         <option value="Rusak Ringan">Rusak Ringan</option>
@@ -127,7 +127,7 @@
                     <p>Kode Ruangan</p>
                 </div>
                 <div class="form-group">
-                    <select class="form-select select2" id="filter-koderuangan">
+                    <select class="form-select select2 " id="filter-koderuangan">
                         <option value="">Semua</option>
                         <option value="A102">A102 || Kepegalan</option>
                         <option value="A103">A103 || Kepegawaian2</option>
@@ -138,10 +138,10 @@
             </div>
             <div class="col">
                 <div class="title-filter">
-                    <p>Ruangan</p>
+                    <p>Tahun Pengadaan</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="filter-ruangan" class="ruangan form-control">
+                    <input type="text" id="filter-tahunpengadaan" class="tahunpengadaan form-control">
                 </div>
             </div>
         </div>
@@ -151,7 +151,7 @@
                     <p>Kode Barang</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="filter-kodebarang" class="ruangan form-control">
+                    <input type="text" id="filter-kodebarang" class="kodebarang form-control">
                 </div>
             </div>
             <div class="col-3">
@@ -159,7 +159,7 @@
                     <p>NUP</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="filter-nup" class="ruangan form-control">
+                    <input type="text" id="filter-nup" class="nup form-control">
                 </div>
             </div>
         </div>
@@ -315,7 +315,7 @@
             let unit = $('#filter-unit').val();
             let kondisi = $('#filter-kondisi').val();
             let koderuangan = $('#filter-koderuangan').val();
-            let ruangan = $('#filter-ruangan').val();
+            let tahunpengadaan = $('#filter-tahunpengadaan').val();
             let kodebarang = $('#filter-kodebarang').val();
             let nup = $('#filter-nup').val();
             // let status = $('#filter-status').val()
@@ -324,7 +324,7 @@
                 unit = $('#filter-unit').val()
                 kondisi = $('#filter-kondisi').val()
                 koderuangan = $('#filter-koderuangan').val()
-                ruangan = $('#filter-ruangan').val()
+                tahunpengadaan = $('#filter-tahunpengadaan').val()
                 kodebarang = $('#filter-kodebarang').val()
                 nup = $('#filter-nup').val()
                 // status = $('#filter-status').val()
@@ -332,7 +332,7 @@
                     unit,
                     kondisi,
                     koderuangan,
-                    ruangan,
+                    tahunpengadaan,
                     kodebarang,
                     nup
                 }
@@ -356,7 +356,7 @@
                         d.kondisi = kondisi;
                         d.kodebarang = kodebarang;
                         d.koderuangan = koderuangan;
-                        d.ruangan = ruangan;
+                        d.tahunpengadaan = tahunpengadaan;
                         d.nup = nup;
                     }
                 },
@@ -395,11 +395,11 @@
                 unit = $('#filter-unit').val()
                 kondisi = $('#filter-kondisi').val()
                 koderuangan = $('#filter-koderuangan').val()
-                ruangan = $('#filter-ruangan').val()
+                tahunpengadaan = $('#filter-tahunpengadaan').val()
                 kodebarang = $('#filter-kodebarang').val()
                 nup = $('#filter-nup').val()
 
-                console.log(unit, kondisi, koderuangan, ruangan, kodebarang, nup);
+                console.log(unit, kondisi, koderuangan, tahunpengadaan, kodebarang, nup);
                 table.ajax.reload(null, false)
 
                 $.ajax({
@@ -413,13 +413,14 @@
                         kondisi: kondisi,
                         kodebarang: kodebarang,
                         koderuangan: koderuangan,
-                        ruangan: ruangan,
+                        tahunpengadaan: tahunpengadaan,
                         nup: nup,
                     },
                     success: function(response) {
                         if (response) {
                             $('#hargatotal').html(response.hargatotal);
                             $('#jumlahaset').html(response.jumlahaset);
+                            $('#baik').html(response.baik);
                             $('#rusakringan').html(response.rusakringan);
                             $('#rusakberat').html(response.rusakberat);
                         }
@@ -432,13 +433,13 @@
                 unit = "";
                 kondisi = "";
                 koderuangan = "";
-                ruangan = "";
+                tahunpengadaan = "";
                 kodebarang = "";
                 nup = "";
                 $('#filter-unit').prop('selectedIndex', 0).change()
                 $('#filter-kondisi').prop('selectedIndex', 0).change()
                 $('#filter-koderuangan').val('')
-                $('#filter-ruangan').val('')
+                $('#filter-tahunpengadaan').val('')
                 $('#filter-kodebarang').val('')
                 $('#filter-nup').val('')
                 // console.log(paymentstatus)
@@ -455,7 +456,7 @@
                         kondisi: kondisi,
                         kodebarang: kodebarang,
                         koderuangan: koderuangan,
-                        ruangan: ruangan,
+                        tahunpengadaan: tahunpengadaan,
                         nup: nup,
                     },
                     success: function(response) {

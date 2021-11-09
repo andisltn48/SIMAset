@@ -10,6 +10,7 @@ class DataPeminjaman extends Model
     protected $fillable = [
         'nama_peminjam',
         'nama_penanggung_jawab',
+        'no_peminjaman',
         'nama_barang',
         'kode_barang',
         'nup_barang',

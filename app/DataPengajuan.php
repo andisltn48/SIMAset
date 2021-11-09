@@ -29,6 +29,7 @@ class DataPengajuan extends Model
         'unit',
         'status_pengajuan',
         'gedung',
+        'tahun_pengadaan',
         'ruangan',
         'catatan'
     ];

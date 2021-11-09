@@ -15,12 +15,12 @@ class DataAsetExport implements FromQuery, WithHeadings, WithColumnFormatting
 
     protected $unit,$kondisi,$koderuangan,$ruangan,$kodebarang,$nup;
 
-    public function __construct($unit,$kondisi,$koderuangan,$ruangan,$kodebarang,$nup)
+    public function __construct($unit,$kondisi,$koderuangan,$tahunpengadaan,$kodebarang,$nup)
     {
         $this->unit = $unit;
         $this->kondisi = $kondisi;
         $this->koderuangan = $koderuangan;
-        $this->ruangan = $ruangan;
+        $this->tahunpengadaan = $tahunpengadaan;
         $this->kodebarang = $kodebarang;
         $this->nup = $nup;
     }
@@ -50,6 +50,7 @@ class DataAsetExport implements FromQuery, WithHeadings, WithColumnFormatting
             'kondisi',
             'unit',
             'gedung',
+            'tahun_pengadaan',
             'ruangan',
             'catatan'
         ]);
@@ -63,7 +64,7 @@ class DataAsetExport implements FromQuery, WithHeadings, WithColumnFormatting
             $data_aset->where('kode_ruangan', $this->koderuangan);
         }
         if ($this->ruangan != null) {
-            $data_aset->where('ruangan', $this->ruangan);
+            $data_aset->where('tahun_pengadaan', $this->tahunpengadaan);
         }
         if ($this->kodebarang != null) {
             $data_aset->where('kode', $this->kodebarang);
@@ -97,6 +98,7 @@ class DataAsetExport implements FromQuery, WithHeadings, WithColumnFormatting
             'Kondisi',
             'Unit',
             'Gedung',
+            'Tahun Pengadaan',
             'Ruangan',
             'Catatan'
         ];

@@ -105,7 +105,7 @@
             <li class="list">
                 <b></b>
                 <b></b>
-                <a href="#">
+                <a href="{{route('peminjaman.form')}}">
                     <span class="icon"><i class="fab fa-wpforms"></i></span>
                     <span class="titlenavbar">Form Peminjaman</span>
                 </a>
