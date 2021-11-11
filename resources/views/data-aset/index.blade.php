@@ -530,11 +530,11 @@
                 $('#btn-edit').attr('href', link);
             });
 
-            let toggle2 = document.querySelector('.toggle');
-            let greetings = document.querySelector('.greetings');
-            toggle2.onclick = function() {
-                greetings.classList.toggle('hide');
-            }
+            // let toggle2 = document.querySelector('.toggle');
+            // let greetings = document.querySelector('.greetings');
+            // toggle2.onclick = function() {
+            //     greetings.classList.toggle('hide');
+            // }
         </script>
     </div>
 </x-app-layout>

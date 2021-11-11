@@ -45,7 +45,7 @@
                             </div>
                             <div class="mt-3 d-flex flex-column text-center">
                                 {{-- <a href="{{ route('data-aset.index') }}">Lupa password?</a> --}}
-                                {{-- <a href="/register">Daftar untuk peminjam</a> --}}
+                                <a href="/register">Daftar untuk peminjam</a>
                             </div>
                             <div class="col text-center mt-4">
                                 <button type="submit" class="btn btn-success shadow">Masuk</button>

@@ -54,14 +54,16 @@
         let content = document.querySelector('#content');
         let icon = document.querySelectorAll('.iconitem');
         let fauser = document.querySelector('.fa-user');
+        let greetings = document.querySelector('.greetings');
+
         toggle.onclick = function() {
             brandtext.classList.toggle('hide');
             toggle.classList.toggle('active')
             navigation.classList.toggle('close');
             content.classList.toggle('span');
-            fauser.classList.toggle('hide')
+            greetings.classList.toggle('hide');
+            fauser.classList.toggle('hide');
             for (let index = 0; index < icon.length; index++) {
-
                 icon[index].classList.toggle('hide');
 
             }

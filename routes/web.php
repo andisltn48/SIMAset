@@ -27,13 +27,6 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/form-peminjaman','PeminjamanController@formpeminjaman')->name('peminjaman.form');
-Route::get('/get-free-aset','PeminjamanController@get_free_aset')->name('peminjaman.get-free-aset');
-Route::get('/template-surat','PeminjamanController@templatesurat')->name('peminjaman.template-surat');
-Route::get('/temporary-data','PeminjamanController@temporary_data')->name('peminjaman.temporary-data');
-Route::post('/store-permintaan','PeminjamanController@storepermintaan')->name('peminjaman.store-permintaan');
-
-
 Route::group(['middleware' => ['auth','cekrole:Super Admin, Sarpras, BMN']], function(){
     //route data aset
     Route::resource('data-aset', DataAsetController::class);
@@ -55,4 +48,13 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin, Sarpras, BMN']], fun
 Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){
     //route peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
+    Route::get('/form-peminjaman','PeminjamanController@formpeminjaman')->name('peminjaman.form');
+    Route::get('/get-free-aset','PeminjamanController@get_free_aset')->name('peminjaman.get-free-aset');
+    Route::get('/template-surat','PeminjamanController@templatesurat')->name('peminjaman.template-surat');
+    Route::get('/temporary-data','PeminjamanController@temporary_data')->name('peminjaman.temporary-data');
+    Route::post('/store-permintaan','PeminjamanController@storepermintaan')->name('peminjaman.store-permintaan');
+    Route::get('/list-permintaan-peminjaman','PeminjamanController@list_permintaan_peminjaman')->name('peminjaman.list-permintaan-peminjaman');
+    Route::get('/get-data-permintaan-peminjaman','PeminjamanController@get_data_permintaan_peminjaman')->name('peminjaman.getdatapermintaanpeminjaman');
+    Route::get('/data-from-nopeminjam','PeminjamanController@data_from_no_peminjam')->name('peminjaman.data-from-nopeminjam');
+    Route::get('/download-surat-peminjaman/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman');
 });

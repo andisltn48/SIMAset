@@ -4,20 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DataPeminjaman extends Model
+class ListBarangPinjam extends Model
 {
-    public $table = 'data_peminjaman';
+    public $table = 'list_barang_pinjam';
     protected $fillable = [
-        'nama_peminjam',
-        'id_peminjam',
-        'nama_penanggung_jawab',
         'no_peminjaman',
-        'jumlah',
-        'tanggal_penggunaan',
-        'surat_peminjaman',
-        'surat_balasan',
-        'data_diri_penanggung_jawab',
-        'status_peminjaman'
+        'nama_barang',
+        'kode_barang',
+        'nup_barang',
+        'kondisi'
     ];
 
     public function getUpdatedAtAttribute($value)
@@ -29,4 +24,3 @@ class DataPeminjaman extends Model
         return date('d-m-Y H:i:s', strtotime($value));
     }
 }
-

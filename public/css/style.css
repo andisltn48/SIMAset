@@ -93,7 +93,7 @@ table.dataTable tbody tr:hover {
     width: 75px;
 }
 
-.greetings.hide,
+.greetings.hide,.greetings2.hide,
 .sidebar-brand-text.hide {
     display: none;
 }
@@ -242,6 +242,13 @@ figcaption ul li {
 
 .sidebar ul li.active {
     background: rgb(241, 241, 241);
+}
+
+.modal-detail-daftar-barang{
+    max-width: 37rem;
+    position: relative;
+    top: -20rem;
+    overflow: hidden;
 }
 
 .sidebar ul li.active a {

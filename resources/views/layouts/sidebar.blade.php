@@ -88,19 +88,9 @@
                 </a>
             </li>
         @endif
-        @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN' || session('role') == 'Sarpras' || session('role') == 'Pengaju')
-            <div class="">
-                <div class=" log text-center text-white mt-3">
-                    <a href="#"><i class="mt-2 text-white fas fa-user fa-3x"></i></a>
-                </div>
-                <div class="mt-2 greetings text-center text-white">
-                    <h5 class="fw-bold">Halo, {{ Auth::user()['name'] }}</h5>
-                </div>
-                <div class=" log text-center text-white mt-3">
-                    <a href="{{ route('auth.logout') }}"><i class="text-white fas fa-sign-out-alt"></i></a>
-                </div>
-            </div>
-        @endif
+        {{-- @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN' || session('role') == 'Sarpras' || session('role') == 'Pengaju') --}}
+            
+        {{-- @endif --}}
         @if (session('role') != 'Super Admin' && session('role') != 'Admin' && session('role') != 'BMN' && session('role') != 'Sarpras' && session('role') != 'Pengaju')
             <li class="list">
                 <b></b>
@@ -119,6 +109,17 @@
                 </a>
             </li>
         @endif
+        <div class="">
+            <div class=" log text-center text-white mt-3">
+                <a href="#"><i class="mt-2 text-white fas fa-user fa-3x"></i></a>
+            </div>
+            <div class="mt-2 greetings text-center text-white">
+                <h5 class="fw-bold">Halo, {{ Auth::user()['name'] }}</h5>
+            </div>
+            <div class=" log text-center text-white mt-3">
+                <a href="{{ route('auth.logout') }}"><i class="text-white fas fa-sign-out-alt"></i></a>
+            </div>
+        </div>
     </ul>
 </div>
 <div class="toggle">
