@@ -1,5 +1,5 @@
 <x-app-layout title="Daftar Permintaan">
-    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
+    <div class="card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible show fade">
                 <div class="alert-body">
@@ -72,24 +72,71 @@
             </div>
         </div>
     </div>
+    <div id="modal-confirm" class="modal fade bd-example-modal-lg" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- konten modal-->
+            <div class="modal-content">
+                <!-- heading modal -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detail data aset</h4>
+                    <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                    </button>
+                </div>
+                <!-- body modal -->
+
+                <div class="model-body p-4">
+                    <form  method="POST" id="form-confirm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="title">
+                            <p>Status<sup class="text-danger">*</sup></p>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-select" id="filter-kondisi" name="status" required>
+                                <option value="">Semua</option>
+                                <option value="Disetujui">Setujui</option>
+                                <option value="Ditolak">Tolak</option>
+                            </select>
+                        </div>
+                        <div class="mt-3">
+                            <p>Surat Balasan<sup class="text-danger">*</sup></p>
+                        </div>
+                        <div class="custom-file">
+                            <input class="form-control-file" name="surat_balasan" type="file"
+                                accept=".docx,application/pdf, application/msword" required>
+                        </div>
+                        <div class="mt-5">
+                            <div class="">
+                                <p>Catatan</p>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="catatan" class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button class="btn me-1 btn-block btn-primary" type="submit"><i class="fas fa-save me-2"></i>Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(".select2").select2();
 
-        var id = {!! json_encode($id_peminjam) !!};
+
         // window.alert(id);
         let table = $('#tableListPermintaan').DataTable({
             searching: false,
             order: [
-                [6, "asc"]
+                [7, "asc"]
             ],
             scrollX: true,
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('peminjaman.getdatapermintaanpeminjaman') }}",
-                data: function(d) {
-                    d.id = id;
-                }
+                url: "{{ route('peminjaman.getdatapermintaanpeminjaman-admin') }}",
             },
             columns: [{
                 data: 'DT_RowIndex',
@@ -133,7 +180,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('peminjaman.data-from-nopeminjam') }}",
+                url: "{{ route('peminjaman.data-from-nopeminjam-admin') }}",
                 type: "get",
                 data: {
                     no_peminjaman: no_peminjamans,
@@ -166,11 +213,19 @@
 
             console.log(no_peminjamans);
 
-            table2.ajax.url("data-from-nopeminjam?no_peminjaman=" + no_peminjamans).load();
+            table2.ajax.url("data-from-nopeminjam-admin?no_peminjaman=" + no_peminjamans).load();
             // table2.ajax.reload(null, false)
 
 
         });
+
+        $(document).on('click', '.btn-confirm', function(event) {
+                // return confirm($(this).data('tanggalSP2D'));
+                var link = $(this).data('link');
+
+            
+                $('#form-confirm').attr('action', link);
+            });
 
         function btnClose() {
             // table2.ajax.url("?no_peminjamans=0").load();

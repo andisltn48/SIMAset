@@ -14,7 +14,9 @@ class ListBarangPinjam extends Migration
     public function up()
     {
         Schema::create('list_barang_pinjam', function (Blueprint $table) {
+            $table->id();
             $table->bigInteger('no_peminjaman');
+            $table->bigInteger('id_barang');
             $table->string('nama_barang');
             $table->bigInteger('kode_barang');
             $table->string('nup_barang');

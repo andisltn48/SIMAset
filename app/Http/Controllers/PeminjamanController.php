@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\DataPeminjaman;
 use App\DataAset;
+use App\User;
 use App\ListBarangPinjam;
 use Auth;
+use Notification;
+use App\Notifications\PeminjamNotification;
 
 class PeminjamanController extends Controller
 {
@@ -18,7 +21,7 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        //
+        return view('peminjaman-admin.index');
     }
 
     /**
@@ -125,12 +128,15 @@ class PeminjamanController extends Controller
                 'surat_peminjaman' => $fileName_suratpeminjaman,
                 'surat_balasan' => '', 
                 'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
-                'status_peminjaman' => 'Belum Dikonfirmasi'
+                'status_permintaan' => 'Belum Dikonfirmasi',
+                'status_peminjaman' => '-',
+                'saran' => $request->saran
             ]);
             foreach ($aset_selected as $key => $value) {
                 $dataaset = DataAset::where('id', $value)->first();
                 $listbarangpinjam = ListBarangPinjam::create([
                     'no_peminjaman' => $no_peminjaman,
+                    'id_barang' => $dataaset->id,
                     'nama_barang' => $dataaset->nama_barang,
                     'kode_barang' => $dataaset->kode,
                     'nup_barang' => $dataaset->nup,
@@ -155,7 +161,17 @@ class PeminjamanController extends Controller
                 'surat_peminjaman' => $fileName_suratpeminjaman,
                 'surat_balasan' => '', 
                 'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
-                'status_peminjaman' => 'Belum Dikonfirmasi'
+                'status_permintaan' => 'Belum Dikonfirmasi',
+                'status_peminjaman' => '-',
+                'saran' => $request->saran
+            ]);
+            $listbarangpinjam = ListBarangPinjam::create([
+                'no_peminjaman' => $no_peminjaman,
+                'id_barang' => $dataaset->id,
+                'nama_barang' => $dataaset->nama_barang,
+                'kode_barang' => $dataaset->kode,
+                'nup_barang' => $dataaset->nup,
+                'kondisi' => $dataaset->kondisi
             ]);
             
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
@@ -173,7 +189,7 @@ class PeminjamanController extends Controller
         // $kode_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('kode_barang')->all();
         // $nup_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('nup_barang')->all();
         $datapeminjaman_free = DataPeminjaman::where('tanggal_penggunaan', date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)))
-        ->where('status_peminjaman', 'Disetujui')->pluck('no_peminjaman')->all();
+        ->where('status_peminjaman', 'Dalam Peminjaman')->pluck('no_peminjaman')->all();
         $kode_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('kode_barang')->all();
         $nup_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('nup_barang')->all();
         $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
@@ -202,29 +218,78 @@ class PeminjamanController extends Controller
         return view('peminjaman-user.list-permintaan', compact('id_peminjam'));
     }
 
+    public function list_peminjaman()
+    {
+        $id_peminjam = Auth::user()['id'];
+        return view('peminjaman-user.list-peminjaman', compact('id_peminjam'));
+    }
+
     public function get_data_permintaan_peminjaman(Request $request)
     {
-        $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id);
+        if ($request->id != NULL) {
+            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id);
+            $datatables = Datatables::of($datapeminjaman);
+            $datatables->orderColumn('updated_at', function ($query, $order) {
+                $query->orderBy('data_peminjaman.updated_at', $order);
+            });
+            return $datatables->addIndexColumn()
+            ->editColumn('status_permintaan', function(DataPeminjaman $datapeminjaman) {
+                if ($datapeminjaman->status_permintaan == 'Belum Dikonfirmasi') {
+                    return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                }
+                if ($datapeminjaman->status_permintaan == 'Disetujui') {
+                    return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                }
+                if ($datapeminjaman->status_permintaan == 'Ditolak') {
+                    return '<div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                }
+            })
+            ->escapeColumns([])
+            ->addColumn('download_surat_peminjaman','peminjaman-user.button-datatable.download-surat-peminjaman')
+            ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
+            ->addColumn('action','peminjaman-user.button-datatable.action')
+            ->toJson();
+        } else {
+            $datapeminjaman = DataPeminjaman::select('data_peminjaman.*');
+            $datatables = Datatables::of($datapeminjaman);
+            $datatables->orderColumn('updated_at', function ($query, $order) {
+                $query->orderBy('data_peminjaman.updated_at', $order);
+            });
+            return $datatables->addIndexColumn()
+            ->editColumn('status_permintaan', function(DataPeminjaman $datapeminjaman) {
+                if ($datapeminjaman->status_permintaan == 'Belum Dikonfirmasi') {
+                    return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                }
+                if ($datapeminjaman->status_permintaan == 'Disetujui') {
+                    return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                }
+                if ($datapeminjaman->status_permintaan == 'Ditolak') {
+                    return '<div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                }
+            })
+            ->escapeColumns([])
+            ->addColumn('download_surat_peminjaman','peminjaman-admin.button-datatable.download-surat-peminjaman')
+            ->addColumn('list_barang','peminjaman-admin.button-datatable.detail-barang')
+            ->addColumn('action','peminjaman-admin.button-datatable.action')
+            ->toJson();
+        }
+        
+    }
+
+    public function get_data_peminjaman(Request $request)
+    {
+        $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman');
         $datatables = Datatables::of($datapeminjaman);
         $datatables->orderColumn('updated_at', function ($query, $order) {
-            $query->orderBy('data_peminjaman.created_at', $order);
+            $query->orderBy('data_peminjaman.updated_at', $order);
         });
         return $datatables->addIndexColumn()
         ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
-            if ($datapeminjaman->status_peminjaman == 'Belum Dikonfirmasi') {
-                return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
-            }
-            if ($datapeminjaman->status_peminjaman == 'Disetujui') {
-                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
-            }
-            if ($datapeminjaman->status_peminjaman == 'Ditolak') {
-                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
-            }
+            return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
         })
         ->escapeColumns([])
-        ->addColumn('download_surat_peminjaman','peminjaman-user.button-datatable.download-surat-peminjaman')
+        ->addColumn('download_surat_balasan','peminjaman-user.button-datatable.download-surat-balasan')
         ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
-        ->addColumn('action','peminjaman-user.button-datatable.action')
         ->toJson();
     }
 
@@ -245,5 +310,58 @@ class PeminjamanController extends Controller
     {
         $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
         return response()->download(public_path('storage/file-peminjaman/surat-peminjaman/'. $datapeminjaman->surat_peminjaman));
+    }
+
+    public function download_surat_balasan($no_peminjaman)
+    {
+        $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        return response()->download(public_path('storage/file-peminjaman/surat-balasan/'. $datapeminjaman->surat_balasan));
+    }
+
+    public function destroy_permintaan($no_peminjaman)
+    {
+        $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        $datapeminjaman->delete();
+        // dd($datapeminjaman->nama_peminjam);
+        $listbarangpinjam = ListBarangPinjam::where('no_peminjaman', $no_peminjaman)->get();
+        foreach ($listbarangpinjam as $key => $value) {
+            $value->delete();
+        }
+
+        return redirect()->back()->with('success', 'Berhasil menghapus permintaan');
+    }
+
+    public function confirm_request(Request $request, $no_peminjaman)
+    {
+        $file_suratbalasan = $request->surat_balasan;
+        $fileName_suratbalasan = time().'_'.$file_suratbalasan->getClientOriginalName();
+        
+
+        $datapermintaan = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        // dd($datapermintaan);
+        if ($request->status == 'Disetujui') {
+            $file_suratbalasan->move(public_path('storage/file-peminjaman/surat-balasan'), $fileName_suratbalasan);
+            $datapermintaan->update([
+                'status_permintaan' => $request->status,
+                'status_peminjaman' => 'Dalam Peminjaman',
+                'surat_balasan' => $fileName_suratbalasan,
+                'catatan' => $request->catatan
+            ]);
+        } else {
+            $datapermintaan->update([
+                'status_permintaan' => $request->status,
+                'catatan' => $request->catatan
+            ]);
+        }
+        
+
+        $user = User::where('id', $datapermintaan->id_peminjam)->first();
+
+        $details = [
+            'body' => $datapermintaan->no_peminjaman
+        ];
+
+        Notification::send($user, new PeminjamNotification($details));
+        return redirect()->back()->with('success', 'Berhasil melakukan konfirmasi');
     }
 }

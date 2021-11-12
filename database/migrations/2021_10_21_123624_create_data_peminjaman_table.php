@@ -24,7 +24,10 @@ class CreateDataPeminjamanTable extends Migration
             $table->string('surat_peminjaman');
             $table->string('surat_balasan');
             $table->string('data_diri_penanggung_jawab');
+            $table->string('status_permintaan');
             $table->string('status_peminjaman');
+            $table->string('saran')->nullable();
+            $table->string('catatan')->nullable();
             $table->timestamps();
         });
     }

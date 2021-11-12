@@ -43,18 +43,35 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin, Sarpras, BMN']], fun
     
     //route unit
     Route::resource('unit', ManajemenUnitController::class);
+
+    //route peminjaman
+    Route::resource('peminjaman', PeminjamanController::class);
+    Route::get('/get-data-permintaan-peminjaman-admin','PeminjamanController@get_data_permintaan_peminjaman')->name('peminjaman.getdatapermintaanpeminjaman-admin');
+    Route::get('/get-data-peminjaman-admin','PeminjamanController@get_data_peminjaman')->name('peminjaman.getdatapeminjaman-admin');
+    Route::get('/data-from-nopeminjam-admin','PeminjamanController@data_from_no_peminjam')->name('peminjaman.data-from-nopeminjam-admin');
+    Route::get('/download-surat-peminjaman-admin/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman-admin');
+    Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
+    Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');
+    Route::post('/confirm-request/{no_permintaan}','PeminjamanController@confirm_request')->name('peminjaman.confirm-request');
 });
 
 Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){
     //route peminjaman
-    Route::resource('peminjaman', PeminjamanController::class);
     Route::get('/form-peminjaman','PeminjamanController@formpeminjaman')->name('peminjaman.form');
     Route::get('/get-free-aset','PeminjamanController@get_free_aset')->name('peminjaman.get-free-aset');
     Route::get('/template-surat','PeminjamanController@templatesurat')->name('peminjaman.template-surat');
     Route::get('/temporary-data','PeminjamanController@temporary_data')->name('peminjaman.temporary-data');
     Route::post('/store-permintaan','PeminjamanController@storepermintaan')->name('peminjaman.store-permintaan');
     Route::get('/list-permintaan-peminjaman','PeminjamanController@list_permintaan_peminjaman')->name('peminjaman.list-permintaan-peminjaman');
+    Route::get('/list-peminjaman','PeminjamanController@list_peminjaman')->name('peminjaman.list-peminjaman');
     Route::get('/get-data-permintaan-peminjaman','PeminjamanController@get_data_permintaan_peminjaman')->name('peminjaman.getdatapermintaanpeminjaman');
+    Route::get('/get-data-peminjaman','PeminjamanController@get_data_peminjaman')->name('peminjaman.getdatapeminjaman');
     Route::get('/data-from-nopeminjam','PeminjamanController@data_from_no_peminjam')->name('peminjaman.data-from-nopeminjam');
     Route::get('/download-surat-peminjaman/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman');
+    Route::get('/download-surat-balasan/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan');
+    Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
+});
+
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('mark-read', 'NotificationController@markNotification')->name('auth.mark-read');
 });

@@ -17,7 +17,10 @@ class DataPeminjaman extends Model
         'surat_peminjaman',
         'surat_balasan',
         'data_diri_penanggung_jawab',
-        'status_peminjaman'
+        'status_permintaan',
+        'status_peminjaman',
+        'saran',
+        'catatan'
     ];
 
     public function getUpdatedAtAttribute($value)

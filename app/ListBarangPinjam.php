@@ -9,6 +9,7 @@ class ListBarangPinjam extends Model
     public $table = 'list_barang_pinjam';
     protected $fillable = [
         'no_peminjaman',
+        'id_barang',
         'nama_barang',
         'kode_barang',
         'nup_barang',

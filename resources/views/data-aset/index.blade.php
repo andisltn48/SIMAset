@@ -146,7 +146,7 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-3">
+            <div class="col">
                 <div class="title-filter">
                     <p>Kode Barang</p>
                 </div>
@@ -154,7 +154,7 @@
                     <input type="text" id="filter-kodebarang" class="kodebarang form-control">
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <div class="title-filter">
                     <p>NUP</p>
                 </div>
@@ -162,16 +162,18 @@
                     <input type="text" id="filter-nup" class="nup form-control">
                 </div>
             </div>
+            <div class="col"></div>
+            <div class="col"></div>
         </div>
 
         <div class="d-flex justify-content-center align-items-center mt-4">
-            <button class="btn btn-block btn-primary me-3" id="filter" style="width: 7vw;"><i
+            <button class="btn btn-block btn-primary me-3" id="filter" style="min-width: 7vw;"><i
                     class="fas fa-filter me-2"></i>Filter</button>
-            <button class="btn btn-block btn-danger" id="reset" style="width: 7vw;"><i
+            <button class="btn btn-block btn-danger" id="reset" style="min-width: 7vw;"><i
                     class="fas fa-undo-alt me-2"></i>Reset</button>
         </div>
         <div class="row mt-2 me-1 ms-1">
-            <button class="btn btn-primary mb-2" onclick="export_excel()" style="max-width: 11vw;" href="">Export to
+            <button class="btn btn-primary mb-2" onclick="export_excel()" style="max-width: 11vw; " href="">Export to
                 Excel</button>
             <table id="tableDataAset" class="table table-bordered display nowrap">
                 <thead>
@@ -472,9 +474,6 @@
 
             })
 
-            function confirm_delete() {
-                return confirm('Apakah anda yakin untuk menghapus data aset ini ? ');
-            }
 
             $(".select2").select2();
 

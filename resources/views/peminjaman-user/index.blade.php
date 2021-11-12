@@ -1,5 +1,5 @@
 <x-app-layout title="Form Peminjaman">
-    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded mobile-margin">
+    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible show fade">
                 <div class="alert-body">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <input name="nama_peminjam" required type="text" class="form-control"
-                                value="{{ old('nama_peminjam') }}">
+                                value="{{ Auth::user()->name }}" readonly>
                         </div>
                     </div>
                     <div class="col" id="penanggung-jawab">
@@ -137,6 +137,7 @@
         </div>
     </div>
     <script>
+        localStorage.removeItem('indexNum');
         $(".select2").select2();
 
         let inventory_prasarana = document.querySelector('.inventory-prasarana');

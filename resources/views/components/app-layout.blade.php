@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css" />
     <script src="//code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
@@ -48,26 +49,54 @@
         </div>
     </div>
     <script>
-        let toggle = document.querySelector('.toggle');
-        let navigation = document.querySelector('.sidebar');
-        let brandtext = document.querySelector('.sidebar-brand-text');
-        let content = document.querySelector('#content');
+        // let toggle = document.querySelector('.toggle');
+        // let navigation = document.querySelector('.sidebar');
+        // let brandtext = document.querySelector('.sidebar-brand-text');
+        // let content = document.querySelector('#content');
         let icon = document.querySelectorAll('.iconitem');
-        let fauser = document.querySelector('.fa-user');
-        let greetings = document.querySelector('.greetings');
+        // let fauser = document.querySelector('.fa-user');
+        // let greetings = document.querySelector('.greetings');
 
-        toggle.onclick = function() {
-            brandtext.classList.toggle('hide');
-            toggle.classList.toggle('active')
-            navigation.classList.toggle('close');
-            content.classList.toggle('span');
-            greetings.classList.toggle('hide');
-            fauser.classList.toggle('hide');
-            for (let index = 0; index < icon.length; index++) {
-                icon[index].classList.toggle('hide');
+        // toggle.onclick = function() {
+        //     brandtext.classList.toggle('hide');
+        //     toggle.classList.toggle('active')
+        //     navigation.classList.toggle('close');
+        //     content.classList.toggle('span');
+        //     greetings.classList.toggle('hide');
+        //     fauser.classList.toggle('hide');
+        //     for (let index = 0; index < icon.length; index++) {
+        //         icon[index].classList.toggle('hide');
 
+        //     }
+        // }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+
+            const showNavbar = (toggleId, navId, headerId, contentId) => {
+                const toggle = document.getElementById(toggleId),
+                    nav = document.getElementById(navId),
+                    headerpd = document.getElementById(headerId),
+                    contentspan = document.querySelector('#content')
+
+                // Validate that all variables exist
+                if (toggle && nav && headerpd) {
+                    toggle.addEventListener('click', () => {
+                        // show navbar
+                        nav.classList.toggle('expand')
+                        headerpd.classList.toggle('body-pd')
+                        contentspan.classList.toggle('span')
+
+                        for (let index = 0; index < icon.length; index++) {
+                            icon[index].classList.toggle('hide');
+
+                        }
+                    })
+                }
             }
-        }
+
+            showNavbar('header-toggle', 'nav-bar', 'header')
+
+        });
     </script>
 </body>
 
