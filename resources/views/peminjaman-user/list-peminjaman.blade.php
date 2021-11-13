@@ -1,5 +1,5 @@
 <x-app-layout title="Daftar Peminjaman">
-    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
+    <div class="card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible show fade">
                 <div class="alert-body">

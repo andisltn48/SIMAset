@@ -16,6 +16,7 @@ class AuthController extends Controller
             $user = User::where('id', $user_id)->first();
             $role = Roles::where('id',$user->role_id)->first();
             session(['role' => $role->name]);
+            // dd($role->name);
             if ($role->name == 'Peminjam') {
                 return redirect('form-peminjaman');
             }

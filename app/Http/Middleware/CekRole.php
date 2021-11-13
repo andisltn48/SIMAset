@@ -18,13 +18,19 @@ class CekRole
      */
     public function handle($request, Closure $next, ...$roles)
     {
-            $user_id = Auth::user()->id;
-            $user = User::where('id', $user_id)->first();
-            $role = Roles::where('id',$user->role_id)->first();
-        if(in_array($role->name,$roles)) {
-
-            return $next($request);
+        $user_id = Auth::user()->id;
+        $user = User::where('id', $user_id)->first();
+        $role = Roles::where('id',$user->role_id)->first();
+        // if(in_array($role->name,$roles)) {
+        //     dd($role->name);
+        //     return $next($request);
+        // }
+        foreach ($roles as $key => $value) {
+            if ($role->name == $value) {    
+                // dd($role->name);
+                return $next($request);
+            }
         }
-        return redirect('/')->with('error','Anda tidak dapat mengakses halaman ini');
+         return redirect('/')->with('error',"Anda tidak dapat mengakses halaman ini");
     }
 }

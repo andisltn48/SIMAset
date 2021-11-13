@@ -87,12 +87,21 @@
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Data Aset</h5>
             </div>
-            <div class="col button text-end">
-                <a href="{{ route('data-aset.create') }}"><button class="btn btn-block btn-success">Tambah
-                        Aset</button></a>
-                <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
-                        Aset</button></a>
-            </div>
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+                <div class="col button text-end">
+                    <a href="{{ route('data-aset.create') }}"><button class="btn btn-block btn-success">Tambah
+                            Aset</button></a>
+                    <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
+                            Aset</button></a>
+                </div>
+            @else
+                <div class="col button text-end">
+                    <button disabled class="btn btn-block btn-success">Tambah
+                            Aset</button>
+                    <button disabled class="btn btn-block btn-success">Impor
+                            Aset</button>
+                </div>
+            @endif
         </div>
         <hr>
         <div class="row mt-2">
@@ -304,12 +313,21 @@
                         </table>
                     </div>
 
-                    <div class="modal-footer">
-                        <div>
-                            <a id="btn-edit" href=""><button class="btn me-1 btn-block btn-warning"><i
-                                        class="fas fa-edit me-2"></i>Edit</button></a>
+                    @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+                        <div class="modal-footer">
+                            <div>
+                                <a id="btn-edit" href=""><button class="btn me-1 btn-block btn-warning"><i
+                                            class="fas fa-edit me-2"></i>Edit</button></a>
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="modal-footer">
+                            <div>
+                                <button disabled class="btn me-1 btn-block btn-warning"><i
+                                        class="fas fa-edit me-2"></i>Edit</button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -2,31 +2,44 @@
     <header class="header" id="header">
         <div style="display: none">
             {{ $notification = auth()->user()->unreadNotifications }}
+            {{ $allnotification = auth()->user()->notifications }}
         </div>
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="name-notif d-flex align-items-center justify-content-center">
             <div class="header_name"> <span class="text-primary fw-bolder">Halo, </span> {{ Auth::user()->name }}<img
                     src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
-            <div class="nav-item avatar dropdown">
-                <a class="nav-link data-toggle waves-effect waves-light text-primary" id="navbarDropdownMenuLink-5"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="cursor: pointer">
+            <div class="nav-item avatar dropdown" id="dropdown">
+                <a class="nav-link data-toggle waves-effect waves-light text-primary"
+                    id="navbarDropdownMenuLink-5 mark-as-read" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="true" style="cursor: pointer">
                     <i class="fas fa-bell"></i>
-                    @if (count($notification)>0)
-                    <spanc class="fwb-old" style="color: rgb(156, 5, 5); font-size: 11px; font-weight: 900;">
-                        {{ count($notification) }}</span>
+                    @if (count($notification) > 0)
+                        <span id="countNotif" class="fwb-old"
+                            style="color: rgb(156, 5, 5); font-size: 11px; font-weight: 900;">
+                            {{ count($notification) }}</span>
                     @endif
                 </a>
-                <div class="dropdown-menu dropdown-secondary p-2" style="min-width: 25rem !important;">
-                    @foreach ($notification as $item)
-                        <div class="dropdown-item alert">
-                            User {{ $item->data['body'] }} has just registered
-                            <a href="#" class="float-right mark-as-read ms-4" data-id="{{ $item->id }}">
+                <div class="dropdown-menu dropdown-secondary p-2" style="min-width: 25% !important;">
+                    @if (count($allnotification) > 0)
+                    <a class="dropdown-item alert" id="linkNotif">
+                        @foreach ($allnotification as $item)
+                            <p style="font-size: 15px !important">{{ $item->data['body'] }} </p>
+                            <p style="font-size: 12px !important; margin-top: -5px !important" class="text-primary"><i
+                                    class="fas fa-clock me-2"></i>{{ $item->created_at }}</p>
+
+                        @endforeach
+                        {{-- <a href="#" class="float-right mark-as-read ms-4" data-id="{{ $item->id }}">
                                 <i class="fas fa-check-double text-success"></i>
-                            </a>
-                        </div>
-                    @endforeach
+                            </a> --}}
+                    </a>
+                    @endif
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-center text-success" href="#" id="mark-all">Tandai semua sebagai dibaca<i class="ms-2 fas fa-check-double text-success"></i></a>
+                    @if (count($allnotification) == null)
+                        <button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>
+                    @else
+                        <a class="dropdown-item text-center text-danger" href="#" id="mark-all">Bersihkan semua
+                            notifikasi</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -79,7 +92,8 @@
                 </div>
             </div> <a href="{{ route('auth.logout') }}" class="nav_link"> <i
                     class='bx bx-log-out nav_icon'></i>
-                <span class="nav_name">SignOut</span> </a>
+                <span class="nav_name">Keluar</span> </a>
+                
         </nav>
     </div>
 </div>
@@ -120,26 +134,44 @@
         });
     </script> --}}
 <script>
+    var id = {!! json_encode(auth()->user()->id) !!};
+
     function sendMarkRequest(id = null) {
-        return $.ajax("{{ route('auth.mark-read') }}", {
-            method: 'get',
-            data: {
-                id
-            }
+        return $.ajax("{{ route('notif.mark-read') }}", {
+            method: 'get'
         });
     }
     $(function() {
-        $('.mark-as-read').click(function() {
-            let request = sendMarkRequest($(this).data('id'));
+        $('#dropdown').click(function() {
+            // let curr_notif_count = document.getElementById("countNotif").innerHTML;
+            // console.log(curr_notif_count - 1);
+            // let request = sendMarkRequest($(this).data('id'));
+            // request.done(() => {
+            //     $(this).parents('div.alert').remove();
+            //     if (curr_notif_count > 1) {
+            //         document.getElementById("countNotif").innerHTML = curr_notif_count-1
+            //     } else {
+            //         document.getElementById("countNotif").innerHTML = ""
+            //     }
+            // });
+            // $('div.alert').remove();
+            console.log("Hai")
+            let request = sendMarkRequest();
+
             request.done(() => {
-                $(this).parents('div.alert').remove();
-            });
+
+                document.getElementById("countNotif").innerHTML = "";
+            })
         });
         $('#mark-all').click(function() {
-            let request = sendMarkRequest();
-            request.done(() => {
-                $('div.alert').remove();
-            })
+            $.ajax("{{ route('notif.clearnotif') }}", {
+                method: 'get',
+                data: {
+                    id_login: id
+                }
+            });
+            $('#linkNotif').remove();
+            document.getElementById("mark-all").innerHTML = '<button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>';
         });
     });
 </script>

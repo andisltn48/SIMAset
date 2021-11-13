@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-around ">
-    @if ($model->status_permintaan == 'Disetujui')
+    @if ($model->status_permintaan == 'Disetujui' || $model->status_permintaan == 'Ditolak')
     <div>
         <button disabled data-toggle="modal" data-target="#modal-confirm" data-link={{ route('peminjaman.confirm-request', $model->no_peminjaman) }} class="btn me-1 btn-block btn-primary btn-confirm"><i
             class="fas fa-check-square me-2"></i>Konfirmasi</button>

@@ -18,12 +18,23 @@
         <a href="{{ route('data-aset.edit', $model->id) }}"><button class="btn me-1 btn-block btn-warning"
                 style="width: 5vw;">Edit</button></a>
     </div> --}}
+    @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+        <div>
+            <form action="{{ route('data-aset.destroy', $model->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-block btn-danger" onclick="return confirm('Apakah anda yakin untuk menghapus data aset ini ?');"><i
+                    class="fas fa-trash-alt me-2"></i>Hapus</button>
+            </form>
+        </div>
+    @else
     <div>
         <form action="{{ route('data-aset.destroy', $model->id) }}" method="POST">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-block btn-danger" onclick="return confirm('Apakah anda yakin untuk menghapus data aset ini ?');"><i
+            <button disabled type="submit" class="btn btn-block btn-danger" onclick="return confirm('Apakah anda yakin untuk menghapus data aset ini ?');"><i
                 class="fas fa-trash-alt me-2"></i>Hapus</button>
         </form>
     </div>
+    @endif
 </div>

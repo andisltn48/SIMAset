@@ -145,6 +145,14 @@ class PeminjamanController extends Controller
             }
             
             \Session::forget('tempo-data');
+            $user = User::where('role_id', '4')->get();
+            $details = [
+                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi',
+                'link' => route('peminjaman.getdatapermintaanpeminjaman-admin')
+            ];
+            foreach ($user as $key => $value) {
+                Notification::send($value, new PeminjamNotification($details));
+            }
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
         } else {
             $validate = $request->validate([
@@ -173,7 +181,14 @@ class PeminjamanController extends Controller
                 'nup_barang' => $dataaset->nup,
                 'kondisi' => $dataaset->kondisi
             ]);
-            
+            $user = User::where('role_id', '4')->get();
+            $details = [
+                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi',
+                'link' => route('peminjaman.getdatapermintaanpeminjaman-admin')
+            ];
+            foreach ($user as $key => $value) {
+                Notification::send($value, new PeminjamNotification($details));
+            }
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
         }
         
@@ -358,7 +373,8 @@ class PeminjamanController extends Controller
         $user = User::where('id', $datapermintaan->id_peminjam)->first();
 
         $details = [
-            'body' => $datapermintaan->no_peminjaman
+            'body' => 'Permintaan peminjaman dengan no: '.$datapermintaan->no_peminjaman.' telah dikonfirmasi',
+            'link' => route('peminjaman.getdatapermintaanpeminjaman')
         ];
 
         Notification::send($user, new PeminjamNotification($details));

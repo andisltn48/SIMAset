@@ -1,5 +1,5 @@
 <x-app-layout title="Impor Aset">
-    <div class="mt-4 card shadow p-3 bg-white rounded dataaset-card">
+    <div class="mt-4 card shadow p-3 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Impor Aset</h5>
@@ -49,7 +49,7 @@
             </div>
         </form>
     </div>
-    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded dataaset-card">
+    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Riwayat Impor Aset</h5>

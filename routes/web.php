@@ -27,7 +27,7 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::group(['middleware' => ['auth','cekrole:Super Admin, Sarpras, BMN']], function(){
+Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras,BMN']], function(){
     //route data aset
     Route::resource('data-aset', DataAsetController::class);
     Route::get('/impor-aset','DataAsetController@import')->name('data-aset.import');
@@ -73,5 +73,6 @@ Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){
 });
 
 Route::group(['middleware' => ['auth']], function(){
-    Route::get('mark-read', 'NotificationController@markNotification')->name('auth.mark-read');
+    Route::get('mark-read', 'NotificationController@markNotification')->name('notif.mark-read');
+    Route::get('clearnotif', 'NotificationController@clearNotification')->name('notif.clearnotif');
 });
