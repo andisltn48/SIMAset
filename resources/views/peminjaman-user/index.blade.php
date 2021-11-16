@@ -141,7 +141,7 @@
         $(".select2").select2();
 
         let inventory_prasarana = document.querySelector('.inventory-prasarana');
-        $('#tanggalpenggunaan').on('click', function() {
+        $('#tanggalpenggunaan').on('change', function() {
             arr_items = [];
             document.getElementById("inventory-prasarana").innerHTML = "";
             inventory_prasarana.classList.remove('block');

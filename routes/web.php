@@ -27,7 +27,7 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras,BMN']], function(){
+Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], function(){
     //route data aset
     Route::resource('data-aset', DataAsetController::class);
     Route::get('/impor-aset','DataAsetController@import')->name('data-aset.import');
@@ -40,15 +40,26 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras,BMN']],
     Route::get('/detail-import/{id}','DataAsetController@detail_riwayat_import')->name('data-aset.detail-riwayat-import');
     Route::post('/destroy-log-import/{id}','DataAsetController@destroy_log_import')->name('data-aset.destroy-log-import');
     Route::post('/data-aset-import','DataAsetController@import_data')->name('data-aset.import-data-aset');
-    
+
     //route unit
     Route::resource('unit', ManajemenUnitController::class);
+    //route ruangan
+    Route::resource('data-ruangan', ManajemenRuanganController::class);
+    Route::get('/get-data-ruangan','ManajemenRuanganController@get_data_ruangan')->name('data-ruangan.get-data-ruangan');
+});
+
+Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras']], function(){
+    //route data aset
+    Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
+    Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
+    Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
 
     //route peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
     Route::get('/get-data-permintaan-peminjaman-admin','PeminjamanController@get_data_permintaan_peminjaman')->name('peminjaman.getdatapermintaanpeminjaman-admin');
     Route::get('/get-data-peminjaman-admin','PeminjamanController@get_data_peminjaman')->name('peminjaman.getdatapeminjaman-admin');
     Route::get('/data-from-nopeminjam-admin','PeminjamanController@data_from_no_peminjam')->name('peminjaman.data-from-nopeminjam-admin');
+    Route::get('/list-peminjaman-admin','PeminjamanController@list_peminjaman_admin')->name('peminjaman.list-peminjaman-admin');
     Route::get('/download-surat-peminjaman-admin/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman-admin');
     Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
     Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');

@@ -23,18 +23,18 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
     {
         $this->id_import = $id_import;
     }
-    
+
     public function model(array $row)
     {
         if ($row["jumlah"] > 1) {
             $current_nup = $row["nup_awal"];
             $last_nup = 0;
 
-            for ($i=0; $i < $row["jumlah"]; $i++) { 
+            for ($i=0; $i < $row["jumlah"]; $i++) {
                 $last_nup = $current_nup + $i;
             }
 
-            for ($current_nup; $current_nup <= $last_nup ; $current_nup++) { 
+            for ($current_nup; $current_nup <= $last_nup ; $current_nup++) {
                 $test_nup = DataAset::where('kode',$row["kode_barang"])->where('nup', $current_nup)->get();
                 // dd($test_nup->count());
                 if ($test_nup->count()  == 0 ) {
@@ -73,7 +73,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
                         'ruangan' => $row['ruangan'],
                         'catatan' => $row['catatan'],
                     ]);
-                } 
+                }
                 else {
                     $failed = DetailLogImport::create([
                         'row' => $row["no"],
@@ -83,7 +83,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
                         'import_id' => $this->id_import
                     ]);
                 }
-                
+
             }
         }
          else {
@@ -125,7 +125,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
                         'ruangan' => $row['ruangan'],
                         'catatan' => $row['catatan'],
                     ]);
-                } 
+                }
                 else {
                     $failed = DetailLogImport::create([
                         'row' => $row["no"],
@@ -136,42 +136,7 @@ class DataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEm
                     ]);
                 }
         }
-        
-        // $success = DetailLogImport::create([
-        //     'row' => $row["no"],
-        //     'nama' => $row["nama_barang"],
-        //     'status' => 'Success',
-        //     'message' => 'Berhasil ditambahkan',
-        //     'import_id' => $this->id_import
-        // ]);
-        
-        // return new DataAset([
-        //     'nama_barang' => $row["nama_barang"],
-        //     'kode' => $row['kode_barang'],
-        //     'nup' => $row['nup'],
-        //     'uraian_barang' => $row['uraian_barang_menurut_kode'],
-        //     'jumlah' => $row['jumlah'],
-        //     'harga_satuan' => $row['harga_satuan'],
-        //     'harga_total' => $row['total'],
-        //     'nilai_tagihan' => $row['nilai_tagihan'],
-        //     'tanggal_SP2D' => date('d-m-Y H:i:s', strtotime($row['tanggal_sp2d'])),
-        //     'nomor_SP2D' => $row['nomor_sp2d'],
-        //     'kelompok_belanja' => $row['kelompok_belanja'],
-        //     'asal_perolehan' => $row['asal_perolehan_perusahaan_kota'],
-        //     'nomor_bukti_perolehan' => $row['no_bukti_perolehan_kontrak_spm'],
-        //     'merk' =>$row['merk_spesifikasi_barang'] ,
-        //     'sumber_dana' => $row["sumber_dana"],
-        //     'pic' => $row["pic"],
-        //     'kode_ruangan' => $row['kode_ruang'],
-        //     'kondisi' => $row['kondisi_barang'],
-        //     'unit' => $row['unit_rumpun'],
-        //     'status' => 'Aktif',
-        //     'gedung' => $row['gedung'],
-        //     'ruangan' => $row['ruangan'],
-        //     'catatan' => $row['catatan'],
-        // ]);
-        // var_dump($row["nup_awal"]);
-        // echo $row["sumber_dana"];
+
     }
 
     public function headingRow(): int

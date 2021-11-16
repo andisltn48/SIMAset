@@ -1,5 +1,5 @@
-<x-app-layout title="Daftar Permintaan">
-    <div class=" card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
+<x-app-layout title="Daftar Peminjaman">
+    <div class="card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible show fade">
                 <div class="alert-body">
@@ -16,26 +16,27 @@
         @endif
         <div class="row header-peminjaman">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Daftar Permintaan Peminjaman</h5>
+                <h5 class="fw-bold">Daftar Peminjaman</h5>
             </div>
             <div class="col button" style="text-align: end">
-                <a href="{{ route('peminjaman.list-peminjaman') }}"><button class="btn btn-block btn-primary">Daftar
-                        Peminjaman</button></a>
+                <a href="{{ route('peminjaman.index') }}"><button
+                        class="btn btn-block btn-primary">Daftar
+                        Permintaan Peminjaman</button></a>
             </div>
         </div>
         <hr>
         <div class="row p-3">
-            <table id="tableListPermintaan" class=" ps-1 table table-bordered display">
+            <table id="tableListPeminjaman" class=" ps-1 table table-bordered display">
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>No Peminjaman</th>
                         <th>Daftar Barang</th>
                         <th>Jumlah Barang</th>
                         <th>Tanggal Penggunaan</th>
-                        <th>Status</th>
-                        <th>Surat Peminjaman</th>
+                        <th>Status Peminjaman</th>
+                        <th>Surat Balasan</th>
                         <th>Updated_At</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
             </table>
@@ -74,21 +75,19 @@
     <script>
         $(".select2").select2();
 
-        var id = {!! json_encode($id_peminjam) !!};
         // window.alert(id);
-        let table = $('#tableListPermintaan').DataTable({
-            searching: false,
+        let table = $('#tableListPeminjaman').DataTable({
+            language: {
+                searchPlaceholder: "Cari No Peminjaman"
+            },
             order: [
-                [6, "asc"]
+                [7, "asc"]
             ],
             scrollX: true,
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('peminjaman.getdatapermintaanpeminjaman') }}",
-                data: function(d) {
-                    d.id = id;
-                }
+                url: "{{ route('peminjaman.getdatapeminjaman-admin') }}",
             },
             columns: [{
                 data: 'DT_RowIndex',
@@ -96,30 +95,42 @@
                 orderable: false,
                 searchable: false
             }, {
+                searchable: 'true',
+                className: "dt-nowrap",
+                data: 'no_peminjaman',
+            }, {
+                searchable: 'false',
                 className: "dt-nowrap",
                 data: 'list_barang',
             }, {
+                searchable: 'false',
                 className: "dt-nowrap",
                 data: 'jumlah',
             }, {
+                width: '15rem',
+                searchable: 'false',
                 className: "dt-nowrap",
                 data: 'tanggal_penggunaan'
             }, {
+                searchable: 'false',
                 className: "dt-nowrap",
-                data: 'status_permintaan'
+                data: 'status_peminjaman'
             }, {
+                searchable: 'false',
                 className: "dt-nowrap",
-                data: 'download_surat_peminjaman'
+                data: 'download_surat_balasan'
             }, {
+                width: '10rem',
+                searchable: 'false',
                 className: "dt-nowrap",
                 data: 'updated_at'
-            }, {
-                className: "dt-nowrap",
-                data: 'action'
-            }],
+            }, ],
         });
         var no_peminjamans;
         var table2 = $('#tableDetailDaftarBarang').DataTable({
+            language: {
+                searchPlaceholder: "Cari Nama Barang"
+            },
             retrieve: true,
             // searching: false,
             order: [
@@ -129,7 +140,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('peminjaman.data-from-nopeminjam') }}",
+                url: "{{ route('peminjaman.data-from-nopeminjam-admin') }}",
                 type: "get",
                 data: {
                     no_peminjaman: no_peminjamans,
@@ -162,7 +173,7 @@
 
             console.log(no_peminjamans);
 
-            table2.ajax.url("data-from-nopeminjam?no_peminjaman=" + no_peminjamans).load();
+            table2.ajax.url("data-from-nopeminjam-admin?no_peminjaman=" + no_peminjamans).load();
             // table2.ajax.reload(null, false)
 
 
@@ -174,4 +185,4 @@
         }
     </script>
 </x-app-layout>
-{{-- <div style="background: rgb(233, 189, 160); border-radius: 2rem;" class="p-2 text-white"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div> --}}
+{{-- <div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-white"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div> --}}

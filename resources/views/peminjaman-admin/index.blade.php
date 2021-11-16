@@ -19,7 +19,7 @@
                 <h5 class="fw-bold">Daftar Permintaan Peminjaman</h5>
             </div>
             <div class="col button" style="text-align: end">
-                <a href="{{ route('peminjaman.list-peminjaman') }}"><button class="btn btn-block btn-primary">Daftar
+                <a href="{{ route('peminjaman.list-peminjaman-admin') }}"><button class="btn btn-block btn-primary">Daftar
                         Peminjaman</button></a>
             </div>
         </div>
@@ -29,6 +29,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Nama Peminjam</th>
+                        <th>No Peminjaman</th>
                         <th>Daftar Barang</th>
                         <th>Jumlah Barang</th>
                         <th>Tanggal Penggunaan</th>
@@ -130,7 +132,7 @@
         let table = $('#tableListPermintaan').DataTable({
             searching: false,
             order: [
-                [7, "asc"]
+                [9, "desc"]
             ],
             scrollX: true,
             processing: true,
@@ -143,6 +145,12 @@
                 name: 'DT_Row_Index',
                 orderable: false,
                 searchable: false
+            }, {
+                className: "dt-nowrap",
+                data: 'nama_peminjam',
+            }, {
+                className: "dt-nowrap",
+                data: 'no_peminjaman',
             }, {
                 className: "dt-nowrap",
                 data: 'list_barang',
@@ -160,7 +168,7 @@
                 data: 'download_surat_peminjaman'
             }, {
                 className: "dt-nowrap",
-                data: 'surat_balasan'
+                data: 'download_surat_balasan'
             }, {
                 className: "dt-nowrap",
                 data: 'updated_at'

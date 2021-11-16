@@ -21,7 +21,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-secondary p-2" style="min-width: 25% !important;">
                     @if (count($allnotification) > 0)
-                    <a class="dropdown-item alert" id="linkNotif">
+                    <div class="dropdown-item alert" id="linkNotif">
                         @foreach ($allnotification as $item)
                             <p style="font-size: 15px !important">{{ $item->data['body'] }} </p>
                             <p style="font-size: 12px !important; margin-top: -5px !important" class="text-primary"><i
@@ -31,14 +31,14 @@
                         {{-- <a href="#" class="float-right mark-as-read ms-4" data-id="{{ $item->id }}">
                                 <i class="fas fa-check-double text-success"></i>
                             </a> --}}
-                    </a>
+                    </div>
                     @endif
                     <div class="dropdown-divider"></div>
                     @if (count($allnotification) == null)
                         <button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>
                     @else
-                        <a class="dropdown-item text-center text-danger" href="#" id="mark-all">Bersihkan semua
-                            notifikasi</a>
+                        <button class="dropdown-item text-center text-danger" href="#" id="mark-all">Bersihkan semua
+                            notifikasi</button>
                     @endif
                 </div>
             </div>
@@ -64,6 +64,10 @@
                     @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
                         <a href="#" class="nav_link"><i class="fas fa-clipboard-list"></i>
                             <span class="nav_name">Daftar Pengajuan</span> </a>
+
+
+                        <a href="{{ route('data-ruangan.index') }}" class="nav_link"><i class="fas fa-suitcase"></i>
+                            <span class="nav_name">Manajemen Ruangan</span> </a>
                     @endif
 
                     @if (session('role') == 'Super Admin' || session('role') == 'Admin')
@@ -93,7 +97,7 @@
             </div> <a href="{{ route('auth.logout') }}" class="nav_link"> <i
                     class='bx bx-log-out nav_icon'></i>
                 <span class="nav_name">Keluar</span> </a>
-                
+
         </nav>
     </div>
 </div>

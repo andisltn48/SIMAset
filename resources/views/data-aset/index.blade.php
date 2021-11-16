@@ -138,10 +138,9 @@
                 <div class="form-group">
                     <select class="form-select select2 " id="filter-koderuangan">
                         <option value="">Semua</option>
-                        <option value="A102">A102 || Kepegalan</option>
-                        <option value="A103">A103 || Kepegawaian2</option>
-                        <option value="A104">A104 || Kepegawaian3</option>
-                        <option value="A105">A105 || Kepegawaian4</option>
+                        @foreach($dataruangan as $data)
+                          <option value="$data->kode_ruangan">{{$data->kode_ruangan}} || {{$data->nama_ruangan}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>

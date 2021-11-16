@@ -147,8 +147,7 @@ class PeminjamanController extends Controller
             \Session::forget('tempo-data');
             $user = User::where('role_id', '4')->get();
             $details = [
-                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi',
-                'link' => route('peminjaman.getdatapermintaanpeminjaman-admin')
+                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi'
             ];
             foreach ($user as $key => $value) {
                 Notification::send($value, new PeminjamNotification($details));
@@ -183,8 +182,7 @@ class PeminjamanController extends Controller
             ]);
             $user = User::where('role_id', '4')->get();
             $details = [
-                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi',
-                'link' => route('peminjaman.getdatapermintaanpeminjaman-admin')
+                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi'
             ];
             foreach ($user as $key => $value) {
                 Notification::send($value, new PeminjamNotification($details));
@@ -237,6 +235,11 @@ class PeminjamanController extends Controller
     {
         $id_peminjam = Auth::user()['id'];
         return view('peminjaman-user.list-peminjaman', compact('id_peminjam'));
+    } 
+    
+    public function list_peminjaman_admin()
+    {
+        return view('peminjaman-admin.list-peminjaman');
     }
 
     public function get_data_permintaan_peminjaman(Request $request)
@@ -284,6 +287,7 @@ class PeminjamanController extends Controller
             })
             ->escapeColumns([])
             ->addColumn('download_surat_peminjaman','peminjaman-admin.button-datatable.download-surat-peminjaman')
+            ->addColumn('download_surat_balasan','peminjaman-admin.button-datatable.download-surat-balasan')
             ->addColumn('list_barang','peminjaman-admin.button-datatable.detail-barang')
             ->addColumn('action','peminjaman-admin.button-datatable.action')
             ->toJson();
@@ -293,19 +297,36 @@ class PeminjamanController extends Controller
 
     public function get_data_peminjaman(Request $request)
     {
-        $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman');
-        $datatables = Datatables::of($datapeminjaman);
-        $datatables->orderColumn('updated_at', function ($query, $order) {
-            $query->orderBy('data_peminjaman.updated_at', $order);
-        });
-        return $datatables->addIndexColumn()
-        ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
-            return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
-        })
-        ->escapeColumns([])
-        ->addColumn('download_surat_balasan','peminjaman-user.button-datatable.download-surat-balasan')
-        ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
-        ->toJson();
+        if ($request->id != NULL) {
+            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman');
+            $datatables = Datatables::of($datapeminjaman);
+            $datatables->orderColumn('updated_at', function ($query, $order) {
+                $query->orderBy('data_peminjaman.updated_at', $order);
+            });
+            return $datatables->addIndexColumn()
+            ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
+                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
+            })
+            ->escapeColumns([])
+            ->addColumn('download_surat_balasan','peminjaman-user.button-datatable.download-surat-balasan')
+            ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
+            ->toJson();
+        } else {
+            $datapeminjaman = DataPeminjaman::where('status_peminjaman', 'Dalam Peminjaman');
+            $datatables = Datatables::of($datapeminjaman);
+            $datatables->orderColumn('updated_at', function ($query, $order) {
+                $query->orderBy('data_peminjaman.updated_at', $order);
+            });
+            return $datatables->addIndexColumn()
+            ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
+                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
+            })
+            ->escapeColumns([])
+            ->addColumn('download_surat_balasan','peminjaman-admin.button-datatable.download-surat-balasan')
+            ->addColumn('list_barang','peminjaman-admin.button-datatable.detail-barang')
+            ->toJson();
+        }
+        
     }
 
     public function data_from_no_peminjam(Request $request)

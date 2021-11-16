@@ -58,8 +58,7 @@ class PeminjamNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'body' => $this->details['body'],
-            'link' => $this->details['link']
+            'body' => $this->details['body']
         ];
     }
 }
