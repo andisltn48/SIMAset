@@ -576,6 +576,10 @@ a {
     .btn-exportexcel-aset{
         max-width: 11vw !important;
     }
+
+    .card-daftar-ruangan {
+        min-width: 65% !important;
+    }
 }
 
 
@@ -742,7 +746,7 @@ a {
         display: none !important;
     }
 
-    .row-aset, .row-filter, .row-tambah, .row-edit{
+    .row-aset, .row-filter, .row-tambah, .row-edit, .row-ruangan{
         flex-direction: column !important;
     }
 }

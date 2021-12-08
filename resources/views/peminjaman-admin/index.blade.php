@@ -130,6 +130,7 @@
 
         // window.alert(id);
         let table = $('#tableListPermintaan').DataTable({
+            pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
                 [9, "desc"]
             ],
@@ -183,6 +184,9 @@
                 searchable: false
             }],
         });
+
+        $.fn.DataTable.ext.pager.numbers_length = 5;
+
         var no_peminjamans;
         var table2 = $('#tableDetailDaftarBarang').DataTable({
             retrieve: true,
