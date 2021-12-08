@@ -10,7 +10,7 @@
     <div>
         <form action="{{ route('data-aset.destroy-log-import', $model->id) }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-block btn-danger" onclick="confirm_delete()"><i
+            <button type="submit" class="btn btn-block btn-danger" onclick="return confirm('Apakah anda yakin untuk menghapus riwayat impor ini ?');"><i
                     class="fas fa-trash-alt me-2"></i>Hapus</button>
         </form>
     </div>

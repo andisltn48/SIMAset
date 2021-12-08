@@ -16,17 +16,18 @@ class CreateDataPeminjamanTable extends Migration
         Schema::create('data_peminjaman', function (Blueprint $table) {
             $table->id();
             $table->string('nama_peminjam');
+            $table->bigInteger('id_peminjam');
             $table->string('nama_penanggung_jawab');
             $table->bigInteger('no_peminjaman');
-            $table->string('nama_barang');
-            $table->bigInteger('kode_barang');
-            $table->string('nup_barang');
-            $table->string('kondisi');
             $table->string('tanggal_penggunaan');
+            $table->string('jumlah');
             $table->string('surat_peminjaman');
             $table->string('surat_balasan');
             $table->string('data_diri_penanggung_jawab');
+            $table->string('status_permintaan');
             $table->string('status_peminjaman');
+            $table->string('saran')->nullable();
+            $table->string('catatan')->nullable();
             $table->timestamps();
         });
     }

@@ -81,4 +81,9 @@ class PengajuanController extends Controller
     {
         //
     }
+
+    public function formpengajuan()
+    {
+        return view('pengajuan-user.index');
+    }
 }

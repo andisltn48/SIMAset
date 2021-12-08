@@ -1,7 +1,7 @@
 <x-app-layout title="Data Aset">
-    <div class="row info-data">
-        <div class="col">
-            <div class="card shadow p-3 mb-5 bg-white jumlah-aset" style="border-radius: 0.7rem">
+    <div class="d-flex row-aset">
+        <div class="col m-1">
+            <div class="card shadow p-3  bg-white jumlah-aset" style="border-radius: 0.7rem">
                 <div class="card-body row">
                     <div class="col">
                         <h5 class="card-title fw-bolder" id="jumlahaset">{{ $jumlahaset }}</h5>
@@ -13,8 +13,8 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card shadow p-3 mb-5 bg-white aset-nonaktif" style="border-radius: 0.7rem">
+        <div class="col m-1">
+            <div class="card shadow p-3  bg-white aset-nonaktif" style="border-radius: 0.7rem">
                 <div class="card-body row">
                     <div class="col">
                         <h5 class="card-title fw-bolder" id="baik">{{ $baik }}</h5>
@@ -26,8 +26,8 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card shadow p-3 mb-5 bg-white aset-aktif" style="border-radius: 0.7rem">
+        <div class="col m-1">
+            <div class="card shadow p-3  bg-white aset-aktif" style="border-radius: 0.7rem">
                 <div class="card-body row">
                     <div class="col">
                         <h5 class="card-title fw-bolder" id="rusakringan">{{ $rusakringan }}</h5>
@@ -39,8 +39,8 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card shadow p-3 mb-5 bg-white aset-nonaktif" style="border-radius: 0.7rem">
+        <div class="col m-1">
+            <div class="card shadow p-3 bg-white aset-nonaktif" style="border-radius: 0.7rem">
                 <div class="card-body row">
                     <div class="col">
                         <h5 class="card-title fw-bolder" id="rusakberat">{{ $rusakberat }}</h5>
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="row info-data2" style="margin-top: -2.4rem !important">
+    <div class="row info-data2 mt-1">
         <div class="">
             <div id="card" class="card shadow p-3 mb-5 bg-white harga-aset" style="border-radius: 0.7rem">
                 <div class="card-body row">
@@ -87,16 +87,25 @@
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Data Aset</h5>
             </div>
-            <div class="col button text-end">
-                <a href="{{ route('data-aset.create') }}"><button class="btn btn-block btn-success">Tambah
-                        Aset</button></a>
-                <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
-                        Aset</button></a>
-            </div>
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+                <div class="col button text-end">
+                    <a href="{{ route('data-aset.create') }}"><button class="btn btn-block btn-success">Tambah
+                            Aset</button></a>
+                    <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
+                            Aset</button></a>
+                </div>
+            @else
+                <div class="col button text-end">
+                    <button disabled class="btn btn-block btn-success">Tambah
+                            Aset</button>
+                    <button disabled class="btn btn-block btn-success">Impor
+                            Aset</button>
+                </div>
+            @endif
         </div>
         <hr>
-        <div class="row mt-2">
-            <div class="col">
+        <div class="d-flex row-filter mt-2">
+            <div class="col m-1">
                 <div class="title-filter">
                     <p>Unit/Rumpun</p>
                 </div>
@@ -109,7 +118,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col m-1">
                 <div class="title-filter">
                     <p>Kondisi Aset</p>
                 </div>
@@ -122,21 +131,20 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col m-1">
                 <div class="title-filter">
                     <p>Kode Ruangan</p>
                 </div>
                 <div class="form-group">
                     <select class="form-select select2 " id="filter-koderuangan">
                         <option value="">Semua</option>
-                        <option value="A102">A102 || Kepegalan</option>
-                        <option value="A103">A103 || Kepegawaian2</option>
-                        <option value="A104">A104 || Kepegawaian3</option>
-                        <option value="A105">A105 || Kepegawaian4</option>
+                        @foreach($dataruangan as $data)
+                          <option value="{{$data->kode_ruangan}}">{{$data->kode_ruangan}} || {{$data->nama_ruangan}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col m-1">
                 <div class="title-filter">
                     <p>Tahun Pengadaan</p>
                 </div>
@@ -145,8 +153,8 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-3">
+        <div class="d-flex row-filter">
+            <div class="col m-1">
                 <div class="title-filter">
                     <p>Kode Barang</p>
                 </div>
@@ -154,7 +162,7 @@
                     <input type="text" id="filter-kodebarang" class="kodebarang form-control">
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col m-1">
                 <div class="title-filter">
                     <p>NUP</p>
                 </div>
@@ -165,13 +173,13 @@
         </div>
 
         <div class="d-flex justify-content-center align-items-center mt-4">
-            <button class="btn btn-block btn-primary me-3" id="filter" style="width: 7vw;"><i
+            <button class="btn btn-block btn-primary me-3" id="filter" style="min-width: 7vw;"><i
                     class="fas fa-filter me-2"></i>Filter</button>
-            <button class="btn btn-block btn-danger" id="reset" style="width: 7vw;"><i
+            <button class="btn btn-block btn-danger" id="reset" style="min-width: 7vw;"><i
                     class="fas fa-undo-alt me-2"></i>Reset</button>
         </div>
         <div class="row mt-2 me-1 ms-1">
-            <button class="btn btn-primary mb-2" onclick="export_excel()" style="max-width: 11vw;" href="">Export to
+            <button class="btn btn-exportexcel-aset btn-primary mb-2" onclick="export_excel()" href="">Export to
                 Excel</button>
             <table id="tableDataAset" class="table table-bordered display nowrap">
                 <thead>
@@ -298,16 +306,29 @@
                                     <th style="width: 25vw; height:7vh">Catatan</th>
                                     <td style="max-width: 35vw" id="catatan"></td>
                                 </tr>
+                                <tr>
+                                    <th style="width: 25vw; height:7vh">Tahun Pengadaan</th>
+                                    <td style="max-width: 35vw" id="tahun-pengadaan"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="modal-footer">
-                        <div>
-                            <a id="btn-edit" href=""><button class="btn me-1 btn-block btn-warning"><i
-                                        class="fas fa-edit me-2"></i>Edit</button></a>
+                    @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+                        <div class="modal-footer">
+                            <div>
+                                <a id="btn-edit" href=""><button class="btn me-1 btn-block btn-warning"><i
+                                            class="fas fa-edit me-2"></i>Edit</button></a>
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="modal-footer">
+                            <div>
+                                <button disabled class="btn me-1 btn-block btn-warning"><i
+                                        class="fas fa-edit me-2"></i>Edit</button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -398,7 +419,6 @@
                 tahunpengadaan = $('#filter-tahunpengadaan').val()
                 kodebarang = $('#filter-kodebarang').val()
                 nup = $('#filter-nup').val()
-
                 console.log(unit, kondisi, koderuangan, tahunpengadaan, kodebarang, nup);
                 table.ajax.reload(null, false)
 
@@ -438,7 +458,7 @@
                 nup = "";
                 $('#filter-unit').prop('selectedIndex', 0).change()
                 $('#filter-kondisi').prop('selectedIndex', 0).change()
-                $('#filter-koderuangan').val('')
+                $('#filter-koderuangan').prop('selectedIndex', 0).change()
                 $('#filter-tahunpengadaan').val('')
                 $('#filter-kodebarang').val('')
                 $('#filter-nup').val('')
@@ -472,9 +492,6 @@
 
             })
 
-            function confirm_delete() {
-                return confirm('Apakah anda yakin untuk menghapus data aset ini ? ');
-            }
 
             $(".select2").select2();
 
@@ -504,6 +521,7 @@
                 var gedung = $(this).data('gedung');
                 var ruangan = $(this).data('ruangan');
                 var catatan = $(this).data('catatan');
+                var tahunpengadaan = $(this).data('tahunpengadaan');
 
                 $('#nama-barang').text(namabarang);
                 $('#kode-barang').text(kode);
@@ -527,14 +545,15 @@
                 $('#gedung').text(gedung);
                 $('#ruangan').text(ruangan);
                 $('#catatan').text(catatan);
+                $('#tahun-pengadaan').text(tahunpengadaan);
                 $('#btn-edit').attr('href', link);
             });
 
-            let toggle2 = document.querySelector('.toggle');
-            let greetings = document.querySelector('.greetings');
-            toggle2.onclick = function() {
-                greetings.classList.toggle('hide');
-            }
+            // let toggle2 = document.querySelector('.toggle');
+            // let greetings = document.querySelector('.greetings');
+            // toggle2.onclick = function() {
+            //     greetings.classList.toggle('hide');
+            // }
         </script>
     </div>
 </x-app-layout>

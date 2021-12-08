@@ -1,5 +1,19 @@
 <x-app-layout title="Form Peminjaman">
-    <div class="mt-4 card shadow p-3 mb-5 bg-white rounded mobile-margin">
+    <div class=" card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible show fade">
+                <div class="alert-body">
+                    {{ session('error') }}
+                </div>
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible show fade">
+                <div class="alert-body">
+                    {{ session('success') }}
+                </div>
+            </div>
+        @endif
         <div class="row header-peminjaman">
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Form Peminjaman</h5>
@@ -11,7 +25,7 @@
         </div>
         <hr>
         <div>
-            <form action="{{route('peminjaman.store-permintaan')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('peminjaman.store-permintaan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row mt-3 " id="column-mobile">
                     <div class="col">
@@ -20,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <input name="nama_peminjam" required type="text" class="form-control"
-                                value="{{ old('nama_peminjam') }}">
+                                value="{{ Auth::user()->name }}" readonly>
                         </div>
                     </div>
                     <div class="col" id="penanggung-jawab">
@@ -47,7 +61,8 @@
                     </div>
                     <div class="col" id="sarana-prasarana">
                         <div class="">
-                            <p>Sarana/Prasarana <span class="text-muted" >(Klik tambah jika lebih dari 1 aset)</span><sup class="text-danger">*</sup></p>
+                            <p>Sarana/Prasarana <span class="text-muted">(Klik tambah jika lebih dari 1
+                                    aset)</span><sup class="text-danger">*</sup></p>
 
                         </div>
                         <div class="form-group d-flex">
@@ -59,12 +74,12 @@
                         </div>
                         <div class="text-danger">
                             @error('sarana')
-                                {{$message}}
+                                {{ $message }}
                             @enderror
                         </div>
                         <div class="mt-2 shadow card inventory-prasarana"
-                            style="display: none; background-color: rgba(226, 226, 253, 0.671)">
-                            <div id="inventory-prasarana" class="p-3"></div>
+                            style="display: none; background-color: rgba(226, 226, 253, 0.671); max-height: 12rem; overflow-x: hidden; overflow-y:auto;">
+                            <div id="inventory-prasarana" class="p-3" style="overflow: hidden"></div>
                             <div class="d-flex justify-content-center align-items-center">
                                 <button onclick="clearitems()" type="button" class="btn btn-danger mb-2">Clear</button>
                                 {{-- <button type="button" class="btn btn-primary ms-2 mb-2">Save</button> --}}
@@ -127,7 +142,7 @@
         let inventory_prasarana = document.querySelector('.inventory-prasarana');
         $('#tanggalpenggunaan').on('change', function() {
             arr_items = [];
-            document.getElementById("inventory-prasarana").innerHTML="";
+            document.getElementById("inventory-prasarana").innerHTML = "";
             inventory_prasarana.classList.remove('block');
             $('#select-sarana')
                 .find('option:not(:first)')
@@ -151,10 +166,11 @@
                 },
                 success: function(response) {
                     if (response) {
-                        // console.log(response.data);
+                        console.log(response.data);
                         response.data.forEach(function(item, index) {
                             // console.log(item['kode']);
-                            var textdata= item['nama_barang']+' || '+item['kode']+' || '+item['nup']; 
+                            var textdata = item['nama_barang'] + ' || ' + item['kode'] +
+                                ' || ' + item['nup'];
                             $('#select-sarana').append($('<option>', {
 
                                 value: item['id'],
@@ -170,19 +186,19 @@
         var no_item = 0;
 
         function addCode() {
-            no_item = no_item+1;
+            no_item = no_item + 1;
             var input = document.getElementById('select-sarana');
             var id_aset = input.value;
             $('#select-sarana')
-                .find('option[value='+id_aset+']')
+                .find('option[value=' + id_aset + ']')
                 .remove()
                 .end();
             arr_items.push(id_aset);
             inventory_prasarana.classList.add('block');
-            
+
             // document.getElementById("inventory-prasarana").innerHTML +=
             //     "<p class=`mt-2`>This is the text which has been inserted by JS " +arr_items + "</p> <br>";
-            
+
             $.ajax({
                 url: "{{ route('peminjaman.temporary-data') }}",
                 type: "GET",
@@ -194,16 +210,19 @@
                     if (response) {
                         console.log(response.data2);
 
-                        document.getElementById("inventory-prasarana").innerHTML+="<p class=`mt-1`>"+no_item+". " +response.data2['nama_barang'] + " || Kode Barang: "+response.data2['kode']+" || NUP: "+response.data2['nup']+"</p>";
-                        
+                        document.getElementById("inventory-prasarana").innerHTML += "<p class=`mt-1`>" +
+                            no_item + ". " + response.data2['nama_barang'] + " || Kode Barang: " + response
+                            .data2['kode'] + " || NUP: " + response.data2['nup'] + "<hr></p>";
+
                     }
                 },
             });
         }
 
         function clearitems() {
+            no_item = 0;
             arr_items = [];
-            document.getElementById("inventory-prasarana").innerHTML="";
+            document.getElementById("inventory-prasarana").innerHTML = "";
             inventory_prasarana.classList.remove('block');
             $('#select-sarana')
                 .find('option:not(:first)')
