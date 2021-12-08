@@ -364,6 +364,7 @@
             }
             // DataTable
             let table = $('#tableDataAset').DataTable({
+                pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
                 order: [
                     [10, "desc"]
                 ],
@@ -412,6 +413,9 @@
                     data: 'action'
                 }],
             });
+
+            $.fn.DataTable.ext.pager.numbers_length = 5;
+
             $('#filter').on('click', function() {
                 unit = $('#filter-unit').val()
                 kondisi = $('#filter-kondisi').val()

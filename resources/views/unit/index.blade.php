@@ -55,6 +55,7 @@
     </div>
     <script>
         let table = $('#tableUnit').DataTable({
+            pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
                 [1, "asc"]
             ],
@@ -83,5 +84,7 @@
                 data: 'action'
             }],
         });
+
+        $.fn.DataTable.ext.pager.numbers_length = 5;
     </script>
 </x-app-layout>
