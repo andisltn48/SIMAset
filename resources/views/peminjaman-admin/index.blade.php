@@ -130,7 +130,6 @@
 
         // window.alert(id);
         let table = $('#tableListPermintaan').DataTable({
-            searching: false,
             order: [
                 [9, "desc"]
             ],
@@ -154,27 +153,34 @@
             }, {
                 className: "dt-nowrap",
                 data: 'list_barang',
+                searchable: false
             }, {
                 className: "dt-nowrap",
                 data: 'jumlah',
+                searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'tanggal_penggunaan'
+                data: 'tanggal_penggunaan',
+                searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'status_permintaan'
+                data: 'status_permintaan',
             }, {
                 className: "dt-nowrap",
-                data: 'download_surat_peminjaman'
+                data: 'download_surat_peminjaman',
+                searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'download_surat_balasan'
+                data: 'download_surat_balasan',
+                searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'updated_at'
+                data: 'updated_at',
+                searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'action'
+                data: 'action',
+                searchable: false
             }],
         });
         var no_peminjamans;

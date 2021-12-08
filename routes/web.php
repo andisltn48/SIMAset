@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], functio
     //route ruangan
     Route::resource('data-ruangan', ManajemenRuanganController::class);
     Route::get('/get-data-ruangan','ManajemenRuanganController@get_data_ruangan')->name('data-ruangan.get-data-ruangan');
+    Route::post('/impor-data-ruangan','ManajemenRuanganController@importexcel')->name('data-ruangan.impor-data-ruangan');
 });
 
 Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras']], function(){
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras']], fun
     Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
     Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
     Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
+    Route::get('/get-ruangan','DataAsetController@get_ruangan')->name('data-aset.get-ruangan');
 
     //route peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
@@ -81,6 +83,11 @@ Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){
     Route::get('/download-surat-peminjaman/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman');
     Route::get('/download-surat-balasan/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan');
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
+});
+
+Route::group(['middleware' => ['auth','cekrole:Pengaju']], function(){
+    //route peminjaman
+    Route::get('/form-pengajuan','PengajuanController@formpengajuan')->name('pengajuan.form');
 });
 
 Route::group(['middleware' => ['auth']], function(){

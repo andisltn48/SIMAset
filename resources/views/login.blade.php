@@ -70,7 +70,13 @@
             </div>
         </div>
     </div>
+    {{-- <script type="text/JavaScript">
+     
+     
+     </script> --}}
     <script>
+        let count = 0;
+
         function myFunction() {
             var x = document.getElementById("myInput");
             if (x.type === "password") {

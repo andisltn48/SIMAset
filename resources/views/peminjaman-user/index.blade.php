@@ -137,7 +137,6 @@
         </div>
     </div>
     <script>
-        localStorage.removeItem('indexNum');
         $(".select2").select2();
 
         let inventory_prasarana = document.querySelector('.inventory-prasarana');

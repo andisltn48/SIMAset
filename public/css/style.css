@@ -426,15 +426,6 @@ figcaption ul li {
     box-sizing: border-box
 }
 
-/* body {
-    position: relative;
-    margin: var(--header-height) 0 0 0;
-    padding: 0 1rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
-    transition: .5s
-} */
-
 a {
     text-decoration: none
 }
@@ -580,6 +571,10 @@ a {
 
     .body-pd {
         padding-left: calc(var(--nav-width) - 175px)
+    }
+
+    .btn-exportexcel-aset{
+        max-width: 11vw !important;
     }
 }
 
@@ -743,4 +738,11 @@ a {
         left: 0 !important;
     }
 
-  }
+    .header.body-pd > .name-notif{
+        display: none !important;
+    }
+
+    .row-aset, .row-filter, .row-tambah, .row-edit{
+        flex-direction: column !important;
+    }
+}

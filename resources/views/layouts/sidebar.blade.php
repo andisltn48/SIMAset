@@ -6,8 +6,7 @@
         </div>
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="name-notif d-flex align-items-center justify-content-center">
-            <div class="header_name"> <span class="text-primary fw-bolder">Halo, </span> {{ Auth::user()->name }}<img
-                    src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+            <div class="header_name"> <span class="text-primary fw-bolder">Halo, </span> {{ Auth::user()->name }}</div>
             <div class="nav-item avatar dropdown" id="dropdown">
                 <a class="nav-link data-toggle waves-effect waves-light text-primary"
                     id="navbarDropdownMenuLink-5 mark-as-read" data-toggle="dropdown" aria-haspopup="true"
@@ -138,9 +137,8 @@
         });
     </script> --}}
 <script>
-    var id = {!! json_encode(auth()->user()->id) !!};
 
-    function sendMarkRequest(id = null) {
+    function sendMarkRequest() {
         return $.ajax("{{ route('notif.mark-read') }}", {
             method: 'get'
         });
@@ -169,10 +167,7 @@
         });
         $('#mark-all').click(function() {
             $.ajax("{{ route('notif.clearnotif') }}", {
-                method: 'get',
-                data: {
-                    id_login: id
-                }
+                method: 'get'
             });
             $('#linkNotif').remove();
             document.getElementById("mark-all").innerHTML = '<button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>';

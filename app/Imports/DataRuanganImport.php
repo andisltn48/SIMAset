@@ -16,28 +16,32 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class DataRuanganImport implements ToModel,WithValidation , WithHeadingRow, SkipsEmptyRows, SkipsOnFailure, SkipsOnError
+class DataRuanganImport implements ToModel , WithHeadingRow, SkipsEmptyRows, SkipsOnFailure, SkipsOnError
 {
     /**
     * @param Collection $collection
     */
     use Importable, SkipsFailures, SkipsErrors;
-    public function collection(Collection $collection)
+    public function model(array $row)
     {
-
-    }
-
-    public function headingRow(): int
-    {
-        return 4;
+      DataRuangan::create([
+        'kode_ruangan' => $row["kode"],
+        'nama_ruangan' => $row["nama_ruang"],
+        'pj' => $row["penanggungjawab_ruangan"],
+        'nip' => $row["nip"],
+        'kode_gedung' => $row["kode_gedung"],
+      ]);
+      // dd($row);
     }
 
     public function rules(): array
     {
-
         return [
-            "*.nama_barang" => ['required'],
-            "*.kode_barang" => ['required', 'numeric'],
+            "*.kode" => ['required'],
+            "*.nama_ruang" => ['required'],
+            "*.penanggungjawab_ruangan" => ['required'],
+            "*.nip" => ['required', 'numeric'],
+            "*.kode_gedung" => ['required', 'numeric'],
         ];
     }
 }

@@ -21,10 +21,6 @@ class CekRole
         $user_id = Auth::user()->id;
         $user = User::where('id', $user_id)->first();
         $role = Roles::where('id',$user->role_id)->first();
-        // if(in_array($role->name,$roles)) {
-        //     dd($role->name);
-        //     return $next($request);
-        // }
         foreach ($roles as $key => $value) {
             if ($role->name == $value) {    
                 // dd($role->name);

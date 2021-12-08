@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use \stdClass;
 use App\DataRuangan;
 use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
+use App\Imports\DataRuanganImport;
 
 class ManajemenRuanganController extends Controller
 {
@@ -19,7 +20,7 @@ class ManajemenRuanganController extends Controller
         $query->orderBy('data_ruangan.kode_ruangan', $order);
     });
     return $datatables->addIndexColumn()
-    ->addColumn('action','data-aset.log-import.action')
+    ->addColumn('action','data-ruangan.action')
     ->toJson();
   }
 
@@ -46,5 +47,21 @@ class ManajemenRuanganController extends Controller
     $file = $request->file('fileimport')->getRealPath();
     $import = new DataRuanganImport();
     $import->import($file);
+    $main_array = [];
+    $message = '';
+    if ($import->failures()->isNotEmpty()) {
+        foreach ($import->failures() as $rows) {
+          $seccond_array = [
+            $rows->values()["kode"],
+            $rows->values()["nama_ruang"],
+            $rows->errors()[0]
+          ];
+          array_push($main_array, $seccond_array);
+          // var_dump($rows->values()["kode"]);
+        }
+    }
+
+// $myJSON = json_encode($json_failed);
+    dd($main_array);
   }
 }

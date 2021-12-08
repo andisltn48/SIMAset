@@ -69,7 +69,7 @@
               </div>
           </div>
       </div>
-      <div class="col card shadow p-3 mb-5 bg-white rounded mobile-margin ms-3" style="border-radius: 0.7rem !important">
+      <div class="col card shadow p-3 mb-5 bg-white rounded mobile-margin ms-3" style="border-radius: 0.7rem !important; max-height: 33rem !important">
         <div class="row header-peminjaman">
             <div class="title">
                 <h5 class="fw-bold">Tambah Ruangan</h5>
@@ -143,7 +143,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form class="" action="" method="post" enctype="multipart/form-data">
+          <form class="" action="{{route('data-ruangan.impor-data-ruangan')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
               <label for="exampleFormControlInput1">Choose File<sup class="text-danger">*</sup></label>

@@ -53,11 +53,14 @@ class DataAsetController extends Controller
             'Rusak Berat' => 'Rusak Berat'
         ];
         $unit = Unit::all();
-        return view('data-aset/tambah',['unit' => $unit, 'kondisi' => $kondisi]);
+        $dataruangan = DataRuangan::all();
+        return view('data-aset/tambah',['unit' => $unit, 'kondisi' => $kondisi, 'dataruangan'=>$dataruangan]);
     }
 
     public function store(Request $request)
     {
+        
+        // dd($request);
         if ($request->nup_akhir == NULL) {
             $validate = $request->validate([
                 'kode_barang' => 'numeric',
@@ -90,10 +93,10 @@ class DataAsetController extends Controller
         $nup_akhir = $request->nup_akhir;
 
         if ($request->jumlah_barang > 1) {
-            for ($current_nup; $current_nup <= $request->jumlah_barang ; $current_nup++) {
+            for ($current_nup; $current_nup <= $nup_akhir ; $current_nup++) {
                 $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
                 if ($cekdata->count() == 0) {
-
+                // echo 'halo';
                 $dataaset_save = DataAset::create([
                     'nama_barang' => $request->nama_barang,
                     'kode' => $request->kode_barang,
@@ -115,7 +118,7 @@ class DataAsetController extends Controller
                     'unit' => $request->unit,
                     'status' => 'Aktif',
                     'gedung' => $request->gedung,
-                    'tahun_pengadaan' => $request->tahunpengadaan,
+                    'tahun_pengadaan' => $request->tahun_pengadaan,
                     'ruangan' => $request->ruangan,
                     'catatan' => $request->catatan,
                 ]);
@@ -124,6 +127,8 @@ class DataAsetController extends Controller
                 }
 
             }
+            
+            return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
         } else {
             $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
             if ($cekdata->count() == 0) {
@@ -149,19 +154,17 @@ class DataAsetController extends Controller
                 'unit' => $request->unit,
                 'status' => 'Aktif',
                 'gedung' => $request->gedung,
-                'tahun_pengadaan' => $request->tahunpengadaan,
+                'tahun_pengadaan' => $request->tahun_pengadaan,
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
             ]);
+            return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
             } else {
                 $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!';
             return redirect(route('data-aset.create'))->with('error',$message);
             }
 
         }
-
-        return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
-
     }
 
     public function show($id)
@@ -171,6 +174,7 @@ class DataAsetController extends Controller
 
     public function edit($id)
     {
+        $dataruangan = DataRuangan::all();
         // echo ($id);
         $dataaset = DataAset::where('id',$id)->first();
         $kondisi = [
@@ -180,13 +184,13 @@ class DataAsetController extends Controller
         ];
 
         $unit = Unit::all();
-        return view('data-aset.edit', compact('dataaset'), ['kondisi' => $kondisi, 'unit'=>$unit]);
+        return view('data-aset.edit', compact('dataaset'), ['kondisi' => $kondisi, 'unit'=>$unit, 'dataruangan'=>$dataruangan]);
         // var_dump($dataaset);
     }
 
     public function update(Request $request, $id)
     {
-        echo $id;
+        // echo $id;
         $validate = $request->validate([
             'kode_barang' => 'numeric',
             'jumlah_barang' => 'numeric',
@@ -228,7 +232,7 @@ class DataAsetController extends Controller
                 'kondisi' => $request->kondisi,
                 'unit' => $request->unit,
                 'gedung' => $request->gedung,
-                'tahun_pengadaan' => $request->tahunpengadaan,
+                'tahun_pengadaan' => $request->tahun_pengadaan,
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
             ]);
@@ -268,7 +272,7 @@ class DataAsetController extends Controller
                     'kondisi' => $request->kondisi,
                     'unit' => $request->unit,
                     'gedung' => $request->gedung,
-                    'tahun_pengadaan' => $request->tahunpengadaan,
+                    'tahun_pengadaan' => $request->tahun_pengadaan,
                     'ruangan' => $request->ruangan,
                     'catatan' => $request->catatan,
                 ]);
@@ -398,7 +402,7 @@ class DataAsetController extends Controller
         if ($kodebarang==null) {
             $kodebarang = '';
         }
-        $ruangan = request()->tahunpengadaan;
+        $tahunpengadaan = request()->tahunpengadaan;
         if ($tahunpengadaan==null) {
             $tahunpengadaan = '';
         }
@@ -568,6 +572,15 @@ class DataAsetController extends Controller
             'baik' => $baik,
             'rusakringan' => $rusakringan,
             'rusakberat' => $rusakberat,
+        ]);
+    }
+
+    public function get_ruangan(Request $request)
+    {
+        $ruangan = DataRuangan::where('kode_ruangan', $request->kode)->first();
+
+        return response()->json([
+            'data' => $ruangan->nama_ruangan,
         ]);
     }
 }
