@@ -3,14 +3,14 @@
         <div class="col card shadow p-3 bg-white rounded mobile-margin card-daftar-ruangan m-2"
             style="border-radius: 0.7rem !important">
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible show fade">
+                <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
                     <div class="alert-body">
                         {{ session('error') }}
                     </div>
                 </div>
             @endif
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible show fade">
+                <div id="alert-div" class="alert alert-success alert-dismissible show fade">
                     <div class="alert-body">
                         {{ session('success') }}
                     </div>
@@ -136,8 +136,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Impor Ruangan</h5>
-                    <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
                     </button>
                 </div>
                 <form class="" action="{{ route('data-ruangan.impor-data-ruangan') }}" method="post"
@@ -172,7 +172,8 @@
                 <!-- body modal -->
 
                 <div class="model-body p-4">
-                    <form class="mt-2 p-2" id="form-edit" method="post">
+                    <form class="mt-2 p-2" id="form-edit" method="POST">
+                        @method('PUT')
                         @csrf
                         <div class="mb-3">
                             <div class="form-group">
@@ -221,8 +222,6 @@
                             </div>
                         </div>
                         <div class="col text-center mt-4">
-                            <a data-toggle="modal" data-target="#modal-import"
-                                class="btn btn-block btn-success">Impor</a>
                             <button type="submit" class="btn btn-primary shadow">Simpan</button>
                         </div>
                     </form>
@@ -335,6 +334,8 @@
             $('#nip-edit').val(nip);
             $('#kode-gedung-edit').val(kodegedung);
         });
+
+        
     </script>
 </x-app-layout>
 {{-- <div style="background: rgb(233, 189, 160); border-radius: 2rem;" class="p-2 text-white"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div> --}}

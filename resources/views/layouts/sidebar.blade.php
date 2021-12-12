@@ -1,8 +1,10 @@
 <div id="body-pd">
     <header class="header" id="header">
         <div style="display: none">
-            {{ $notification = auth()->user()->unreadNotifications }}
-            {{ $allnotification = auth()->user()->notifications }}
+            @php
+            $notification = auth()->user()->unreadNotifications;
+            $allnotification = auth()->user()->notifications;
+            @endphp
         </div>
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="name-notif d-flex align-items-center justify-content-center">

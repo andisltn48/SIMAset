@@ -97,6 +97,10 @@
             showNavbar('header-toggle', 'nav-bar', 'header')
 
         });
+
+        setTimeout(function() {
+            $('#alert-div').fadeOut('fast');
+        }, 3000); // <-- time in milliseconds
     </script>
 </body>
 

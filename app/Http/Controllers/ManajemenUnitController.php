@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Unit;
+use Yajra\Datatables\Datatables;
+
 use Illuminate\Http\Request;
 
 class ManajemenUnitController extends Controller
@@ -34,7 +37,14 @@ class ManajemenUnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $storeunit = Unit::create([
+            'nama_unit' => $request->nama,
+            'kode_unit' => $request->kode
+        ]);
+
+        if ($storeunit) {
+            return redirect()->back()->with('success', 'Data unit berhasil ditambahkan');
+        }
     }
 
     /**
@@ -80,5 +90,17 @@ class ManajemenUnitController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function get_data_unit()
+    {
+        $unit = Unit::select('units.*');
+        $datatables = Datatables::of($unit);
+        $datatables->orderColumn('kode_unit', function ($query, $order) {
+            $query->orderBy('units.kode_unit', $order);
+        });
+        return $datatables->addIndexColumn()
+        ->addColumn('action','unit.action')
+        ->toJson(); 
     }
 }
