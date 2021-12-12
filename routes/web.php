@@ -43,6 +43,9 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], functio
 
     //route unit
     Route::resource('unit', ManajemenUnitController::class);
+    Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
+    
+
     //route ruangan
     Route::resource('data-ruangan', ManajemenRuanganController::class);
     Route::get('/get-data-ruangan','ManajemenRuanganController@get_data_ruangan')->name('data-ruangan.get-data-ruangan');
@@ -66,6 +69,7 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras']], fun
     Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
     Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');
     Route::post('/confirm-request/{no_permintaan}','PeminjamanController@confirm_request')->name('peminjaman.confirm-request');
+    
 });
 
 Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){

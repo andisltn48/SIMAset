@@ -1,14 +1,14 @@
 <x-app-layout title="Form Peminjaman">
     <div class=" card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible show fade">
+            <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
                 <div class="alert-body">
                     {{ session('error') }}
                 </div>
             </div>
         @endif
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible show fade">
+            <div id="alert-div" class="alert alert-success alert-dismissible show fade">
                 <div class="alert-body">
                     {{ session('success') }}
                 </div>

@@ -1,13 +1,27 @@
 <x-app-layout title="Unit">
-    <div class="mt-4 card shadow p-3 bg-white rounded dataaset-card">
-        <div class="row container-dataaset header-dataaset">
-            <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Manajemen Unit</h5>
+    <div class="d-flex row-unit">
+        <div class="col mt-4 card shadow p-3 bg-white rounded dataaset-card m-2 card-daftar-unit" style="border-radius: 0.7rem !important" >
+            @if (session('error'))
+                <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
+                    <div class="alert-body">
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+            @if (session('success'))
+                <div id="alert-div" class="alert alert-success alert-dismissible show fade">
+                    <div class="alert-body">
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+            <div class="row container-dataaset header-dataaset">
+                <div class="col-12 col-md-8 title">
+                    <h5 class="fw-bold">Manajemen Unit</h5>
+                </div>
             </div>
-        </div>
-        <hr>
-        <div class="row p-3">
-            <div class="col-7">
+            <hr>
+            <div class="">
                 <table id="tableUnit" class="table table-bordered display nowrap">
                     <thead>
                         <tr>
@@ -20,37 +34,38 @@
                     </thead>
                 </table>
             </div>
-            <div class="col">
-                <div class="fs-5 fw-bolder ps-5 text-center">
-                    Tambah Unit
-                </div>
-                <form action="">
-                    <div class="form-addunit mt-5 ps-5">
-                        <div class="mb-2">
-                            <div class="form-group">
-                                <label class="text-dark fw">Kode Unit</label>
-                                <input class="form-control" type="text" name="kode" value="" required>
-                            </div>
+        </div>
+        <div class="mt-4 card shadow p-3 bg-white rounded dataaset-card m-2 col m-2" style="border-radius: 0.7rem !important; max-height: 23rem;">
+            <h5 class="fw-bolder text-center">
+                Tambah Unit
+            </h5>
+            <form action="{{route('unit.store')}}" method="POST">
+                @csrf
+                <div class="form-addunit mt-5">
+                    <div class="mb-2">
+                        <div class="form-group">
+                            <label class="text-dark fw">Kode Unit<sup class="text-danger">*</sup></label>
+                            <input class="form-control" type="text" name="kode" style="border-radius: 1rem; margin-top:0.3rem" required>
                         </div>
-                        <div class="col mt-3">
-                            <div class="form-group">
-                                <label class="text-dark">Nama Unit</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" value="" name="nama" id="myInput"
-                                        required>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-5">
-                            <div class="col text-center">
-                                <button type="submit" class="me-3 btn btn-primary"><i
-                                        class="fas fa-save me-2"></i>Simpan</button>
+                    </div>
+                    <div class="col mt-3">
+                        <div class="form-group">
+                            <label class="text-dark">Nama Unit<sup class="text-danger">*</sup></label>
+                            <div class="input-group">
+                                <input  class="form-control" name="nama" 
+                                style="border-radius: 1rem; margin-top:0.3rem" required>
+    
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="row mt-5">
+                        <div class="col text-center">
+                            <button type="submit" class="me-3 btn btn-primary"><i
+                                    class="fas fa-save me-2"></i>Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <script>
@@ -63,7 +78,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('unit.getdataunit') }}",
+                url: "{{route('unit.get-data-unit')}}"
             },
             columns: [{
                 data: 'DT_RowIndex',

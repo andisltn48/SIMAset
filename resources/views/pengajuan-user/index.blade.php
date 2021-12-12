@@ -14,14 +14,14 @@
             <form action="{{ route('data-aset.store') }}" method="POST">
                 @csrf
                 @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible show fade">
+                    <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
                         <div class="alert-body">
                             {{ session('error') }}
                         </div>
                     </div>
                 @endif
                 @if (session('success'))
-                    <div class="alert alert-success alert-dismissible show fade">
+                    <div id="alert-div" class="alert alert-success alert-dismissible show fade">
                         <div class="alert-body">
                             {{ session('success') }}
                         </div>

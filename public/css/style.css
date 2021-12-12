@@ -65,13 +65,13 @@ body {
 .btn {
     border-radius: 20px !important;
     box-shadow: 0px 0px 6px #c7c7c7;
-    border: 2px solid black !important;
+    /* border: 2px solid black !important;
     background-color: white !important;
-    color: black !important;
+    color: black !important; */
     font-size: 16px !important;
     /* cursor: pointer; */
 }
-
+/* 
 
 .btn-primary {
   border-color: #2196F3 !important;
@@ -111,7 +111,7 @@ body {
 .btn-danger:hover {
   background: #f44336 !important;
   color: white !important;
-}
+} */
 
 /* .sidebar {
     position: fixed;
@@ -577,7 +577,7 @@ a {
         max-width: 11vw !important;
     }
 
-    .card-daftar-ruangan {
+    .card-daftar-ruangan, .card-daftar-unit {
         min-width: 65% !important;
     }
 }
@@ -746,7 +746,7 @@ a {
         display: none !important;
     }
 
-    .row-aset, .row-filter, .row-tambah, .row-edit, .row-ruangan{
+    .row-aset, .row-filter, .row-tambah, .row-edit, .row-ruangan, .row-unit{
         flex-direction: column !important;
     }
 }
