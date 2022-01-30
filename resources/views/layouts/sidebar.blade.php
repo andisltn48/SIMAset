@@ -2,13 +2,14 @@
     <header class="header" id="header">
         <div style="display: none">
             @php
-            $notification = auth()->user()->unreadNotifications;
-            $allnotification = auth()->user()->notifications;
+                $notification = auth()->user()->unreadNotifications;
+                $allnotification = auth()->user()->notifications;
             @endphp
         </div>
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="name-notif d-flex align-items-center justify-content-center">
-            <div class="header_name"> <span class="text-primary fw-bolder">Halo, </span> {{ Auth::user()->name }}</div>
+            <div class="header_name"> <span class="text-primary fw-bolder">Halo, </span> {{ Auth::user()->name }}
+            </div>
             <div class="nav-item avatar dropdown" id="dropdown">
                 <a class="nav-link data-toggle waves-effect waves-light text-primary"
                     id="navbarDropdownMenuLink-5 mark-as-read" data-toggle="dropdown" aria-haspopup="true"
@@ -22,21 +23,23 @@
                 </a>
                 <div class="dropdown-menu dropdown-secondary p-2" style="min-width: 25% !important;">
                     @if (count($allnotification) > 0)
-                    <div class="dropdown-item alert" id="linkNotif">
-                        @foreach ($allnotification as $item)
-                            <p style="font-size: 15px !important">{{ $item->data['body'] }} </p>
-                            <p style="font-size: 12px !important; margin-top: -5px !important" class="text-primary"><i
-                                    class="fas fa-clock me-2"></i>{{ $item->created_at }}</p>
+                        <div class="dropdown-item alert" id="linkNotif">
+                            @foreach ($allnotification as $item)
+                                <p style="font-size: 15px !important">{{ $item->data['body'] }} </p>
+                                <p style="font-size: 12px !important; margin-top: -5px !important"
+                                    class="text-primary"><i class="fas fa-clock me-2"></i>{{ $item->created_at }}
+                                </p>
 
-                        @endforeach
-                        {{-- <a href="#" class="float-right mark-as-read ms-4" data-id="{{ $item->id }}">
+                            @endforeach
+                            {{-- <a href="#" class="float-right mark-as-read ms-4" data-id="{{ $item->id }}">
                                 <i class="fas fa-check-double text-success"></i>
                             </a> --}}
-                    </div>
+                        </div>
                     @endif
                     <div class="dropdown-divider"></div>
                     @if (count($allnotification) == null)
-                        <button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>
+                        <button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada
+                            Notifikasi</button>
                     @else
                         <button class="dropdown-item text-center text-danger" href="#" id="mark-all">Bersihkan semua
                             notifikasi</button>
@@ -67,7 +70,8 @@
                             <span class="nav_name">Daftar Pengajuan</span> </a>
 
 
-                        <a href="{{ route('data-ruangan.index') }}" class="nav_link"><i class="fas fa-suitcase"></i>
+                        <a href="{{ route('data-ruangan.index') }}" class="nav_link"><i
+                                class="fas fa-suitcase"></i>
                             <span class="nav_name">Manajemen Ruangan</span> </a>
                     @endif
 
@@ -79,6 +83,11 @@
                     @if (session('role') == 'Super Admin')
                         <a href="#" class="nav_link"><i class="fas fa-users"></i>
                             <span class="nav_name">Manajemen User</span> </a>
+                    @endif
+
+                    @if (session('role') == 'Super Admin')
+                        <a href="{{route('aktivitas-sistem.index')}}" class="nav_link"><i class="fas fa-file-medical-alt"></i>
+                            <span class="nav_name">Laporan Aktivitas Sistem</span> </a>
                     @endif
 
                     @if (session('role') == 'Super Admin')
@@ -139,7 +148,6 @@
         });
     </script> --}}
 <script>
-
     function sendMarkRequest() {
         return $.ajax("{{ route('notif.mark-read') }}", {
             method: 'get'
@@ -172,7 +180,8 @@
                 method: 'get'
             });
             $('#linkNotif').remove();
-            document.getElementById("mark-all").innerHTML = '<button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>';
+            document.getElementById("mark-all").innerHTML =
+                '<button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>';
         });
     });
 </script>

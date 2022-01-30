@@ -529,6 +529,8 @@ a {
     height: 100vh
 }
 
+
+
 @media screen and (min-width: 768px) {
     :root {
         --header-height: 3rem;
@@ -691,6 +693,7 @@ a {
     line-height: 2;
     padding: 25px 0;
   }
+
 
 
 @media only screen and (max-width: 768px) {
