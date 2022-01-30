@@ -25,6 +25,11 @@ Route::post('/register-store', 'AuthController@register')->name('auth.register')
 
 Route::get('/register', function () {
     return view('register');
+})->name('register');
+
+Route::group(['middleware' => ['auth','cekrole:Super Admin']], function () {
+    Route::resource('aktivitas-sistem', AktivitasSistemController::class);
+    Route::get('/get-aktivitas-sistem','AktivitasSistemController@get_aktivitas')->name('aktivitas-sistem.get-aktivitas');
 });
 
 Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], function(){

@@ -19,3 +19,13 @@
         </form>
     </div>
 </div>
+
+{{-- <div>
+    $pemesanantiketnew
+    $idwisata
+    @if ($pemesanantiketnew->user_id == Auth::user()->id)
+        @if ($pemesanantiketnew->wisata_id == $idwisata)
+            <button>blaawda</button>
+        @endif
+    @endif
+</div> --}}

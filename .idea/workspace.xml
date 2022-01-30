@@ -1,39 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e1b3e465-abe5-401b-9bc9-0a4b03d79609" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DataAsetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DataAsetController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ManajemenRuanganController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ManajemenRuanganController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PengajuanController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PengajuanController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Admin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/BMN.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/CekRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/CekRole.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Peminjam.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Pengaju.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Sarpras.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/SuperAdmin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/DataRuanganImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/DataRuanganImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/components/app-layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/components/app-layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/components/guest-layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/components/guest-layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/data-aset/action.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/data-aset/action.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/data-aset/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/data-aset/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/data-aset/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/data-aset/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/data-aset/tambah.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/data-aset/tambah.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/data-ruangan/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/data-ruangan/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/login.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/peminjaman-admin/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/peminjaman-admin/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/peminjaman-user/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/peminjaman-user/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-    </list>
+    <list default="true" id="e1b3e465-abe5-401b-9bc9-0a4b03d79609" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -169,6 +143,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -186,6 +161,7 @@
       <option name="presentableId" value="Default" />
       <updated>1638439898074</updated>
       <workItem from="1638439900809" duration="629000" />
+      <workItem from="1639743516728" duration="329000" />
     </task>
     <servers />
   </component>

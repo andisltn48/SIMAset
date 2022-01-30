@@ -7,7 +7,9 @@ use App\DataAset;
 use App\Unit;
 use App\DataRuangan;
 use App\LogImport;
+use App\AktivitasSistem;
 use App\DetailLogImport;
+use Auth;
 use Yajra\Datatables\Datatables;
 use App\Exports\DataAsetExport;
 use App\Imports\DataAsetImport;
@@ -123,11 +125,18 @@ class DataAsetController extends Controller
                     'catatan' => $request->catatan,
                 ]);
                 } else {
-                    return redirect(route('data-aset.create'))->with('error','Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!');
+                    return redirect(route('data-aset.create'))->with('error','Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$current_nup.' telah terdaftar!');
                 }
 
             }
             
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan penambahan aset',
+                'user_ip' => $request->ip,
+                'user_role' => session('role'),
+            ]);
+
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
         } else {
             $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
@@ -158,9 +167,15 @@ class DataAsetController extends Controller
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
             ]);
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan penambahan aset',
+                'user_ip' => $request->ip,
+                'user_role' => session('role'),
+            ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
             } else {
-                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!';
+                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar!';
             return redirect(route('data-aset.create'))->with('error',$message);
             }
 
@@ -236,7 +251,14 @@ class DataAsetController extends Controller
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
             ]);
+
             if ($dataaset_save) {
+                $activity = AktivitasSistem::create([
+                    'user_id' => Auth::user()->id,
+                    'user_activity' => Auth::user()->name.' melakukan update data aset',
+                    'user_ip' => $request->ip,
+                    'user_role' => session('role'),
+                ]);
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
             }
         } else {
@@ -277,6 +299,12 @@ class DataAsetController extends Controller
                     'catatan' => $request->catatan,
                 ]);
                 if ($dataaset_save) {
+                    $activity = AktivitasSistem::create([
+                        'user_id' => Auth::user()->id,
+                        'user_activity' => Auth::user()->name.' melakukan update data aset',
+                        'user_ip' => $request->ip,
+                        'user_role' => session('role'),
+                    ]);
                     return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
                 }
             } else {
@@ -290,15 +318,21 @@ class DataAsetController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         $dataaset = DataAset::where('id', $id)->delete();
         if ($dataaset) {
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan hapus data aset',
+                'user_ip' => $request->ip,
+                'user_role' => session('role'),
+            ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil dihapus');
         }
     }
 
-    public function destroy_log_import($id)
+    public function destroy_log_import(Request $request,$id)
     {
         $riwayat = LogImport::where('id', $id)->first();
         $detailriwayat = DetailLogImport::where('import_id', $riwayat->id)->get();
@@ -308,7 +342,13 @@ class DataAsetController extends Controller
         }
         $riwayat = $riwayat->delete();
         if ($riwayat) {
-            return redirect(route('data-aset.import'))->with('success','Data Aset berhasil dihapus');
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan hapus riwayat impor',
+                'user_ip' => $request->ip,
+                'user_role' => session('role'),
+            ]);
+            return redirect(route('data-aset.import'))->with('success','Riwayat impor berhasil dihapus');
         }
     }
 
@@ -414,6 +454,12 @@ class DataAsetController extends Controller
         if ($nup==null) {
             $nup = '';
         }
+        $activity = AktivitasSistem::create([
+            'user_id' => Auth::user()->id,
+            'user_activity' => Auth::user()->name.' melakukan export excel data aset',
+            'user_ip' => $request->ip,
+            'user_role' => session('role'),
+        ]);
         return (new DataAsetExport($unit,$kondisi,$koderuangan,$tahunpengadaan,$kodebarang,$nup))->download('Data-Aset.xlsx');
         // return (new DataAsetExport)->download('app.xls');
     }
@@ -495,6 +541,12 @@ class DataAsetController extends Controller
         ]);
 
         if ($importsdata != NULL) {
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan impor data aset',
+                'user_ip' => $request->ip,
+                'user_role' => session('role'),
+            ]);
             return redirect(route('data-aset.import'))->with('success', 'Berhasil melakukan impor');
         }
 

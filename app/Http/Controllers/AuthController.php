@@ -4,18 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\AktivitasSistem;
 use App\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
     public function login(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user_id = Auth::user()->id;
             $user = User::where('id', $user_id)->first();
             $role = Roles::where('id',$user->role_id)->first();
             session(['role' => $role->name]);
+
+            $activity = AktivitasSistem::create([
+                'user_id' => $user_id,
+                'user_activity' => $user->name.' melakukan login ke dalam sistem',
+                'user_ip' => $request->ip,
+                'user_role' => session('role'),
+            ]);
             // dd($role->name);
             if ($role->name == 'Peminjam') {
                 return redirect('form-peminjaman');
@@ -49,6 +58,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'remember_token' => \Str::random(50),
             'role_id' => '5',
+        ]);
+
+        $activity = AktivitasSistem::create([
+            'user_id' => $user->id,
+            'user_activity' => $user->name.' melakukan registrasi ke dalam sistem',
+            'user_ip' => $request->ip,
+            'user_role' => 'Peminjam',
         ]);
 
         return redirect('/')->with('success', 'Berhasil membuat akun');    }

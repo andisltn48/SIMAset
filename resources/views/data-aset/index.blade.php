@@ -181,7 +181,7 @@
         <div class="row mt-2 me-1 ms-1">
             <button class="btn btn-exportexcel-aset btn-primary mb-2" onclick="export_excel()" href="">Export to
                 Excel</button>
-            <table id="tableDataAset" class="table table-bordered display nowrap">
+            <table id="tableDataAset" class="table table-bordered display nowrap" style="width: 100%">
                 <thead>
                     <tr>
                         <th>No</th>
