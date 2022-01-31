@@ -30,6 +30,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Nama Peminjam</th>
                         <th>No Peminjaman</th>
                         <th>Daftar Barang</th>
                         <th>Jumlah Barang</th>
@@ -94,6 +95,9 @@
                 name: 'DT_Row_Index',
                 orderable: false,
                 searchable: false
+            }, {
+                className: "dt-nowrap",
+                data: 'nama_peminjam',
             }, {
                 searchable: 'true',
                 className: "dt-nowrap",

@@ -22,7 +22,7 @@ class AuthController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => $user_id,
                 'user_activity' => $user->name.' melakukan login ke dalam sistem',
-                'user_ip' => $request->ip,
+                
                 'user_role' => session('role'),
             ]);
             // dd($role->name);
@@ -63,7 +63,7 @@ class AuthController extends Controller
         $activity = AktivitasSistem::create([
             'user_id' => $user->id,
             'user_activity' => $user->name.' melakukan registrasi ke dalam sistem',
-            'user_ip' => $request->ip,
+            
             'user_role' => 'Peminjam',
         ]);
 
