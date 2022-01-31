@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Unit;
+use App\DataAset;
 use Yajra\Datatables\Datatables;
 
 use Illuminate\Http\Request;
@@ -37,6 +38,9 @@ class ManajemenUnitController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'kode' => 'unique:units,kode_unit'
+        ]);
         $storeunit = Unit::create([
             'nama_unit' => $request->nama,
             'kode_unit' => $request->kode
@@ -78,7 +82,16 @@ class ManajemenUnitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $unit = Unit::find($id);
+        if ($unit) {
+            $unit->update([
+                'nama_unit' => $request->nama,
+            ]);
+
+            
+            return redirect()->back()->with('success', 'Data unit berhasil diupdate');
+        }
+
     }
 
     /**
@@ -89,7 +102,16 @@ class ManajemenUnitController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $unit = Unit::find($id);
+        $dataAset = DataAset::where('unit',$unit->kode_unit)->first();
+        if (!$dataAset) {
+            $unit->delete();
+
+            
+            return redirect()->back()->with('success', 'Data unit berhasil diupdate');
+        } else {
+            return redirect()->back()->with('error', 'Data unit sedang digunakan');
+        }
     }
 
     public function get_data_unit()

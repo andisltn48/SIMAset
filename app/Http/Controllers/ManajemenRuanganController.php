@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \stdClass;
 use App\DataRuangan;
+use App\AktivitasSistem;
 use App\DataAset;
+use Auth;
 use Yajra\Datatables\Datatables;
 use App\Imports\DataRuanganImport;
 
@@ -53,7 +55,13 @@ class ManajemenRuanganController extends Controller
         ]);
     
         if ($dataruangan) {
-          return redirect()->back()->with('success', 'Data ruangan berhasil ditambahkan');
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan penambahan data ruangan',
+                
+                'user_role' => session('role'),
+            ]);
+            return redirect()->back()->with('success', 'Data ruangan berhasil ditambahkan');
         }
     }
 
@@ -111,7 +119,12 @@ class ManajemenRuanganController extends Controller
                 'ruangan' => $request->nama_ruangan
             ]);
         }
-        
+        $activity = AktivitasSistem::create([
+            'user_id' => Auth::user()->id,
+            'user_activity' => Auth::user()->name.' melakukan update data ruangan',
+            
+            'user_role' => session('role'),
+        ]);
         return redirect()->back()->with('success', 'Data ruangan berhasil diedit');
         
     }
@@ -129,6 +142,12 @@ class ManajemenRuanganController extends Controller
         if ($dataaset == NULL) {
             if ($dataruangan) {
                 $dataruangan->delete();
+                $activity = AktivitasSistem::create([
+                    'user_id' => Auth::user()->id,
+                    'user_activity' => Auth::user()->name.' melakukan hapus data ruangan',
+                    
+                    'user_role' => session('role'),
+                ]);
                 return redirect()->back()->with('success', 'Data ruangan berhasil dihapus');
             }
         } else {
@@ -158,16 +177,31 @@ class ManajemenRuanganController extends Controller
         if ($import->failures()->isNotEmpty()) {
             foreach ($import->failures() as $rows) {
               $seccond_array = [
-                $rows->values()["kode"],
-                $rows->values()["nama_ruang"],
-                $rows->errors()[0]
+                'kode' => $rows->values()["kode"],
+                'nama' => $rows->values()["nama_ruang"],
+                'message' => $rows->errors()[0]
               ];
-              array_push($main_array, $seccond_array);
+
+              $main_arrays[] = $seccond_array;
+            //   array_push($main_arrays, $seccond_array);
               // var_dump($rows->values()["kode"]);
             }
+        } else {
+            $main_arrays = NULL;
         }
     
+        $activity = AktivitasSistem::create([
+            'user_id' => Auth::user()->id,
+            'user_activity' => Auth::user()->name.' melakukan impor data ruangan',
+            
+            'user_role' => session('role'),
+        ]);
     // $myJSON = json_encode($json_failed);
-        dd($main_array);
+        if ($main_arrays != NULL) {
+            return redirect()->back()->with('error',$main_arrays);
+        } else {
+            return redirect()->back()->with('success', 'berhasil melakukan import data ruangan');
+        }
+        
     }
 }

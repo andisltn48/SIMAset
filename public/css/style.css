@@ -25,18 +25,7 @@ body {
 }
 
 
-.iconitem i {
-    position: absolute;
-    margin-top: 5px;
-    right: 25px;
-    opacity: 0;
-    transition: 0s;
-}
 
-.iconitem.hide i {
-    opacity: 0.6;
-    color: brown;
-}
 
 .dataaset-card {
     top: -25px;
@@ -532,6 +521,20 @@ a {
 
 
 @media screen and (min-width: 768px) {
+    .iconitem i {
+        position: absolute;
+        margin-top: 5px;
+        right: 25px;
+        opacity: 0.6;
+        font-size: 30px;
+        transition: 0s;
+    }
+    
+    .iconitem.hide i {
+        font-size: 40px;
+        color: brown;
+    }
+
     :root {
         --header-height: 3rem;
         --nav-width: 270px;
@@ -697,6 +700,20 @@ a {
 
 
 @media only screen and (max-width: 768px) {
+
+    .iconitem i {
+        position: absolute;
+        margin-top: 5px;
+        right: 25px;
+        opacity: 0.6;
+        font-size: 40px;
+        transition: 0s;
+    }
+    
+    .iconitem.hide i {
+        font-size: 30px;
+        color: brown;
+    }
 
     .expand {
         width: calc(var(--nav-width) + 200px)

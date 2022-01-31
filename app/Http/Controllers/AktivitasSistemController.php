@@ -13,6 +13,21 @@ class AktivitasSistemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function test(Request $request)
+    {
+        $input = $request->all();
+        foreach ($request->a as $key => $value) {
+            $arr[] = [
+                'a' => $value,
+                'b' => $input['b'][$key],
+                'c' => $input['c'][$key],
+                'd' => $input['d'][$key],
+            ];
+        }
+        dd($arr);
+    } 
+
     public function index()
     {
         return view('aktivitas-sistem.index');

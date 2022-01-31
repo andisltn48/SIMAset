@@ -157,14 +157,6 @@
                         </div>
                     </div>
                     
-                    <div class="col m-1" >
-                        <div class="">
-                            <p>Tahun Pengadaan<sup class="text-danger">*</sup></p>
-                        </div>
-                        <div class="form-group">
-                            <input required name="tahun_pengadaan" value="{{ $dataaset->tahun_pengadaan }}" type="text" class="form-control">
-                        </div>
-                    </div>
                 </div>
                 <div class="d-flex row-edit mt-3">
                     <div class="col m-1" >
@@ -264,6 +256,17 @@
                         </div>
                         <div class="form-group">
                             <input name="gedung" value="{{ $dataaset->gedung }}" type="text" class="form-control">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="d-flex row-edit mt-3">
+                    <div class="col m-1" >
+                        <div class="">
+                            <p>Tahun Pengadaan<sup class="text-danger">*</sup></p>
+                        </div>
+                        <div class="form-group">
+                            <input required name="tahun_pengadaan" value="{{ $dataaset->tahun_pengadaan }}" type="text" class="form-control">
                         </div>
                     </div>
                 </div>

@@ -28,15 +28,34 @@
                         <th>Nama</th>
                         <th>Role</th>
                         <th>Aktivitas</th>
-                        <th>IP Address</th>
                         <th>Tanggal Aktivitas</th>
                         <th>Action</th>
                     </tr>
                 </thead>
             </table>
         </div>
+        {{-- <div>
+            <form action="{{route('test')}}" method="POST">
+                @csrf
+                <table>
+                    <tr>
+                        <td> <input type="hidden" name="a[]" value="xyz" /> xyz</td>
+                        <td> <input type="hidden" name="b[]" value="123" /> 123</td>
+                        <td> <input type="hidden" name="c[]" value="456" /> 456</td>
+                        <td> <input type="hidden" name="d[]" value="abc" /> abc</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="hidden" name="a[]" value="xyzd" /> xyz</td>
+                        <td> <input type="hidden" name="b[]" value="123z" /> 123</td>
+                        <td> <input type="hidden" name="c[]" value="456s" /> 456</td>
+                        <td> <input type="hidden" name="d[]" value="abcx" /> abc</td>
+                    </tr>
+                </table>
+                <button type="submit">Input</button>
+            </form>
+        </div> --}}
     </div>
-    
+
     <script>
         $(".select2").select2();
 
@@ -70,10 +89,6 @@
                 searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'user_ip',
-                searchable: false
-            }, {
-                className: "dt-nowrap",
                 data: 'created_at',
                 searchable: false
             }, {
@@ -84,8 +99,6 @@
         });
 
         $.fn.DataTable.ext.pager.numbers_length = 5;
-
-        
     </script>
 </x-app-layout>
 {{-- <div style="background: rgb(233, 189, 160); border-radius: 2rem;" class="p-2 text-white"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div> --}}

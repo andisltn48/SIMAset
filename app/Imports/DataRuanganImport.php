@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class DataRuanganImport implements ToModel , WithHeadingRow, SkipsEmptyRows, SkipsOnFailure, SkipsOnError
+class DataRuanganImport implements ToModel , WithHeadingRow, SkipsEmptyRows, SkipsOnFailure, SkipsOnError,WithValidation
 {
     /**
     * @param Collection $collection
@@ -34,14 +34,19 @@ class DataRuanganImport implements ToModel , WithHeadingRow, SkipsEmptyRows, Ski
       // dd($row);
     }
 
+    public function headingRow(): int
+    {
+        return 1;
+    }
+
     public function rules(): array
     {
         return [
-            "*.kode" => ['required'],
-            "*.nama_ruang" => ['required'],
-            "*.penanggungjawab_ruangan" => ['required'],
-            "*.nip" => ['required', 'numeric'],
-            "*.kode_gedung" => ['required', 'numeric'],
+            "*.kode" => 'required|unique:data_ruangan,kode_ruangan',
+            "*.nama_ruang" => 'required',
+            "*.penanggungjawab_ruangan" => 'required',
+            "*.nip" => 'required', 'numeric',
+            "*.kode_gedung" => 'required|numeric',
         ];
     }
 }

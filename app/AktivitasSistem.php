@@ -10,7 +10,6 @@ class AktivitasSistem extends Model
     protected $fillable = [
         'user_id',
         'user_activity',
-        'user_ip',
         'user_role',
     ];
     public function getUpdatedAtAttribute($value)

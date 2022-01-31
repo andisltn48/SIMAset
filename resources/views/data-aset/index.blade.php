@@ -8,7 +8,7 @@
                         <h6 class="card-subtitle mt-2 text-nowrap">Jumlah Aset</h6>
                     </div>
                     <div class="col text-center iconitem">
-                        <i class="fas fa-database fa-3x text-dark"></i>
+                        <i class="fas fa-database text-dark"></i>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         <h6 class="card-subtitle mt-2 text-nowrap">Baik</h6>
                     </div>
                     <div class="col text-center iconitem">
-                        <i class="fas fa-times-circle fa-3x text-dark"></i>
+                        <i class="fas fa-check-circle text-success"></i>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                         <h6 class="card-subtitle mt-2 text-nowrap">Rusak Ringan</h6>
                     </div>
                     <div class="col text-center iconitem">
-                        <i class="fas fa-check-circle fa-3x text-dark"></i>
+                        <i class="fas fa-times-circle text-danger"></i>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                         <h6 class="card-subtitle mt-2 text-nowrap">Rusak Berat</h6>
                     </div>
                     <div class="col text-center iconitem">
-                        <i class="fas fa-times-circle fa-3x text-dark"></i>
+                        <i class="fas fa-times-circle text-danger"></i>
                     </div>
                 </div>
             </div>
@@ -55,20 +55,20 @@
     </div>
     <div class="row info-data2 mt-1">
         <div class="">
-            <div id="card" class="card shadow p-3 mb-5 bg-white harga-aset" style="border-radius: 0.7rem">
+            <div id="card" class="card shadow p-3 m-1 mb-5 bg-white harga-aset" style="border-radius: 0.7rem">
                 <div class="card-body row">
                     <div class="col-10">
                         <h5 class="card-title fw-bolder" id="hargatotal">{{ $hargatotal }}</h5>
                         <h6 class="card-subtitle mt-2">Total Harga Aset</h6>
                     </div>
                     <div class="col text-center iconitem">
-                        <i class="fas fa-money-check-alt fa-3x text-dark"></i>
+                        <i class="fas fa-money-check-alt text-success"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card shadow p-3 mb-5 bg-white dataaset-card" style="border-radius: 0.7rem">
+    <div class="card shadow p-3 m-1 mb-5 bg-white dataaset-card" style="border-radius: 0.7rem">
         @if (session('error'))
             <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
                 <div class="alert-body">

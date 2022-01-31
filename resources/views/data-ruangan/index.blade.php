@@ -5,7 +5,12 @@
             @if (session('error'))
                 <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
                     <div class="alert-body">
-                        {{ session('error') }}
+                        {{-- {{ session('error') }} --}}
+                        <ul>
+                            @foreach ( session('error') as $item)
+                                <li>{{$item['kode']}} | {{$item['nama']}} | {{$item['message']}}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             @endif
@@ -276,46 +281,7 @@
         });
         $.fn.DataTable.ext.pager.numbers_length = 5;
         
-    
 
-        var no_peminjamans;
-        var table2 = $('#tableDetailDaftarBarang').DataTable({
-            retrieve: true,
-            // searching: false,
-            order: [
-                [1, "desc"]
-            ],
-            scrollX: true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('peminjaman.data-from-nopeminjam-admin') }}",
-                type: "get",
-                data: {
-                    no_peminjaman: no_peminjamans,
-                },
-            },
-            columns: [{
-                data: 'DT_RowIndex',
-                name: 'DT_Row_Index',
-                orderable: false,
-                searchable: false
-            }, {
-                className: "dt-nowrap",
-                data: 'nama_barang',
-            }, {
-                searchable: false,
-                className: "dt-nowrap",
-                data: 'kode_barang',
-            }, {
-                searchable: false,
-                className: "dt-nowrap",
-                data: 'nup_barang'
-            }, {
-                className: "dt-nowrap",
-                data: 'kondisi'
-            }],
-        });
 
         $(document).on('click', '.btn-edit-ruangan', function(event) {
             // return confirm($(this).data('tanggalSP2D'));

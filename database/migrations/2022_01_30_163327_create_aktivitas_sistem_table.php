@@ -17,7 +17,6 @@ class CreateAktivitasSistemTable extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('user_activity');
-            $table->string('user_ip')->nullable();
             $table->string('user_role');
             $table->timestamps();
         });
