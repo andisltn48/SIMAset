@@ -5,7 +5,8 @@
                 <h5 class="fw-bold">Detail Riwayat Impor Aset</h5>
             </div>
             <div class="col button text-end">
-                <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor Aset</button></a>
+                <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
+                        Aset</button></a>
             </div>
         </div>
         <hr>
@@ -24,40 +25,46 @@
         </div>
     </div>
     <script>
-        var id={!! json_encode($import_id) !!};
+        var id = {!! json_encode($import_id) !!};
         // window.alert(id);
         let table = $('#tableRiwayatImpor').DataTable({
-                searching: false,
-                order: [
-                    [2, "asc"]
-                ],
-                scrollX: true,
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('data-aset.getdatadetailimport') }}",
-                    data: function(d) {
-                        d.id = id;
-                    }
-                },
-                columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_Row_Index',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    width: '15vw',
-                    data: 'nama',
-                }, {
-                    width: '15vw',
-                    data: 'row',
-                }, {
-                    width: '15vw',
-                    data: 'status',
-                }, {
-                    width: '15vw',
-                    data: 'message'
-                }],
-            });
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
+            searching: false,
+            order: [
+                [2, "asc"]
+            ],
+            scrollX: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('data-aset.getdatadetailimport') }}",
+                data: function(d) {
+                    d.id = id;
+                }
+            },
+            columns: [{
+                data: 'DT_RowIndex',
+                name: 'DT_Row_Index',
+                orderable: false,
+                searchable: false
+            }, {
+                width: '15vw',
+                data: 'nama',
+            }, {
+                width: '15vw',
+                data: 'row',
+            }, {
+                width: '15vw',
+                data: 'status',
+            }, {
+                width: '15vw',
+                data: 'message'
+            }],
+        });
     </script>
 </x-app-layout>

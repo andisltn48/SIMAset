@@ -1,207 +1,257 @@
 <x-app-layout title="Data Aset">
-    <div class="d-flex row-aset">
-        <div class="col m-1">
-            <div class="card shadow p-3  bg-white jumlah-aset" style="border-radius: 0.7rem">
-                <div class="card-body row">
-                    <div class="col">
-                        <h5 class="card-title fw-bolder" id="jumlahaset">{{ $jumlahaset }}</h5>
-                        <h6 class="card-subtitle mt-2 text-nowrap">Jumlah Aset</h6>
-                    </div>
-                    <div class="col text-center iconitem">
-                        <i class="fas fa-database text-dark"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col m-1">
-            <div class="card shadow p-3  bg-white aset-nonaktif" style="border-radius: 0.7rem">
-                <div class="card-body row">
-                    <div class="col">
-                        <h5 class="card-title fw-bolder" id="baik">{{ $baik }}</h5>
-                        <h6 class="card-subtitle mt-2 text-nowrap">Baik</h6>
-                    </div>
-                    <div class="col text-center iconitem">
-                        <i class="fas fa-check-circle text-success"></i>
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Aset</p>
+                                <h5 class="font-weight-bolder mb-0" id="jumlahaset">
+                                    {{ $jumlahaset }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md ">
+                                <i class="fas fa-database text-white text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col m-1">
-            <div class="card shadow p-3  bg-white aset-aktif" style="border-radius: 0.7rem">
-                <div class="card-body row">
-                    <div class="col">
-                        <h5 class="card-title fw-bolder" id="rusakringan">{{ $rusakringan }}</h5>
-                        <h6 class="card-subtitle mt-2 text-nowrap">Rusak Ringan</h6>
-                    </div>
-                    <div class="col text-center iconitem">
-                        <i class="fas fa-times-circle text-danger"></i>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Kondisi Baik</p>
+                                <h5 class="font-weight-bolder mb-0" id="baik">
+                                    {{ $baik }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                <i class="fas fa-check-circle text-white text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col m-1">
-            <div class="card shadow p-3 bg-white aset-nonaktif" style="border-radius: 0.7rem">
-                <div class="card-body row">
-                    <div class="col">
-                        <h5 class="card-title fw-bolder" id="rusakberat">{{ $rusakberat }}</h5>
-                        <h6 class="card-subtitle mt-2 text-nowrap">Rusak Berat</h6>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Rusak Ringan</p>
+                                <h5 class="font-weight-bolder mb-0" id="rusakringan">
+                                    {{ $rusakringan }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                <i class="fas fa-times-circle text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col text-center iconitem">
-                        <i class="fas fa-times-circle text-danger"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Rusak Berat</p>
+                                <h5 class="font-weight-bolder mb-0" id="rusakberat">
+                                    {{ $rusakberat }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                <i class="fas fa-times-circle text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row info-data2 mt-1">
+    <div class="row mt-4">
         <div class="">
-            <div id="card" class="card shadow p-3 m-1 mb-5 bg-white harga-aset" style="border-radius: 0.7rem">
-                <div class="card-body row">
-                    <div class="col-10">
-                        <h5 class="card-title fw-bolder" id="hargatotal">{{ $hargatotal }}</h5>
-                        <h6 class="card-subtitle mt-2">Total Harga Aset</h6>
-                    </div>
-                    <div class="col text-center iconitem">
-                        <i class="fas fa-money-check-alt text-success"></i>
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Harga Aset</p>
+                                <h5 class="font-weight-bolder mb-0" id="hargatotal">
+                                    {{ $hargatotal }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                <i class="fas fa-money-check-alt text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card shadow p-3 m-1 mb-5 bg-white dataaset-card" style="border-radius: 0.7rem">
-        @if (session('error'))
-            <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
-                <div class="alert-body">
-                    {{ session('error') }}
-                </div>
-            </div>
-        @endif
-        @if (session('success'))
-            <div id="alert-div" class="alert alert-success alert-dismissible show fade">
-                <div class="alert-body">
-                    {{ session('success') }}
-                </div>
-            </div>
-        @endif
-        <div class="row container-dataaset header-dataaset">
-            <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Data Aset</h5>
-            </div>
-            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
-                <div class="col button text-end">
-                    <a href="{{ route('data-aset.create') }}"><button class="btn btn-block btn-success">Tambah
-                            Aset</button></a>
-                    <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
-                            Aset</button></a>
-                </div>
-            @else
-                <div class="col button text-end">
-                    <button disabled class="btn btn-block btn-success">Tambah
-                            Aset</button>
-                    <button disabled class="btn btn-block btn-success">Impor
-                            Aset</button>
-                </div>
-            @endif
-        </div>
-        <hr>
-        <div class="d-flex row-filter mt-2">
-            <div class="col m-1">
-                <div class="title-filter">
-                    <p>Unit/Rumpun</p>
-                </div>
-                <div class="form-group">
-                    <select class="form-select select2 " id="filter-unit">
-                        <option value="">Semua</option>
-                        @foreach ($unit as $item)
-                            <option value="{{ $item->kode_unit }}">{{ $item->nama_unit }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col m-1">
-                <div class="title-filter">
-                    <p>Kondisi Aset</p>
-                </div>
-                <div class="form-group">
-                    <select class="form-select select2 " id="filter-kondisi">
-                        <option value="">Semua</option>
-                        <option value="Baik">Baik</option>
-                        <option value="Rusak Ringan">Rusak Ringan</option>
-                        <option value="Rusak Berat">Rusak Berat</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col m-1">
-                <div class="title-filter">
-                    <p>Kode Ruangan</p>
-                </div>
-                <div class="form-group">
-                    <select class="form-select select2 " id="filter-koderuangan">
-                        <option value="">Semua</option>
-                        @foreach($dataruangan as $data)
-                          <option value="{{$data->kode_ruangan}}">{{$data->kode_ruangan}} || {{$data->nama_ruangan}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col m-1">
-                <div class="title-filter">
-                    <p>Tahun Pengadaan</p>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="filter-tahunpengadaan" class="tahunpengadaan form-control">
-                </div>
-            </div>
-        </div>
-        <div class="d-flex row-filter">
-            <div class="col m-1">
-                <div class="title-filter">
-                    <p>Kode Barang</p>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="filter-kodebarang" class="kodebarang form-control">
-                </div>
-            </div>
-            <div class="col m-1">
-                <div class="title-filter">
-                    <p>NUP</p>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="filter-nup" class="nup form-control">
-                </div>
-            </div>
-        </div>
+    <div class="row mt-4">
+        <div class="mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        @if (session('error'))
+                            <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
+                                <div class="alert-body">
+                                    {{ session('error') }}
+                                </div>
+                            </div>
+                        @endif
+                        @if (session('success'))
+                            <div id="alert-div" class="alert alert-success alert-dismissible show fade">
+                                <div class="alert-body">
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                        @endif
+                        <div class="row container-dataaset header-dataaset">
+                            <div class="col-12 col-md-8 title">
+                                <h5 class="fw-bold">Data Aset</h5>
+                            </div>
+                            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+                                <div class="col button text-end">
+                                    <a href="{{ route('data-aset.create') }}"><button
+                                            class="btn btn-block btn-success">Tambah
+                                            Aset</button></a>
+                                    <a href="{{ route('data-aset.import') }}"><button
+                                            class="btn btn-block btn-success">Impor
+                                            Aset</button></a>
+                                </div>
+                            @else
+                                <div class="col button text-end">
+                                    <button disabled class="btn btn-block btn-success">Tambah
+                                        Aset</button>
+                                    <button disabled class="btn btn-block btn-success">Impor
+                                        Aset</button>
+                                </div>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="d-flex row-filter mt-2">
+                            <div class="col m-1">
+                                <div class="title-filter">
+                                    <p>Unit/Rumpun</p>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-select select2 " id="filter-unit">
+                                        <option value="">Semua</option>
+                                        @foreach ($unit as $item)
+                                            <option value="{{ $item->kode_unit }}">{{ $item->nama_unit }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col m-1">
+                                <div class="title-filter">
+                                    <p>Kondisi Aset</p>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-select select2" id="filter-kondisi">
+                                        <option value="">Semua</option>
+                                        <option value="Baik">Baik</option>
+                                        <option value="Rusak Ringan">Rusak Ringan</option>
+                                        <option value="Rusak Berat">Rusak Berat</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col m-1">
+                                <div class="title-filter">
+                                    <p>Kode Ruangan</p>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-select select2 " id="filter-koderuangan">
+                                        <option value="">Semua</option>
+                                        @foreach ($dataruangan as $data)
+                                            <option value="{{ $data->kode_ruangan }}">{{ $data->kode_ruangan }} ||
+                                                {{ $data->nama_ruangan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col m-1">
+                                <div class="title-filter">
+                                    <p>Tahun Pengadaan</p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="filter-tahunpengadaan" class="tahunpengadaan form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex row-filter">
+                            <div class="col m-1">
+                                <div class="title-filter">
+                                    <p>Kode Barang</p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="filter-kodebarang" class="kodebarang form-control">
+                                </div>
+                            </div>
+                            <div class="col m-1">
+                                <div class="title-filter">
+                                    <p>NUP</p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="filter-nup" class="nup form-control">
+                                </div>
+                            </div>
+                        </div>
 
-        <div class="d-flex justify-content-center align-items-center mt-4">
-            <button class="btn btn-block btn-primary me-3" id="filter" style="min-width: 7vw;"><i
-                    class="fas fa-filter me-2"></i>Filter</button>
-            <button class="btn btn-block btn-danger" id="reset" style="min-width: 7vw;"><i
-                    class="fas fa-undo-alt me-2"></i>Reset</button>
+                        <div class="d-flex justify-content-center align-items-center mt-4">
+                            <button class="btn btn-block btn-primary me-3" id="filter" style="min-width: 7vw;"><i
+                                    class="fas fa-filter me-2"></i>Filter</button>
+                            <button class="btn btn-block btn-danger" id="reset" style="min-width: 7vw;"><i
+                                    class="fas fa-undo-alt me-2"></i>Reset</button>
+                        </div>
+                        <div class="row mt-2 me-1 ms-1">
+                            <button class="btn btn-exportexcel-aset btn-primary mb-2" onclick="export_excel()"
+                                href="">Export to
+                                Excel</button>
+                            <table id="tableDataAset" class="table table-bordered display nowrap" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Barang</th>
+                                        <th>Kode Barang</th>
+                                        <th>Uraian Barang</th>
+                                        <th>NUP</th>
+                                        <th>Harga Satuan</th>
+                                        <th>Total Harga</th>
+                                        <th>Asal Perolehan</th>
+                                        <th>Unit</th>
+                                        <th>Kondisi</th>
+                                        <th>Updatet At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row mt-2 me-1 ms-1">
-            <button class="btn btn-exportexcel-aset btn-primary mb-2" onclick="export_excel()" href="">Export to
-                Excel</button>
-            <table id="tableDataAset" class="table table-bordered display nowrap" style="width: 100%">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Barang</th>
-                        <th>Kode Barang</th>
-                        <th>Uraian Barang</th>
-                        <th>NUP</th>
-                        <th>Harga Satuan</th>
-                        <th>Total Harga</th>
-                        <th>Asal Perolehan</th>
-                        <th>Unit</th>
-                        <th>Kondisi</th>
-                        <th>Updatet At</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
-        <!-- Modal -->
         <div id="modal-detail" class="modal fade bd-example-modal-lg" role="dialog">
             <div class="modal-dialog modal-lg">
                 <!-- konten modal-->
@@ -364,6 +414,12 @@
             }
             // DataTable
             let table = $('#tableDataAset').DataTable({
+                language: {
+                    'paginate': {
+                        'previous': '<i class="fa fa-angle-left"></i>',
+                        'next': '<i class="fa fa-angle-right"></i>'
+                    }
+                },
                 pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
                 order: [
                     [10, "desc"]

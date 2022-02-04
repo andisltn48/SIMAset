@@ -21,30 +21,33 @@
             <div class="col">
                 <p>
 
-                    File template excel untuk melakukan impor : <a href="{{route('data-aset.import-template')}}"><button class="ms-2 btn btn-primary"> <i
+                    File template excel untuk melakukan impor : <a
+                        href="{{ route('data-aset.import-template') }}"><button class="ms-2 btn btn-primary"> <i
                                 class="fas fa-fw fa-file-excel me-2"></i>Download Template</button></a>
 
                 </p>
             </div>
         </div>
-        <form action="{{route('data-aset.import-data-aset')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('data-aset.import-data-aset') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mt-5">
                 <div class="col">
                     <label for="exampleFormControlInput1">Choose File<sup class="text-danger">*</sup></label>
                     <div class="custom-file">
-                        <input class="form-control-file" name="fileimport" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                        <input class="form-control-file" name="fileimport" type="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                     </div>
                     <div class="text-danger">
                         @error('fileimport')
-                        {{ $message }}
+                            {{ $message }}
                         @enderror
                     </div>
                 </div>
-                
+
                 <div class="col text-start mt-3">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square me-2"></i>Impor</button>
-                    <a href="{{ route('data-aset.index') }}" class=" ms-2 btn btn-block btn-danger" ><i class="fas fa-arrow-circle-left me-2"></i>Kembali</a>
+                    <a href="{{ route('data-aset.index') }}" class=" ms-2 btn btn-block btn-danger"><i
+                            class="fas fa-arrow-circle-left me-2"></i>Kembali</a>
                 </div>
             </div>
         </form>
@@ -72,33 +75,39 @@
     </div>
     <script>
         let table = $('#tableRiwayatImpor').DataTable({
-                searching: false,
-                order: [
-                    [3, "desc"]
-                ],
-                scrollX: true,
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('data-aset.getdataimport') }}",
-                },
-                columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_Row_Index',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    width: '15vw',
-                    data: 'success',
-                }, {
-                    width: '15vw',
-                    data: 'failed'
-                }, {
-                    width: '20vw',
-                    data: 'created_at'
-                }, {
-                    data: 'action'
-                }],
-            });
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
+            searching: false,
+            order: [
+                [3, "desc"]
+            ],
+            scrollX: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('data-aset.getdataimport') }}",
+            },
+            columns: [{
+                data: 'DT_RowIndex',
+                name: 'DT_Row_Index',
+                orderable: false,
+                searchable: false
+            }, {
+                width: '15vw',
+                data: 'success',
+            }, {
+                width: '15vw',
+                data: 'failed'
+            }, {
+                width: '20vw',
+                data: 'created_at'
+            }, {
+                data: 'action'
+            }],
+        });
     </script>
 </x-app-layout>

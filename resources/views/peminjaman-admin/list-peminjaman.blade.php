@@ -19,8 +19,7 @@
                 <h5 class="fw-bold">Daftar Peminjaman</h5>
             </div>
             <div class="col button" style="text-align: end">
-                <a href="{{ route('peminjaman.index') }}"><button
-                        class="btn btn-block btn-primary">Daftar
+                <a href="{{ route('peminjaman.index') }}"><button class="btn btn-block btn-primary">Daftar
                         Permintaan Peminjaman</button></a>
             </div>
         </div>
@@ -56,8 +55,8 @@
                     </div>
                     <!-- body modal -->
 
-                    <div class="model-body p-4" style="overflow-x: scroll; overflow-y:hidden">
-                        <table class="mt-4 table table-hover table-borderless " id="tableDetailDaftarBarang">
+                    <div class="model-body p-4" style="overflow-x: scroll; overflow-y:hidden; ">
+                        <table style="width:100%" class="mt-4 table table-hover table-borderless nowrap" id="tableDetailDaftarBarang">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -79,7 +78,10 @@
         // window.alert(id);
         let table = $('#tableListPeminjaman').DataTable({
             language: {
-                searchPlaceholder: "Cari No Peminjaman"
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
             },
             order: [
                 [7, "asc"]
@@ -133,8 +135,14 @@
         var no_peminjamans;
         var table2 = $('#tableDetailDaftarBarang').DataTable({
             language: {
-                searchPlaceholder: "Cari Nama Barang"
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
             },
+            // language: {
+            //     searchPlaceholder: "Cari Nama Barang"
+            // },
             retrieve: true,
             // searching: false,
             order: [

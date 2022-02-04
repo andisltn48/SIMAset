@@ -62,9 +62,15 @@
 
         // window.alert(id);
         let table = $('#tableListAktivitas').DataTable({
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
-                [5, "desc"]
+                [4, "desc"]
             ],
             scrollX: true,
             processing: true,

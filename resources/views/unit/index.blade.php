@@ -123,6 +123,12 @@
     </div>
     <script>
         let table = $('#tableUnit').DataTable({
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
                 [1, "asc"]

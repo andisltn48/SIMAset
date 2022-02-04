@@ -1,187 +1,154 @@
-<div id="body-pd">
-    <header class="header" id="header">
-        <div style="display: none">
-            @php
-                $notification = auth()->user()->unreadNotifications;
-                $allnotification = auth()->user()->notifications;
-            @endphp
-        </div>
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <div class="name-notif d-flex align-items-center justify-content-center">
-            <div class="header_name"> <span class="text-primary fw-bolder">Halo, </span> {{ Auth::user()->name }}
-            </div>
-            <div class="nav-item avatar dropdown" id="dropdown">
-                <a class="nav-link data-toggle waves-effect waves-light text-primary"
-                    id="navbarDropdownMenuLink-5 mark-as-read" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="true" style="cursor: pointer">
-                    <i class="fas fa-bell"></i>
-                    @if (count($notification) > 0)
-                        <span id="countNotif" class="fwb-old"
-                            style="color: rgb(156, 5, 5); font-size: 11px; font-weight: 900;">
-                            {{ count($notification) }}</span>
-                    @endif
-                </a>
-                <div class="dropdown-menu dropdown-secondary p-2" style="min-width: 25% !important;">
-                    @if (count($allnotification) > 0)
-                        <div class="dropdown-item alert" id="linkNotif">
-                            @foreach ($allnotification as $item)
-                                <p style="font-size: 15px !important">{{ $item->data['body'] }} </p>
-                                <p style="font-size: 12px !important; margin-top: -5px !important"
-                                    class="text-primary"><i class="fas fa-clock me-2"></i>{{ $item->created_at }}
-                                </p>
-
-                            @endforeach
-                            {{-- <a href="#" class="float-right mark-as-read ms-4" data-id="{{ $item->id }}">
-                                <i class="fas fa-check-double text-success"></i>
-                            </a> --}}
-                        </div>
-                    @endif
-                    <div class="dropdown-divider"></div>
-                    @if (count($allnotification) == null)
-                        <button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada
-                            Notifikasi</button>
-                    @else
-                        <button class="dropdown-item text-center text-danger" href="#" id="mark-all">Bersihkan semua
-                            notifikasi</button>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span
-                        class="nav_logo-name">SIM-Aset</span> </a>
-                <div class="nav_list">
-                    @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN' || session('role') == 'Sarpras')
-                        <a href="{{ route('data-aset.index') }}" class="nav_link"> <i
-                                class="fas fa-file"></i>
-                            <span class="nav_name">Data Aset</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'Sarpras')
-                        <a href="{{ route('peminjaman.index') }}" class="nav_link"><i
-                                class="fas fa-archive"></i>
-                            <span class="nav_name">Peminjaman</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
-                        <a href="#" class="nav_link"><i class="fas fa-clipboard-list"></i>
-                            <span class="nav_name">Daftar Pengajuan</span> </a>
-
-
-                        <a href="{{ route('data-ruangan.index') }}" class="nav_link"><i
-                                class="fas fa-suitcase"></i>
-                            <span class="nav_name">Manajemen Ruangan</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Super Admin' || session('role') == 'Admin')
-                        <a href="{{ route('unit.index') }}" class="nav_link"><i class="fas fa-suitcase"></i>
-                            <span class="nav_name">Manajemen Unit</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Super Admin')
-                        <a href="#" class="nav_link"><i class="fas fa-users"></i>
-                            <span class="nav_name">Manajemen User</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Super Admin')
-                        <a href="{{route('aktivitas-sistem.index')}}" class="nav_link"><i class="fas fa-file-medical-alt"></i>
-                            <span class="nav_name">Laporan Aktivitas Sistem</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Super Admin')
-                        <a href="#" class="nav_link"><i class="fas fa-file-medical-alt"></i>
-                            <span class="nav_name">Laporan Aset</span> </a>
-                    @endif
-
-                    @if (session('role') == 'Peminjam')
-                        <a href="{{ route('peminjaman.form') }}" class="nav_link"><i class="fab fa-wpforms"></i>
-                            <span class="nav_name">Form Peminjaman</span> </a>
-
-                        <a href="{{ route('peminjaman.list-peminjaman') }}" class="nav_link"><i
-                                class="fas fa-file-medical-alt"></i>
-                            <span class="nav_name">Daftar Peminjaman</span> </a>
-                    @endif
-                </div>
-            </div> <a href="{{ route('auth.logout') }}" class="nav_link"> <i
-                    class='bx bx-log-out nav_icon'></i>
-                <span class="nav_name">Keluar</span> </a>
-
-        </nav>
+<aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
+    id="sidenav-main">
+    <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+            aria-hidden="true" id="iconSidenav"></i>
+        <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html "
+            target="_blank">
+            {{-- <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo"> --}}
+            <span class="ms-1 fs-5 font-weight-bold">SIM-Aset</span>
+        </a>
     </div>
-</div>
-<!--Container Main start-->
-{{-- <div class="height-100 bg-light">
-        <h4>Main Components</h4>
-    </div> --}}
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN' || session('role') == 'Sarpras')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('data-aset.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+            @endif
 
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'Sarpras')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('peminjaman.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-archive text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Peminjaman</span>
+                    </a>
+                </li>
+            @endif
 
-{{-- <script>
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
+                <li class="nav-item">
+                    <a class="nav-link " href="#">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-clipboard text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Daftar Pengajuan</span>
+                    </a>
+                </li>
 
-        document.addEventListener("DOMContentLoaded", function(event) {
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('data-ruangan.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-suitcase text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Manajemen Ruangan</span>
+                    </a>
+                </li>
+            @endif
 
-            const showNavbar = (toggleId, navId, headerId, contentId) => {
-                const toggle = document.getElementById(toggleId),
-                    nav = document.getElementById(navId),
-                    headerpd = document.getElementById(headerId),
-                    contentspan = document.getElementById(content)
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('unit.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-suitcase text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Manajemen Unit</span>
+                    </a>
+                </li>
+            @endif
 
-                // Validate that all variables exist
-                if (toggle && nav && headerpd) {
-                    toggle.addEventListener('click', () => {
-                        // show navbar
-                        nav.classList.toggle('expand')
-                        // change icon
-                        toggle.classList.toggle('bx-x')
-                        // add padding to body
-                        // add padding to header
-                        headerpd.classList.toggle('body-pd')
+            @if (session('role') == 'Super Admin')
+                <li class="nav-item">
+                    <a class="nav-link " href="#">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-users text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Manajemen User</span>
+                    </a>
+                </li>
+            @endif
 
-                        contentspan.classList.toggle('span')
-                    })
-                }
-            }
+            @if (session('role') == 'Super Admin')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('aktivitas-sistem.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-medical-alt text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Laporan Aktivitas Sistem</span>
+                    </a>
+                </li>
+            @endif
 
-            showNavbar('header-toggle', 'nav-bar', 'header')
+            @if (session('role') == 'Super Admin')
+                <li class="nav-item">
+                    <a class="nav-link " href="#">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-medical-alt text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Laporan Aset</span>
+                    </a>
+                </li>
+            @endif
 
-        });
-    </script> --}}
-<script>
-    function sendMarkRequest() {
-        return $.ajax("{{ route('notif.mark-read') }}", {
-            method: 'get'
-        });
-    }
-    $(function() {
-        $('#dropdown').click(function() {
-            // let curr_notif_count = document.getElementById("countNotif").innerHTML;
-            // console.log(curr_notif_count - 1);
-            // let request = sendMarkRequest($(this).data('id'));
-            // request.done(() => {
-            //     $(this).parents('div.alert').remove();
-            //     if (curr_notif_count > 1) {
-            //         document.getElementById("countNotif").innerHTML = curr_notif_count-1
-            //     } else {
-            //         document.getElementById("countNotif").innerHTML = ""
-            //     }
-            // });
-            // $('div.alert').remove();
-            console.log("Hai")
-            let request = sendMarkRequest();
+            @if (session('role') == 'Peminjam')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('peminjaman.form') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fab fa-wpforms text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Form Peminjaman</span>
+                    </a>
+                </li>
 
-            request.done(() => {
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('peminjaman.list-peminjaman') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Daftar Peminjaman</span>
+                    </a>
+                </li>
+            @endif
 
-                document.getElementById("countNotif").innerHTML = "";
-            })
-        });
-        $('#mark-all').click(function() {
-            $.ajax("{{ route('notif.clearnotif') }}", {
-                method: 'get'
-            });
-            $('#linkNotif').remove();
-            document.getElementById("mark-all").innerHTML =
-                '<button disabled class="dropdown-item text-center text-dark" href="#">Tidak Ada Notifikasi</button>';
-        });
-    });
-</script>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="../pages/profile.html">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="../pages/sign-up.html">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-collection text-info text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
