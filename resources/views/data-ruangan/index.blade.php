@@ -60,6 +60,12 @@
                         <input class="form-control " name="kode_ruangan" value="{{ old('kode_ruangan') }}"
                              required>
                     </div>
+                    
+                    <div class="text-danger">
+                        @error('kode_ruangan')
+                            {{ $message }}
+                        @enderror
+                    </div>
                 </div>
                 <div class="mb-2">
                     <div class="form-group">
