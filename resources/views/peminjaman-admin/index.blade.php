@@ -19,7 +19,8 @@
                 <h5 class="fw-bold">Daftar Permintaan Peminjaman</h5>
             </div>
             <div class="col button" style="text-align: end">
-                <a href="{{ route('peminjaman.list-peminjaman-admin') }}"><button class="btn btn-block btn-primary">Daftar
+                <a href="{{ route('peminjaman.list-peminjaman-admin') }}"><button
+                        class="btn btn-block btn-primary">Daftar
                         Peminjaman</button></a>
             </div>
         </div>
@@ -58,7 +59,7 @@
                     <!-- body modal -->
 
                     <div class="model-body p-4" style="overflow-x: scroll; overflow-y:hidden">
-                        <table class="mt-4 table table-hover table-borderless " id="tableDetailDaftarBarang">
+                        <table class="mt-4 table table-hover table-borderless nowrap" id="tableDetailDaftarBarang" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -88,7 +89,7 @@
                 <!-- body modal -->
 
                 <div class="model-body p-4">
-                    <form  method="POST" id="form-confirm" enctype="multipart/form-data">
+                    <form method="POST" id="form-confirm" enctype="multipart/form-data">
                         @csrf
                         <div class="title">
                             <p>Status<sup class="text-danger">*</sup></p>
@@ -117,7 +118,8 @@
                             </div>
                         </div>
                         <div class="mt-4 text-end">
-                            <button class="btn me-1 btn-block btn-primary" type="submit"><i class="fas fa-save me-2"></i>Simpan</button>
+                            <button class="btn me-1 btn-block btn-primary" type="submit"><i
+                                    class="fas fa-save me-2"></i>Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -130,6 +132,12 @@
 
         // window.alert(id);
         let table = $('#tableListPermintaan').DataTable({
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
                 [9, "desc"]
@@ -189,6 +197,12 @@
 
         var no_peminjamans;
         var table2 = $('#tableDetailDaftarBarang').DataTable({
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
             retrieve: true,
             // searching: false,
             order: [
@@ -238,12 +252,12 @@
         });
 
         $(document).on('click', '.btn-confirm', function(event) {
-                // return confirm($(this).data('tanggalSP2D'));
-                var link = $(this).data('link');
+            // return confirm($(this).data('tanggalSP2D'));
+            var link = $(this).data('link');
 
-            
-                $('#form-confirm').attr('action', link);
-            });
+
+            $('#form-confirm').attr('action', link);
+        });
 
         function btnClose() {
             // table2.ajax.url("?no_peminjamans=0").load();

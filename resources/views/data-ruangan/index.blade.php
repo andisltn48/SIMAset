@@ -7,8 +7,8 @@
                     <div class="alert-body">
                         {{-- {{ session('error') }} --}}
                         <ul>
-                            @foreach ( session('error') as $item)
-                                <li>{{$item['kode']}} | {{$item['nama']}} | {{$item['message']}}</li>
+                            @foreach (session('error') as $item)
+                                <li>{{ $item['kode'] }} | {{ $item['nama'] }} | {{ $item['message'] }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -44,39 +44,9 @@
                     </table>
                 </div>
             </div>
-            <div id="modal-detail" class="modal fade bd-example-modal-lg modal-detail-daftar-barang" role="dialog">
-                <div class="modal-dialog modal-lg">
-                    <!-- konten modal-->
-                    <div class="modal-content">
-                        <!-- heading modal -->
-                        <div class="modal-header">
-                            <h4 class="modal-title">Detail data aset</h4>
-                            <button type="button" class="btn" onclick="btnClose()" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true"><i class="fas fa-times"></i></span>
-                            </button>
-                        </div>
-                        <!-- body modal -->
-
-                        <div class="model-body p-4" style="overflow-x: scroll; overflow-y:hidden">
-                            <table class="mt-4 table table-hover table-borderless " id="tableDetailDaftarBarang">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Barang</th>
-                                        <th>Kode Barang</th>
-                                        <th>NUP Barang</th>
-                                        <th>Kondisi</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col card shadow p-3 bg-white rounded mobile-margin m-2"
-            style="border-radius: 0.7rem !important; max-height: 33rem !important">
+            style="border-radius: 0.7rem !important; max-height: 36rem !important">
             <div class="row header-peminjaman">
                 <div class="title">
                     <h5 class="fw-bold">Tambah Ruangan</h5>
@@ -87,29 +57,35 @@
                 <div class="mb-3">
                     <div class="form-group">
                         <label class="text-dark fw">Kode Ruangan<sup class="text-danger">*</sup></label>
-                        <input class="form-control shadow-sm" name="kode_ruangan" value="{{ old('kode_ruangan') }}"
-                            style="border-radius: 1rem; margin-top:0.3rem" required>
+                        <input class="form-control " name="kode_ruangan" value="{{ old('kode_ruangan') }}"
+                             required>
+                    </div>
+                    
+                    <div class="text-danger">
+                        @error('kode_ruangan')
+                            {{ $message }}
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-2">
                     <div class="form-group">
                         <label class="text-dark fw">Nama Ruangan<sup class="text-danger">*</sup></label>
-                        <input class="form-control shadow-sm" name="nama_ruangan" value="{{ old('nama_ruangan') }}"
-                            style="border-radius: 1rem; margin-top:0.3rem" required>
+                        <input class="form-control " name="nama_ruangan" value="{{ old('nama_ruangan') }}"
+                             required>
                     </div>
                 </div>
                 <div class="mb-2">
                     <div class="form-group">
                         <label class="text-dark fw">Penanggung Jawab<sup class="text-danger">*</sup></label>
-                        <input class="form-control shadow-sm" name="pj" value="{{ old('pj') }}"
-                            style="border-radius: 1rem; margin-top:0.3rem" required>
+                        <input class="form-control " name="pj" value="{{ old('pj') }}"
+                             required>
                     </div>
                 </div>
                 <div class="mb-2">
                     <div class="form-group">
                         <label class="text-dark fw">NIP<sup class="text-danger">*</sup></label>
-                        <input class="form-control shadow-sm" name="nip" value="{{ old('nip') }}"
-                            style="border-radius: 1rem; margin-top:0.3rem" required>
+                        <input class="form-control " name="nip" value="{{ old('nip') }}"
+                             required>
                     </div>
                     <div class="text-danger">
                         @error('nip')
@@ -120,8 +96,8 @@
                 <div class="mb-2">
                     <div class="form-group">
                         <label class="text-dark fw">Kode Gedung<sup class="text-danger">*</sup></label>
-                        <input class="form-control shadow-sm" name="kode_gedung" value="{{ old('kode_gedung') }}"
-                            style="border-radius: 1rem; margin-top:0.3rem" required>
+                        <input class="form-control " name="kode_gedung" value="{{ old('kode_gedung') }}"
+                             required>
                     </div>
                     <div class="text-danger">
                         @error('kode_gedung')
@@ -183,30 +159,30 @@
                         <div class="mb-3">
                             <div class="form-group">
                                 <label class="text-dark fw">Kode Ruangan<sup class="text-danger">*</sup></label>
-                                <input class="form-control shadow-sm" name="kode_ruangan" id="kode-ruangan-edit"
-                                    style="border-radius: 1rem; margin-top:0.3rem" required>
+                                <input class="form-control " name="kode_ruangan" id="kode-ruangan-edit"
+                                     required>
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="form-group">
                                 <label class="text-dark fw">Nama Ruangan<sup class="text-danger">*</sup></label>
-                                <input class="form-control shadow-sm" name="nama_ruangan" id="nama-ruangan-edit"
-                                    style="border-radius: 1rem; margin-top:0.3rem" required>
+                                <input class="form-control " name="nama_ruangan" id="nama-ruangan-edit"
+                                     required>
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="form-group">
                                 <label class="text-dark fw">Penanggung Jawab<sup
                                         class="text-danger">*</sup></label>
-                                <input class="form-control shadow-sm" name="pj" id="pj-edit"
-                                    style="border-radius: 1rem; margin-top:0.3rem" required>
+                                <input class="form-control " name="pj" id="pj-edit"
+                                     required>
                             </div>
                         </div>
                         <div class="mb-2">
                             <div class="form-group">
                                 <label class="text-dark fw">NIP<sup class="text-danger">*</sup></label>
-                                <input class="form-control shadow-sm" name="nip" id="nip-edit"
-                                    style="border-radius: 1rem; margin-top:0.3rem" required>
+                                <input class="form-control " name="nip" id="nip-edit"
+                                     required>
                             </div>
                             <div class="text-danger">
                                 @error('nip')
@@ -217,8 +193,8 @@
                         <div class="mb-2">
                             <div class="form-group">
                                 <label class="text-dark fw">Kode Gedung<sup class="text-danger">*</sup></label>
-                                <input class="form-control shadow-sm" name="kode_gedung" id="kode-gedung-edit"
-                                    style="border-radius: 1rem; margin-top:0.3rem" required>
+                                <input class="form-control " name="kode_gedung" id="kode-gedung-edit"
+                                     required>
                             </div>
                             <div class="text-danger">
                                 @error('kode_gedung')
@@ -239,6 +215,12 @@
 
         // window.alert(id);
         let table = $('#tableDataRuangan').DataTable({
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                }
+            },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
                 [1, "asc"]
@@ -280,7 +262,7 @@
             }],
         });
         $.fn.DataTable.ext.pager.numbers_length = 5;
-        
+
 
 
         $(document).on('click', '.btn-edit-ruangan', function(event) {
@@ -300,8 +282,6 @@
             $('#nip-edit').val(nip);
             $('#kode-gedung-edit').val(kodegedung);
         });
-
-        
     </script>
 </x-app-layout>
 {{-- <div style="background: rgb(233, 189, 160); border-radius: 2rem;" class="p-2 text-white"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div> --}}

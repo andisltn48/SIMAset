@@ -152,6 +152,14 @@ class PeminjamanController extends Controller
             foreach ($user as $key => $value) {
                 Notification::send($value, new PeminjamNotification($details));
             }
+
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan permintaan peminjaman',
+                
+                'user_role' => session('role'),
+            ]);
+
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
         } else {
             $validate = $request->validate([
@@ -187,6 +195,14 @@ class PeminjamanController extends Controller
             foreach ($user as $key => $value) {
                 Notification::send($value, new PeminjamNotification($details));
             }
+
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan permintaan peminjaman',
+                
+                'user_role' => session('role'),
+            ]);
+
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
         }
         
@@ -364,6 +380,13 @@ class PeminjamanController extends Controller
             $value->delete();
         }
 
+        $activity = AktivitasSistem::create([
+            'user_id' => Auth::user()->id,
+            'user_activity' => Auth::user()->name.' melakukan hapus permintaan peminjaman',
+            
+            'user_role' => session('role'),
+        ]);
+
         return redirect()->back()->with('success', 'Berhasil menghapus permintaan');
     }
 
@@ -399,6 +422,14 @@ class PeminjamanController extends Controller
         ];
 
         Notification::send($user, new PeminjamNotification($details));
+
+        $activity = AktivitasSistem::create([
+            'user_id' => Auth::user()->id,
+            'user_activity' => Auth::user()->name.' melakukan konfirmasi permintaan peminjaman',
+            
+            'user_role' => session('role'),
+        ]);
+
         return redirect()->back()->with('success', 'Berhasil melakukan konfirmasi');
     }
 }

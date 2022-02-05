@@ -43,7 +43,7 @@ class AktivitasSistemController extends Controller
         });
         return $datatables->addIndexColumn()
         ->escapeColumns([])
-        ->addColumn('action','ini action')
+        ->addColumn('action','aktivitas-sistem.action')
         ->toJson();
     }
 
@@ -110,6 +110,8 @@ class AktivitasSistemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $aktivitas = AktivitasSistem::find($id);
+        $aktivitas->delete();
+        return redirect()->back()->with('success','Berhasil menghapus aktivitas');
     }
 }

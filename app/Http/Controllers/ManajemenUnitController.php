@@ -47,6 +47,12 @@ class ManajemenUnitController extends Controller
         ]);
 
         if ($storeunit) {
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan tambah data unit',
+                
+                'user_role' => session('role'),
+            ]);
             return redirect()->back()->with('success', 'Data unit berhasil ditambahkan');
         }
     }
@@ -88,6 +94,12 @@ class ManajemenUnitController extends Controller
                 'nama_unit' => $request->nama,
             ]);
 
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan update data unit',
+                
+                'user_role' => session('role'),
+            ]);
             
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
         }
@@ -107,7 +119,12 @@ class ManajemenUnitController extends Controller
         if (!$dataAset) {
             $unit->delete();
 
-            
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan hapus data unit',
+                
+                'user_role' => session('role'),
+            ]);
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
         } else {
             return redirect()->back()->with('error', 'Data unit sedang digunakan');

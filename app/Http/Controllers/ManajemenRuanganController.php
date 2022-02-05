@@ -42,6 +42,7 @@ class ManajemenRuanganController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
+            'kode_ruangan' => 'unique:data_ruangan,kode_ruangan',
             'nip' => 'numeric',
             'kode_gedung' => 'numeric',
         ]);

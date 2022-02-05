@@ -409,8 +409,6 @@ class DataAsetController extends Controller
         });
         return $datatables->addIndexColumn()
         ->addColumn('action','data-aset.log-import.action')
-        ->addColumn('success','{{$model->success}} Baris')
-        ->addColumn('failed','{{$model->failed}} Baris')
         ->toJson();
     }
 
@@ -529,45 +527,45 @@ class DataAsetController extends Controller
             }
         }
 
-        $total = DetailLogImport::where('import_id', $importId)->get();
-        $success = DetailLogImport::where('import_id', $importId)->where('status', 'Success')->get();
-        $failed = DetailLogImport::where('import_id', $importId)->where('status', 'Failed')->get();
+        $total = DetailLogImport::where('import_id', $importId)->get()->count();
+        $success = DetailLogImport::where('import_id', $importId)->where('status', 'Success')->get()->count();
+        $failed = DetailLogImport::where('import_id', $importId)->where('status', 'Failed')->get()->count();
 
-        $totalCount = 0;
-        $successCount = 0;
-        $failedCount = 0;
+        // $totalCount = 0;
+        // $successCount = 0;
+        // $failedCount = 0;
 
-        $savedRowTotal = NULL;
-        foreach ($total as $key => $value) {
-            $currRowTotal = $value->row;
-            if ($currRowTotal != $savedRowTotal) {
-                $totalCount +=1;
-                $savedRowTotal = $currRowTotal;
-            }
-        }
+        // $savedRowTotal = NULL;
+        // foreach ($total as $key => $value) {
+        //     $currRowTotal = $value->row;
+        //     if ($currRowTotal != $savedRowTotal) {
+        //         $totalCount +=1;
+        //         $savedRowTotal = $currRowTotal;
+        //     }
+        // }
 
-        $savedRowSuccess = NULL;
-        foreach ($success as $key => $value) {
-            $currRowSuccess = $value->row;
-            if ($currRowSuccess != $savedRowSuccess) {
-                $successCount +=1;
-                $savedRowSuccess = $currRowSuccess;
-            }
-        }
+        // $savedRowSuccess = NULL;
+        // foreach ($success as $key => $value) {
+        //     $currRowSuccess = $value->row;
+        //     if ($currRowSuccess != $savedRowSuccess) {
+        //         $successCount +=1;
+        //         $savedRowSuccess = $currRowSuccess;
+        //     }
+        // }
 
-        $savedRowFailed = NULL;
-        foreach ($failed as $key => $value) {
-            $currRowFailed = $value->row;
-            if ($currRowFailed != $savedRowFailed) {
-                $failedCount +=1;
-                $savedRowFailed = $currRowFailed;
-            }
-        }
+        // $savedRowFailed = NULL;
+        // foreach ($failed as $key => $value) {
+        //     $currRowFailed = $value->row;
+        //     if ($currRowFailed != $savedRowFailed) {
+        //         $failedCount +=1;
+        //         $savedRowFailed = $currRowFailed;
+        //     }
+        // }
 
         $importsdata = LogImport::where('id', $importId)->update([
-            'total' => $totalCount,
-            'success' => $successCount,
-            'failed' => $failedCount,
+            'total' => $total,
+            'success' => $success,
+            'failed' => $failed,
         ]);
 
         if ($importsdata != NULL) {
