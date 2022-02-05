@@ -6,8 +6,14 @@ use Illuminate\Http\Request;
 use App\User;
 use App\AktivitasSistem;
 use App\Roles;
+use App\PasswordReset;
+use App\EmailVerify;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use DB;
+use Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -22,7 +28,7 @@ class AuthController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => $user_id,
                 'user_activity' => $user->name.' melakukan login ke dalam sistem',
-                
+
                 'user_role' => session('role'),
             ]);
             // dd($role->name);
@@ -44,7 +50,8 @@ class AuthController extends Controller
     public function register(Request $request){
         $request->validate(
             [
-                'password' => ['min:6','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'],
+                'password' => ['min:6','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/','confirmed'],
+                'password_confirmation' => ['required'],
                 'email' => ['unique:users,email']
             ],
             [
@@ -63,9 +70,104 @@ class AuthController extends Controller
         $activity = AktivitasSistem::create([
             'user_id' => $user->id,
             'user_activity' => $user->name.' melakukan registrasi ke dalam sistem',
-            
+
             'user_role' => 'Peminjam',
         ]);
 
-        return redirect('/')->with('success', 'Berhasil membuat akun');    }
+        return redirect('/')->with('success', 'Berhasil membuat akun');
+    }
+
+    public function showForgetPasswordForm()
+    {
+        return view('forgetPassword');
+    }
+
+    public function submitForgetPasswordForm(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ]);
+
+        $token = Str::random(64);
+
+        // DB::table('password_resets')->insert([
+        //     'email' => $request->email,
+        //     'token' => $token,
+        //     'created_at' => Carbon::now()
+        // ]);
+        $table = PasswordReset::create([
+            'email' => $request->email,
+            'token' => $token,
+        ]);
+
+        Mail::send('forgetPasswordView', ['token' => $token], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Reset Password');
+        });
+
+        return back()->with('success', 'We have e-mailed your password reset link!');
+    }
+
+    public function showResetPasswordForm($token)
+    {
+        return view('forgetPasswordLink', ['token' => $token]);
+    }
+
+    public function submitResetPasswordForm(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required|string|min:6|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            'password_confirmation' => 'required'
+        ]);
+
+        $updatePassword = PasswordReset::where([
+                              'email' => $request->email,
+                              'token' => $request->token
+                            ])
+                            ->first();
+
+        if(!$updatePassword){
+            return back()->withInput()->with('error', 'Invalid token!');
+        }
+
+        $user = User::where('email', $request->email)
+                    ->update(['password' => Hash::make($request->password)]);
+
+        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+
+        return redirect('/')->with('success', 'Your password has been changed!');
+    }
+
+    public function emailVerifyForm()
+    {
+        return view('emailVerify');
+    }
+
+    public function submitEmailVerifyForm(Request $request)
+    {
+        // $request->validate([
+        //     'email' => 'required|email|exists:users',
+        // ]);
+
+        // dd(Auth::user()->email);
+        $token = Str::random(64);
+
+        // DB::table('password_resets')->insert([
+        //     'email' => $request->email,
+        //     'token' => $token,
+        //     'created_at' => Carbon::now()
+        // ]);
+        $table = EmailVerify::create([
+            'email' => Auth::user()->email,
+            'token' => $token,
+        ]);
+
+        Mail::send('emailVerifyView', ['token' => $token], function($message) use($request){
+            $message->to(Auth::user()->email);
+            $message->subject('Verifikasi Email');
+        });
+
+        return back()->with('success', 'We have e-mailed your password reset link!');
+    }
 }

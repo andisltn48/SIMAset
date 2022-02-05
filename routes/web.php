@@ -27,13 +27,18 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-Route::group(['middleware' => ['auth','cekrole:Super Admin']], function () {
+Route::get('forget-password', 'AuthController@showForgetPasswordForm')->name('forget.password.get');
+Route::post('forget-password', 'AuthController@submitForgetPasswordForm')->name('forget.password.post');
+Route::get('reset-password/{token}', 'AuthController@showResetPasswordForm')->name('reset.password.get');
+Route::post('reset-password', 'AuthController@submitResetPasswordForm')->name('reset.password.post');
+
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], function () {
     Route::resource('aktivitas-sistem', AktivitasSistemController::class);
     Route::get('/get-aktivitas-sistem','AktivitasSistemController@get_aktivitas')->name('aktivitas-sistem.get-aktivitas');
     Route::post('/test','AktivitasSistemController@test')->name('test');
 });
 
-Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,BMN']], function(){
     //route data aset
     Route::resource('data-aset', DataAsetController::class);
     Route::get('/impor-aset','DataAsetController@import')->name('data-aset.import');
@@ -50,7 +55,7 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], functio
     //route unit
     Route::resource('unit', ManajemenUnitController::class);
     Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
-    
+
 
     //route ruangan
     Route::resource('data-ruangan', ManajemenRuanganController::class);
@@ -58,7 +63,7 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,BMN']], functio
     Route::post('/impor-data-ruangan','ManajemenRuanganController@importexcel')->name('data-ruangan.impor-data-ruangan');
 });
 
-Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras']], function(){
     //route data aset
     Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
     Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
@@ -75,10 +80,10 @@ Route::group(['middleware' => ['auth','cekrole:Super Admin,Admin,Sarpras']], fun
     Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
     Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');
     Route::post('/confirm-request/{no_permintaan}','PeminjamanController@confirm_request')->name('peminjaman.confirm-request');
-    
+
 });
 
-Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], function(){
     //route peminjaman
     Route::get('/form-peminjaman','PeminjamanController@formpeminjaman')->name('peminjaman.form');
     Route::get('/get-free-aset','PeminjamanController@get_free_aset')->name('peminjaman.get-free-aset');
@@ -95,12 +100,14 @@ Route::group(['middleware' => ['auth','cekrole:Peminjam']], function(){
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
 });
 
-Route::group(['middleware' => ['auth','cekrole:Pengaju']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], function(){
     //route peminjaman
     Route::get('/form-pengajuan','PengajuanController@formpengajuan')->name('pengajuan.form');
 });
 
 Route::group(['middleware' => ['auth']], function(){
+    Route::get('verify-email', 'AuthController@emailVerifyForm')->name('email.verify.get');
+    Route::post('verify-email', 'AuthController@submitEmailVerifyForm')->name('email.verify.post');
     Route::get('mark-read', 'NotificationController@markNotification')->name('notif.mark-read');
     Route::get('clearnotif', 'NotificationController@clearNotification')->name('notif.clearnotif');
 });
