@@ -1,4 +1,42 @@
-<x-guest-layout title="Masuk">
+<x-guest-layout title="Lupa Password">
+    <!-- <main class="login-form">
+  <div class="cotainer">
+      <div class="row justify-content-center">
+          <div class="col-md-8">
+              <div class="card">
+                  <div class="card-header">Reset Password</div>
+                  <div class="card-body">
+  
+                    @if (Session::has('message'))
+                         <div class="alert alert-success" role="alert">
+                            {{ Session::get('message') }}
+                        </div>
+                    @endif
+  
+                      <form action="{{ route('forget.password.post') }}" method="POST">
+                          @csrf
+                          <div class="form-group row">
+                              <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                              <div class="col-md-6">
+                                  <input type="text" id="email_address" class="form-control" name="email" required autofocus>
+                                  @if ($errors->has('email'))
+                                      <span class="text-danger">{{ $errors->first('email') }}</span>
+                                  @endif
+                              </div>
+                          </div>
+                          <div class="col-md-6 offset-md-4">
+                              <button type="submit" class="btn btn-primary">
+                                  Send Password Reset Link
+                              </button>
+                          </div>
+                      </form>
+                        
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</main> -->
     <div class="item" style="overflow: hidden !important;">
         <div class="container-fluid vh-100">
             <div class="" style="margin-top:100px; ">
@@ -12,11 +50,15 @@
                             <div class="text-primary text-center mt-2 fs-3 fw-bolder">SIM-<span
                                     class="text-dark">Aset</span>
                             </div>
+                            <div class=" text-center mt-2 fs-6 fw-bolder"><span class="text-dark">Lupa
+                                    Password</span>
+                            </div>
                         </div>
-                        <form class="" action="{{ route('auth.login') }}" method="POST">
+                        <form class="" action="{{ route('forget.password.post') }}" method="POST">
                             @csrf
                             <div class="p-4">
-                                <form class="" action="{{ route('auth.login') }}" method="POST">
+                                <form class="" action="{{ route('forget.password.post') }}"
+                                    method="POST">
                                     @csrf
                                     <div class="row mt-3 d-flex flex-column align-items-center">
                                         @if (session('error'))
@@ -39,31 +81,15 @@
                                                 <input class="form-control shadow-sm" type="email" name="email"
                                                     value="{{ old('email') }}"
                                                     style="border-radius: 1rem; margin-top:0.3rem" required>
+                                                @if ($errors->has('email'))
+                                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                                @endif
                                             </div>
                                         </div>
-                                        <div class="mb-2">
-                                            <div class="form-group">
-                                                <label class="text-dark">Password</label>
-                                                <div class="input-group">
-                                                    <input type="password" class="form-control shadow-sm"
-                                                        value="{{ old('password') }}" name="password" id="myInput"
-                                                        required style="border-radius: 1rem; margin-top:0.3rem">
 
-                                                </div>
-                                                <input style="margin-top: 0.9rem" type="checkbox"
-                                                    onclick="myFunction()"> Show Password
-                                            </div>
-                                        </div>
-                                        <div class="mt-3 d-flex flex-column text-center">
-
-                                            <a href="{{route('forget.password.get')}}">Lupa password?</a>
-                                        </div>
-                                        <div class="mt-1 d-flex flex-column text-center">
-
-                                            <a href="/register">Daftar untuk peminjam</a>
-                                        </div>
                                         <div class="col text-center mt-4">
-                                            <button type="submit" class="btn btn-success shadow">Masuk</button>
+                                            <button type="submit" class="btn btn-success shadow">Send Password Reset
+                                                Link</button>
                                         </div>
                                     </div>
                                 </form>
@@ -74,20 +100,7 @@
             </div>
         </div>
     </div>
-    {{-- <script type="text/JavaScript">
-     
-     
-     </script> --}}
     <script>
-        let count = 0;
 
-        function myFunction() {
-            var x = document.getElementById("myInput");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
     </script>
 </x-guest-layout>
