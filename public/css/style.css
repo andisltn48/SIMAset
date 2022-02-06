@@ -12,6 +12,29 @@
     max-width: 11vw !important;
 }
 
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  color: black;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  /* border: 1px solid #ccc; */
+  border-top: 1px solid #ccc;
+}
+
+.tabcontent.active {
+    display: block;
+}
+
 /* for mobile */
 @media only screen and (max-width: 768px) {
 
@@ -23,7 +46,7 @@
         font-size: 40px;
         transition: 0s;
     }
-    
+
     .iconitem.hide i {
         font-size: 30px;
         color: brown;

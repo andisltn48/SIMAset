@@ -2,14 +2,14 @@
     <div class="card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
-                <div class="alert-body">
+                <div class="alert-body text-white">
                     {{ session('error') }}
                 </div>
             </div>
         @endif
         @if (session('success'))
             <div id="alert-div" class="alert alert-success alert-dismissible show fade">
-                <div class="alert-body">
+                <div class="alert-body text-white">
                     {{ session('success') }}
                 </div>
             </div>
@@ -136,7 +136,8 @@
                 'paginate': {
                     'previous': '<i class="fa fa-angle-left"></i>',
                     'next': '<i class="fa fa-angle-right"></i>'
-                }
+                },
+                searchPlaceholder: "Cari nama peminjam"
             },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [

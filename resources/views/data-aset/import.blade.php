@@ -10,9 +10,16 @@
             </div>
         </div>
         <hr>
+        @if (session('error'))
+            <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
+                <div class="alert-body text-white">
+                    {{ session('error') }}
+                </div>
+            </div>
+        @endif
         @if (session('success'))
             <div class="alert alert-success alert-dismissible show fade">
-                <div class="alert-body">
+                <div class="alert-body text-white">
                     {{ session('success') }}
                 </div>
             </div>

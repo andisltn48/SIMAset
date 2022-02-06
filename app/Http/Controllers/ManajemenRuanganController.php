@@ -46,7 +46,7 @@ class ManajemenRuanganController extends Controller
             'nip' => 'numeric',
             'kode_gedung' => 'numeric',
         ]);
-    
+
         $dataruangan = DataRuangan::create([
           'kode_ruangan' => $request->kode_ruangan,
           'nama_ruangan' => $request->nama_ruangan,
@@ -54,12 +54,12 @@ class ManajemenRuanganController extends Controller
           'nip' => $request->nip,
           'kode_gedung' => $request->kode_gedung,
         ]);
-    
+
         if ($dataruangan) {
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penambahan data ruangan',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect()->back()->with('success', 'Data ruangan berhasil ditambahkan');
@@ -103,7 +103,7 @@ class ManajemenRuanganController extends Controller
             'kode_gedung' => 'numeric',
         ]);
         $currentKodeRuangan = DataRuangan::where('id', $id)->first();
-    
+
         $dataruangan = DataRuangan::where('id', $id)->update([
           'kode_ruangan' => $request->kode_ruangan,
           'nama_ruangan' => $request->nama_ruangan,
@@ -123,11 +123,11 @@ class ManajemenRuanganController extends Controller
         $activity = AktivitasSistem::create([
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan update data ruangan',
-            
+
             'user_role' => session('role'),
         ]);
         return redirect()->back()->with('success', 'Data ruangan berhasil diedit');
-        
+
     }
 
     /**
@@ -139,28 +139,34 @@ class ManajemenRuanganController extends Controller
     public function destroy($id)
     {
         $dataruangan = DataRuangan::where('id', $id)->first();
-        $dataaset = DataAset::where('kode_ruangan', $dataruangan->kode_ruangan)->first(); 
+        $dataaset = DataAset::where('kode_ruangan', $dataruangan->kode_ruangan)->first();
         if ($dataaset == NULL) {
             if ($dataruangan) {
                 $dataruangan->delete();
                 $activity = AktivitasSistem::create([
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan hapus data ruangan',
-                    
+
                     'user_role' => session('role'),
                 ]);
                 return redirect()->back()->with('success', 'Data ruangan berhasil dihapus');
             }
         } else {
-            
+
             return redirect()->back()->with('error', 'Data ruangan gagal dihapus (Data ruangan sedang digunakan!)');
         }
-        
+
     }
 
-    public function get_data_ruangan(){
+    public function get_data_ruangan(Request $request){
         $dataruangan = DataRuangan::select('data_ruangan.*');
         $datatables = Datatables::of($dataruangan);
+        if ($request->get('search')['value']) {
+            $datatables->filter(function ($query) {
+                    $keyword = request()->get('search')['value'];
+                    $query->where('kode_ruangan', 'like', "%" . $keyword . "%");
+
+        });}
         $datatables->orderColumn('kode_ruangan', function ($query, $order) {
             $query->orderBy('data_ruangan.kode_ruangan', $order);
         });
@@ -190,11 +196,11 @@ class ManajemenRuanganController extends Controller
         } else {
             $main_arrays = NULL;
         }
-    
+
         $activity = AktivitasSistem::create([
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan impor data ruangan',
-            
+
             'user_role' => session('role'),
         ]);
     // $myJSON = json_encode($json_failed);
@@ -203,6 +209,6 @@ class ManajemenRuanganController extends Controller
         } else {
             return redirect()->back()->with('success', 'berhasil melakukan import data ruangan');
         }
-        
+
     }
 }

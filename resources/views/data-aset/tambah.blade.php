@@ -15,14 +15,14 @@
                 @csrf
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible show fade">
-                        <div class="alert-body">
+                        <div class="alert-body text-white">
                             {{ session('error') }}
                         </div>
                     </div>
                 @endif
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible show fade">
-                        <div class="alert-body">
+                        <div class="alert-body text-white">
                             {{ session('success') }}
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                     url: "{{ route('data-aset.get-ruangan') }}",
                     type: "get",
                     data: {
-                        kode: value 
+                        kode: value
                     },
                     success: function(response) {
                         if (response) {
@@ -385,6 +385,6 @@
                 $('#jumlah').removeAttr('readonly')
             }
         }
-        
+
     </script>
 </x-app-layout>

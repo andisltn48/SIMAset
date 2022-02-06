@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataAset;
+use App\DataPeminjaman;
+use App\ListBarangPinjam;
 
 class LaporanAsetController extends Controller
 {
@@ -13,7 +16,47 @@ class LaporanAsetController extends Controller
      */
     public function index()
     {
-        //
+        function convert($harga)
+        {
+            return strrev(implode('.', str_split(strrev(strval($harga)), 3)));
+        };
+
+        function RemoveSpecialChar($str) {
+            $res = str_replace( array( '.' ), '', $str);
+
+            return $res;
+        }
+        $currentTahun = date("Y");
+        $jumlahaset = DataAset::all()->count();
+        $kondisiAsetBaik = DataAset::where('kondisi', 'Baik')->count();
+        $kondisiAsetRusakRingan = DataAset::where('kondisi', 'Rusak Ringan')->count();
+        $kondisiAsetRusakBerat = DataAset::where('kondisi', 'Rusak Berat')->count();
+        $totalBarangPinjam = 0;
+        $datapeminjaman = DataPeminjaman::where('status_peminjaman', 'Dalam Peminjaman')->get();
+        foreach ($datapeminjaman as $key => $value) {
+          $databarang = ListBarangPinjam::where('no_peminjaman', $value->no_peminjaman)->get();
+          foreach ($databarang as $key => $item) {
+             $totalBarangPinjam =+ 1;
+          }
+        }
+        $totalBarangTidakPinjam = $jumlahaset - $totalBarangPinjam;
+
+        $dataaset = DataAset::all();
+        $hargatotal = 0;
+        foreach ($dataaset as $key => $value) {
+            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_total']);
+        }
+
+        $hargatotal = 'Rp ' . convert($hargatotal);
+
+        return view('laporan-aset.index', compact('jumlahaset',
+        'kondisiAsetBaik',
+        'kondisiAsetRusakRingan',
+        'kondisiAsetRusakBerat',
+        'totalBarangPinjam',
+        'totalBarangTidakPinjam',
+        'hargatotal',
+        'currentTahun'));
     }
 
     /**

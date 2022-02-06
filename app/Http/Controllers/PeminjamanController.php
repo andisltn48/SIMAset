@@ -126,7 +126,7 @@ class PeminjamanController extends Controller
                 'jumlah' => count($aset_selected),
                 'tanggal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)),
                 'surat_peminjaman' => $fileName_suratpeminjaman,
-                'surat_balasan' => '', 
+                'surat_balasan' => '',
                 'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
                 'status_permintaan' => 'Belum Dikonfirmasi',
                 'status_peminjaman' => '-',
@@ -143,7 +143,7 @@ class PeminjamanController extends Controller
                     'kondisi' => $dataaset->kondisi
                 ]);
             }
-            
+
             \Session::forget('tempo-data');
             $user = User::where('role_id', '4')->get();
             $details = [
@@ -156,7 +156,7 @@ class PeminjamanController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan permintaan peminjaman',
-                
+
                 'user_role' => session('role'),
             ]);
 
@@ -166,7 +166,7 @@ class PeminjamanController extends Controller
                 'sarana' => 'required'
             ]);
             $dataaset = DataAset::where('id', $request->sarana)->first();
-            $datapeminjaman = DataPeminjaman::create([ 
+            $datapeminjaman = DataPeminjaman::create([
                 'nama_peminjam' => $request->nama_peminjam,
                 'id_peminjam' => Auth::user()['id'],
                 'nama_penanggung_jawab' => $request->penanggung_jawab,
@@ -174,7 +174,7 @@ class PeminjamanController extends Controller
                 'jumlah' => 1,
                 'tanggal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)),
                 'surat_peminjaman' => $fileName_suratpeminjaman,
-                'surat_balasan' => '', 
+                'surat_balasan' => '',
                 'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
                 'status_permintaan' => 'Belum Dikonfirmasi',
                 'status_peminjaman' => '-',
@@ -199,13 +199,13 @@ class PeminjamanController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan permintaan peminjaman',
-                
+
                 'user_role' => session('role'),
             ]);
 
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
         }
-        
+
     }
 
     public function templatesurat(){
@@ -223,7 +223,7 @@ class PeminjamanController extends Controller
         $nup_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('nup_barang')->all();
         $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
         $dataaset2 = DataAset::where('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
-        $fixdata = $dataaset1->merge($dataaset2); 
+        $fixdata = $dataaset1->merge($dataaset2);
         return response()->json([
             'data' => $fixdata,
         ]);
@@ -251,8 +251,8 @@ class PeminjamanController extends Controller
     {
         $id_peminjam = Auth::user()['id'];
         return view('peminjaman-user.list-peminjaman', compact('id_peminjam'));
-    } 
-    
+    }
+
     public function list_peminjaman_admin()
     {
         return view('peminjaman-admin.list-peminjaman');
@@ -263,19 +263,25 @@ class PeminjamanController extends Controller
         if ($request->id != NULL) {
             $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id);
             $datatables = Datatables::of($datapeminjaman);
+            if ($request->get('search')['value']) {
+                $datatables->filter(function ($query) {
+                        $keyword = request()->get('search')['value'];
+                        $query->where('no_peminjaman', 'like', "%" . $keyword . "%");
+
+            });}
             $datatables->orderColumn('updated_at', function ($query, $order) {
                 $query->orderBy('data_peminjaman.updated_at', $order);
             });
             return $datatables->addIndexColumn()
             ->editColumn('status_permintaan', function(DataPeminjaman $datapeminjaman) {
                 if ($datapeminjaman->status_permintaan == 'Belum Dikonfirmasi') {
-                    return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                    return '<div style="background: rgb(203, 214, 255);" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
                 if ($datapeminjaman->status_permintaan == 'Disetujui') {
-                    return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                    return '<div style="background: rgb(197, 255, 205);" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
                 if ($datapeminjaman->status_permintaan == 'Ditolak') {
-                    return '<div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                    return '<div style="background: rgb(255, 185, 185);" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
             })
             ->escapeColumns([])
@@ -286,6 +292,12 @@ class PeminjamanController extends Controller
         } else {
             $datapeminjaman = DataPeminjaman::select('data_peminjaman.*');
             $datatables = Datatables::of($datapeminjaman);
+            if ($request->get('search')['value']) {
+                $datatables->filter(function ($query) {
+                        $keyword = request()->get('search')['value'];
+                        $query->where('nama_peminjam', 'like', "%" . $keyword . "%");
+
+            });}
             $datatables->orderColumn('updated_at', function ($query, $order) {
                 $query->orderBy('data_peminjaman.updated_at', $order);
             });
@@ -308,7 +320,7 @@ class PeminjamanController extends Controller
             ->addColumn('action','peminjaman-admin.button-datatable.action')
             ->toJson();
         }
-        
+
     }
 
     public function get_data_peminjaman(Request $request)
@@ -316,12 +328,18 @@ class PeminjamanController extends Controller
         if ($request->id != NULL) {
             $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman');
             $datatables = Datatables::of($datapeminjaman);
+            if ($request->get('search')['value']) {
+                $datatables->filter(function ($query) {
+                        $keyword = request()->get('search')['value'];
+                        $query->where('no_peminjaman', 'like', "%" . $keyword . "%");
+
+            });}
             $datatables->orderColumn('updated_at', function ($query, $order) {
                 $query->orderBy('data_peminjaman.updated_at', $order);
             });
             return $datatables->addIndexColumn()
             ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
-                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
+                return '<div style="background: rgb(197, 255, 205);" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
             })
             ->escapeColumns([])
             ->addColumn('download_surat_balasan','peminjaman-user.button-datatable.download-surat-balasan')
@@ -330,6 +348,12 @@ class PeminjamanController extends Controller
         } else {
             $datapeminjaman = DataPeminjaman::where('status_peminjaman', 'Dalam Peminjaman');
             $datatables = Datatables::of($datapeminjaman);
+            if ($request->get('search')['value']) {
+                $datatables->filter(function ($query) {
+                        $keyword = request()->get('search')['value'];
+                        $query->where('nama_peminjam', 'like', "%" . $keyword . "%");
+
+            });}
             $datatables->orderColumn('updated_at', function ($query, $order) {
                 $query->orderBy('data_peminjaman.updated_at', $order);
             });
@@ -342,7 +366,7 @@ class PeminjamanController extends Controller
             ->addColumn('list_barang','peminjaman-admin.button-datatable.detail-barang')
             ->toJson();
         }
-        
+
     }
 
     public function data_from_no_peminjam(Request $request)
@@ -383,7 +407,7 @@ class PeminjamanController extends Controller
         $activity = AktivitasSistem::create([
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan hapus permintaan peminjaman',
-            
+
             'user_role' => session('role'),
         ]);
 
@@ -394,7 +418,7 @@ class PeminjamanController extends Controller
     {
         $file_suratbalasan = $request->surat_balasan;
         $fileName_suratbalasan = time().'_'.$file_suratbalasan->getClientOriginalName();
-        
+
 
         $datapermintaan = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
         // dd($datapermintaan);
@@ -412,7 +436,7 @@ class PeminjamanController extends Controller
                 'catatan' => $request->catatan
             ]);
         }
-        
+
 
         $user = User::where('id', $datapermintaan->id_peminjam)->first();
 
@@ -426,7 +450,7 @@ class PeminjamanController extends Controller
         $activity = AktivitasSistem::create([
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan konfirmasi permintaan peminjaman',
-            
+
             'user_role' => session('role'),
         ]);
 

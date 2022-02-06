@@ -36,6 +36,16 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::resource('aktivitas-sistem', AktivitasSistemController::class);
     Route::get('/get-aktivitas-sistem','AktivitasSistemController@get_aktivitas')->name('aktivitas-sistem.get-aktivitas');
     Route::post('/test','AktivitasSistemController@test')->name('test');
+
+    Route::resource('manajemen-user', ManajemenUserController::class);
+    Route::get('/get-superadmin','ManajemenUserController@get_superadmin')->name('manajemen-user.get-superadmin');
+    Route::get('/get-admin','ManajemenUserController@get_admin')->name('manajemen-user.get-admin');
+    Route::get('/get-bmn','ManajemenUserController@get_bmn')->name('manajemen-user.get-bmn');
+    Route::get('/get-sarpras','ManajemenUserController@get_sarpras')->name('manajemen-user.get-sarpras');
+    Route::get('/get-peminjam','ManajemenUserController@get_peminjam')->name('manajemen-user.get-peminjam');
+    Route::get('/get-pengaju','ManajemenUserController@get_pengaju')->name('manajemen-user.get-pengaju');
+
+    Route::resource('laporan-aset', LaporanAsetController::class);
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,BMN']], function(){
@@ -106,8 +116,10 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], funct
 });
 
 Route::group(['middleware' => ['auth']], function(){
+    Route::resource('manajemen-profil', ManajemenProfileController::class);
     Route::get('verify-email', 'AuthController@emailVerifyForm')->name('email.verify.get');
     Route::post('verify-email', 'AuthController@submitEmailVerifyForm')->name('email.verify.post');
+    Route::get('verify-email/{token}', 'AuthController@submitEmailVerify')->name('email.verify.submit');
     Route::get('mark-read', 'NotificationController@markNotification')->name('notif.mark-read');
     Route::get('clearnotif', 'NotificationController@clearNotification')->name('notif.clearnotif');
 });
