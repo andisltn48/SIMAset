@@ -26,18 +26,24 @@ class AktivitasSistemController extends Controller
             ];
         }
         dd($arr);
-    } 
+    }
 
     public function index()
     {
         return view('aktivitas-sistem.index');
     }
 
-    public function get_aktivitas()
+    public function get_aktivitas(Request $request)
     {
         $aktivitas = AktivitasSistem::leftjoin('users','users.id','aktivitas_sistem.user_id')
         ->select('aktivitas_sistem.*','users.name');
         $datatables = Datatables::of($aktivitas);
+        if ($request->get('search')['value']) {
+            $datatables->filter(function ($query) {
+                    $keyword = request()->get('search')['value'];
+                    $query->where('users.name', 'like', "%" . $keyword . "%");
+
+        });}
         $datatables->orderColumn('created_at', function ($query, $order) {
             $query->orderBy('aktivitas_sistem.created_at', $order);
         });

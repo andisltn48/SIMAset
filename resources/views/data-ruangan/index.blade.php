@@ -4,8 +4,7 @@
             style="border-radius: 0.7rem !important">
             @if (session('error'))
                 <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
-                    <div class="alert-body">
-                        {{-- {{ session('error') }} --}}
+                    <div class="alert-body text-white">
                         <ul>
                             @foreach (session('error') as $item)
                                 <li>{{ $item['kode'] }} | {{ $item['nama'] }} | {{ $item['message'] }}</li>
@@ -16,7 +15,7 @@
             @endif
             @if (session('success'))
                 <div id="alert-div" class="alert alert-success alert-dismissible show fade">
-                    <div class="alert-body">
+                    <div class="alert-body text-white">
                         {{ session('success') }}
                     </div>
                 </div>
@@ -60,7 +59,7 @@
                         <input class="form-control " name="kode_ruangan" value="{{ old('kode_ruangan') }}"
                              required>
                     </div>
-                    
+
                     <div class="text-danger">
                         @error('kode_ruangan')
                             {{ $message }}
@@ -219,7 +218,8 @@
                 'paginate': {
                     'previous': '<i class="fa fa-angle-left"></i>',
                     'next': '<i class="fa fa-angle-right"></i>'
-                }
+                },
+                searchPlaceholder: "Cari kode ruangan"
             },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [

@@ -61,7 +61,7 @@ class DataAsetController extends Controller
 
     public function store(Request $request)
     {
-        
+
         // dd($request);
         if ($request->nup_akhir == NULL) {
             $validate = $request->validate([
@@ -133,7 +133,7 @@ class DataAsetController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penambahan aset',
-                
+
                 'user_role' => session('role'),
             ]);
 
@@ -170,7 +170,7 @@ class DataAsetController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penambahan aset',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
@@ -255,7 +255,7 @@ class DataAsetController extends Controller
                 $activity = AktivitasSistem::create([
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan update data aset',
-                    
+
                     'user_role' => session('role'),
                 ]);
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
@@ -301,7 +301,7 @@ class DataAsetController extends Controller
                 $activity = AktivitasSistem::create([
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan update data aset',
-                    
+
                     'user_role' => session('role'),
                 ]);
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
@@ -319,7 +319,7 @@ class DataAsetController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus data aset',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil dihapus');
@@ -339,7 +339,7 @@ class DataAsetController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus riwayat impor',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect(route('data-aset.import'))->with('success','Riwayat impor berhasil dihapus');
@@ -422,7 +422,7 @@ class DataAsetController extends Controller
 
     public function export_excel(Request $request)
     {
-       
+
         // echo Request()->unit;
 
         $unit = request()->unit;
@@ -452,7 +452,7 @@ class DataAsetController extends Controller
         $activity = AktivitasSistem::create([
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan export excel data aset',
-            
+
             'user_role' => session('role'),
         ]);
         return (new DataAsetExport($unit,$kondisi,$koderuangan,$tahunpengadaan,$kodebarang,$nup))->download('Data-Aset.xlsx');
@@ -572,7 +572,7 @@ class DataAsetController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan impor data aset',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect(route('data-aset.import'))->with('success', 'Berhasil melakukan impor');

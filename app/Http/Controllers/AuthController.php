@@ -95,6 +95,12 @@ class AuthController extends Controller
         //     'token' => $token,
         //     'created_at' => Carbon::now()
         // ]);
+
+        $cektable = PasswordReset::where('email', $request->email)->get();
+        foreach ($cektable as $key => $value) {
+          $value->delete();
+        }
+
         $table = PasswordReset::create([
             'email' => $request->email,
             'token' => $token,
@@ -105,7 +111,7 @@ class AuthController extends Controller
             $message->subject('Reset Password');
         });
 
-        return back()->with('success', 'We have e-mailed your password reset link!');
+        return back()->with('success', 'Kami telah mengirimkan link reset password ke email anda');
     }
 
     public function showResetPasswordForm($token)
@@ -119,6 +125,9 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users',
             'password' => 'required|string|min:6|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
             'password_confirmation' => 'required'
+        ],
+        [
+            'password.regex' => 'Must contain at least one uppercase/lowercase letters and one number'
         ]);
 
         $updatePassword = PasswordReset::where([
@@ -128,7 +137,7 @@ class AuthController extends Controller
                             ->first();
 
         if(!$updatePassword){
-            return back()->withInput()->with('error', 'Invalid token!');
+            return back()->withInput()->with('error', 'Token tidak ditemukan!');
         }
 
         $user = User::where('email', $request->email)
@@ -136,7 +145,15 @@ class AuthController extends Controller
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
-        return redirect('/')->with('success', 'Your password has been changed!');
+        $currUser = User::where('email', $request->email)->first();
+        $activity = AktivitasSistem::create([
+            'user_id' => $currUser->id,
+            'user_activity' => $currUser->name.' melakukan perubahan password',
+
+            'user_role' => session('role'),
+        ]);
+
+        return redirect('/')->with('success', 'Anda telah berhasil mengubah password anda');
     }
 
     public function emailVerifyForm()
@@ -158,6 +175,12 @@ class AuthController extends Controller
         //     'token' => $token,
         //     'created_at' => Carbon::now()
         // ]);
+
+        $cektable = EmailVerify::where('email', Auth::user()->email)->get();
+        foreach ($cektable as $key => $value) {
+          $value->delete();
+        }
+
         $table = EmailVerify::create([
             'email' => Auth::user()->email,
             'token' => $token,
@@ -168,6 +191,30 @@ class AuthController extends Controller
             $message->subject('Verifikasi Email');
         });
 
-        return back()->with('success', 'We have e-mailed your password reset link!');
+        return back()->with('success', 'Kami telah mengirim link verifikasi ke email anda');
+    }
+
+    public function submitEmailVerify($token)
+    {
+        $emailVerify = EmailVerify::where('token',$token)->first();
+
+        if(!$emailVerify){
+            return back()->withInput()->with('error', 'Token tidak ditemukan!');
+        }
+
+        $user = User::where('email', $emailVerify->email)
+                    ->update(['email_verified_at' => Carbon::now()]);
+
+        DB::table('email_verify')->where(['email'=> $emailVerify->email])->delete();
+
+        $currUser = User::where('email', $emailVerify->email)->first();
+        $activity = AktivitasSistem::create([
+            'user_id' => $currUser->id,
+            'user_activity' => $currUser->name.' melakukan verifikasi email',
+
+            'user_role' => session('role'),
+        ]);
+
+        return redirect('/')->with('success', 'Anda telah berhasil melakukan verifikasi email anda');
     }
 }

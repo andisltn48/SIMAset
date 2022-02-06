@@ -15,14 +15,14 @@
                 @csrf
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible show fade">
-                        <div class="alert-body">
+                        <div class="alert-body text-white">
                             {{ session('error') }}
                         </div>
                     </div>
                 @endif
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible show fade">
-                        <div class="alert-body">
+                        <div class="alert-body text-white">
                             {{ session('success') }}
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                             @enderror
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="d-flex row-edit mt-3">
                     <div class="col m-1" >
@@ -258,7 +258,7 @@
                             <input name="gedung" value="{{ $dataaset->gedung }}" type="text" class="form-control">
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="d-flex row-edit mt-3">
                     <div class="col m-1" >
@@ -337,7 +337,7 @@
                     url: "{{ route('data-aset.get-ruangan') }}",
                     type: "get",
                     data: {
-                        kode: value 
+                        kode: value
                     },
                     success: function(response) {
                         if (response) {

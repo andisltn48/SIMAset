@@ -50,7 +50,7 @@ class ManajemenUnitController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan tambah data unit',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect()->back()->with('success', 'Data unit berhasil ditambahkan');
@@ -97,10 +97,10 @@ class ManajemenUnitController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan update data unit',
-                
+
                 'user_role' => session('role'),
             ]);
-            
+
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
         }
 
@@ -122,7 +122,7 @@ class ManajemenUnitController extends Controller
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus data unit',
-                
+
                 'user_role' => session('role'),
             ]);
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
@@ -131,15 +131,21 @@ class ManajemenUnitController extends Controller
         }
     }
 
-    public function get_data_unit()
+    public function get_data_unit(Request $request)
     {
         $unit = Unit::select('units.*');
         $datatables = Datatables::of($unit);
+        if ($request->get('search')['value']) {
+            $datatables->filter(function ($query) {
+                    $keyword = request()->get('search')['value'];
+                    $query->where('kode_unit', 'like', "%" . $keyword . "%");
+
+        });}
         $datatables->orderColumn('kode_unit', function ($query, $order) {
             $query->orderBy('units.kode_unit', $order);
         });
         return $datatables->addIndexColumn()
         ->addColumn('action','unit.action')
-        ->toJson(); 
+        ->toJson();
     }
 }
