@@ -7,6 +7,7 @@ use Yajra\Datatables\Datatables;
 use App\DataPeminjaman;
 use App\DataAset;
 use App\User;
+use App\AktivitasSistem;
 use App\ListBarangPinjam;
 use Auth;
 use Notification;
@@ -96,6 +97,7 @@ class PeminjamanController extends Controller
 
     public function storepermintaan(Request $request)
     {
+
         $validate = $request->validate([
             'surat_peminjaman' => 'required',
             'datadiri_penanggungjawab' => 'required',
@@ -261,7 +263,7 @@ class PeminjamanController extends Controller
     public function get_data_permintaan_peminjaman(Request $request)
     {
         if ($request->id != NULL) {
-            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id);
+            $datapeminjaman = DataPeminjaman::where('status_permintaan','Belum Dikonfirmasi')->where('id_peminjam', $request->id);
             $datatables = Datatables::of($datapeminjaman);
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {
@@ -290,7 +292,7 @@ class PeminjamanController extends Controller
             ->addColumn('action','peminjaman-user.button-datatable.action')
             ->toJson();
         } else {
-            $datapeminjaman = DataPeminjaman::select('data_peminjaman.*');
+            $datapeminjaman = DataPeminjaman::where('status_permintaan','Belum Dikonfirmasi')->select('data_peminjaman.*');
             $datatables = Datatables::of($datapeminjaman);
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {

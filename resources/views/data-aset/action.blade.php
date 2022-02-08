@@ -9,6 +9,7 @@
             data-nomorbuktiperolehan="{{ $model->nomor_bukti_perolehan }}" data-merk="{{ $model->merk }}"
             data-sumberdana="{{ $model->sumber_dana }}" data-pic="{{ $model->pic }}"
             data-koderuangan="{{ $model->kode_ruangan }}" data-kondisi="{{ $model->kondisi }}"
+            data-foto="{{asset('storage/foto-aset/'.$model->foto) }}"
             data-unit="{{ $model->nama_unit }}" data-status="{{ $model->status }}" data-gedung="{{ $model->gedung }}"
             data-ruangan="{{ $model->ruangan }}" data-catatan="{{ $model->catatan }}" data-tahunpengadaan="{{ $model->tahun_pengadaan }}"
             data-link={{ route('data-aset.edit', $model->id) }} class="btn me-1 btn-block btn-primary btn-detail"><i

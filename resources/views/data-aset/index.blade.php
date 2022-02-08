@@ -268,6 +268,9 @@
                     <div class="model-body p-4">
                         <table class="mt-4 table table-hover table-borderless ">
                             <tbody>
+                                <div class="text-center">
+                                    <img id="foto-aset" class="img-thumbnail" alt="">
+                                </div>
                                 <tr>
                                     <th style="width: 25vw; height:7vh">Nama Barang</th>
                                     <td id="nama-barang" style="max-width: 35vw"></td>
@@ -583,6 +586,7 @@
                 var ruangan = $(this).data('ruangan');
                 var catatan = $(this).data('catatan');
                 var tahunpengadaan = $(this).data('tahunpengadaan');
+                var linkFoto = $(this).data('foto');
 
                 $('#nama-barang').text(namabarang);
                 $('#kode-barang').text(kode);
@@ -608,6 +612,9 @@
                 $('#catatan').text(catatan);
                 $('#tahun-pengadaan').text(tahunpengadaan);
                 $('#btn-edit').attr('href', link);
+                $('#foto-aset').attr('src', linkFoto);
+
+                console.log(linkFoto);
             });
 
             // let toggle2 = document.querySelector('.toggle');

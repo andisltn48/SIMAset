@@ -36,6 +36,7 @@ class CreateDataAsetTable extends Migration
             $table->string('tahun_pengadaan');
             $table->string('gedung')->nullable();
             $table->string('ruangan')->nullable();
+            $table->string('foto')->nullable();
             $table->string('catatan')->nullable();
             $table->timestamps();
         });

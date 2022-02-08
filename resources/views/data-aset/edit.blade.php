@@ -11,7 +11,7 @@
         </div>
         <hr>
         <div>
-            <form action="{{ route('data-aset.update', $dataaset->id) }}" method="POST">
+            <form action="{{ route('data-aset.update', $dataaset->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible show fade">
@@ -267,6 +267,14 @@
                         </div>
                         <div class="form-group">
                             <input required name="tahun_pengadaan" value="{{ $dataaset->tahun_pengadaan }}" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col m-1">
+                        <div class="">
+                            <p>Foto Aset</p>
+                        </div>
+                        <div class="form-group">
+                            <input accept="image/*" class="form-control-file" name="foto" type="file">
                         </div>
                     </div>
                 </div>

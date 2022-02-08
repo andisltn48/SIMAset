@@ -12,6 +12,9 @@
     max-width: 11vw !important;
 }
 
+.inventory-prasarana.block{
+    display: block !important;
+}
 
 /* Change background color of buttons on hover */
 .tab button:hover {
