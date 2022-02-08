@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Unit;
 use App\DataAset;
+use Auth;
+use App\AktivitasSistem;
 use Yajra\Datatables\Datatables;
 
 use Illuminate\Http\Request;

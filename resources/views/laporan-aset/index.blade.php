@@ -54,10 +54,10 @@
           <div class="col mb-lg-0 mb-4">
             <div class="card z-index-2 h-100 bg-light">
               <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">Total Harga Aset (Tahun Pengadaan : {{$currentTahun}})</h6>
+                <h6 class="text-capitalize">Total Harga Aset (Tahun : {{$currentTahun}})</h6>
                 <p class="text-sm mb-0">
                   <i class="fas fa-money-check-alt text-success m-2"></i>
-                  <span class="font-weight-bold">{{ $hargatotal }}</span> Harga Total Aset
+                  <span class="font-weight-bold">{{ $hargaAsetByTahun }}</span> Harga Total Aset
                 </p>
               </div>
               <div class="card-body p-3">
@@ -183,6 +183,19 @@
       });
     </script>
     <script> //chart harga aset
+      var Januari = {!! json_encode($Januari) !!};
+      var Februari = {!! json_encode($Februari) !!};
+      var Maret = {!! json_encode($Maret) !!};
+      var April = {!! json_encode($April) !!};
+      var Mei = {!! json_encode($Mei) !!};
+      var Juni = {!! json_encode($Juni) !!};
+      var Juli = {!! json_encode($Juli) !!};
+      var Agustus = {!! json_encode($Agustus) !!};
+      var September = {!! json_encode($September) !!};
+      var Oktober = {!! json_encode($Oktober) !!};
+      var November = {!! json_encode($November) !!};
+      var Desember = {!! json_encode($Desember) !!};
+
       var ctxL = document.getElementById("lineChart").getContext('2d');
       var myLineChart = new Chart(ctxL, {
         type: 'line',
@@ -190,7 +203,7 @@
           labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli","Agustus","September","Oktober","November","Desember"],
           datasets: [{
             label: "Total Harga Aset",
-            data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
+            data: [Januari, Februari, Maret, April, Mei, Juni, Juli, Agustus, September, Oktober, November, Desember],
             backgroundColor: [
               'rgba(105, 0, 132, .2)',
             ],

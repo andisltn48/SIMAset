@@ -29,6 +29,7 @@ class DataAset extends Model
         'unit',
         'gedung',
         'tahun_pengadaan',
+        'foto',
         'ruangan',
         'catatan'
     ];

@@ -34,7 +34,7 @@ class DataAsetController extends Controller
         $dataaset = DataAset::all();
         $hargatotal = 0;
         foreach ($dataaset as $key => $value) {
-            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_total']);
+            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_satuan']);
         }
 
         $hargatotal = 'Rp ' . convert($hargatotal);
@@ -61,6 +61,16 @@ class DataAsetController extends Controller
 
     public function store(Request $request)
     {
+
+        $fotoaset = NULL;
+
+        if ($request->foto != NULL) {
+            $fileFotoAset = $request->foto;
+            $fileName_fotoAset = time().'_'.$fileFotoAset->getClientOriginalName();
+            $fileFotoAset->move(public_path('storage/foto-aset'), $fileName_fotoAset);
+
+            $fotoaset = $fileName_fotoAset;
+        }
 
         // dd($request);
         if ($request->nup_akhir == NULL) {
@@ -122,6 +132,7 @@ class DataAsetController extends Controller
                     'gedung' => $request->gedung,
                     'tahun_pengadaan' => $request->tahun_pengadaan,
                     'ruangan' => $request->ruangan,
+                    'foto' => $fotoaset,
                     'catatan' => $request->catatan,
                 ]);
                 } else {
@@ -129,7 +140,7 @@ class DataAsetController extends Controller
                 }
 
             }
-            
+
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penambahan aset',
@@ -141,42 +152,51 @@ class DataAsetController extends Controller
         } else {
             $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
             if ($cekdata->count() == 0) {
+              $fotoaset = NULL;
 
-            $dataaset_save = DataAset::create([
-                'nama_barang' => $request->nama_barang,
-                'kode' => $request->kode_barang,
-                'nup' => $request->nup_awal,
-                'uraian_barang' => $request->uraian_barang,
-                'harga_satuan' => $harga_satuan,
-                'harga_total' => $harga_total,
-                'nilai_tagihan' => $nilai_tagihan,
-                'tanggal_SP2D' => $date_sp2d,
-                'nomor_SP2D' => $request->nomor_sp2d,
-                'kelompok_belanja' => $request->kelompok_belanja,
-                'asal_perolehan' => $request->asal_perolehan,
-                'nomor_bukti_perolehan' => $request->nomor_bukti_perolehan,
-                'merk' => $request->merk,
-                'sumber_dana' => $request->sumber_dana,
-                'pic' => $request->pic,
-                'kode_ruangan' => $request->kode_ruangan,
-                'kondisi' => $request->kondisi,
-                'unit' => $request->unit,
-                'status' => 'Aktif',
-                'gedung' => $request->gedung,
-                'tahun_pengadaan' => $request->tahun_pengadaan,
-                'ruangan' => $request->ruangan,
-                'catatan' => $request->catatan,
-            ]);
-            $activity = AktivitasSistem::create([
-                'user_id' => Auth::user()->id,
-                'user_activity' => Auth::user()->name.' melakukan penambahan aset',
+              if ($request->foto != NULL) {
+                  $fileFotoAset = $request->foto;
+                  $fileName_fotoAset = time().'_'.$fileFotoAset->getClientOriginalName();
+                  $fileFotoAset->move(public_path('storage/foto-aset'), $fileName_fotoAset);
 
-                'user_role' => session('role'),
-            ]);
+                  $fotoaset = $fileName_fotoAset;
+              }
+              $dataaset_save = DataAset::create([
+                  'nama_barang' => $request->nama_barang,
+                  'kode' => $request->kode_barang,
+                  'nup' => $request->nup_awal,
+                  'uraian_barang' => $request->uraian_barang,
+                  'harga_satuan' => $harga_satuan,
+                  'harga_total' => $harga_total,
+                  'nilai_tagihan' => $nilai_tagihan,
+                  'tanggal_SP2D' => $date_sp2d,
+                  'nomor_SP2D' => $request->nomor_sp2d,
+                  'kelompok_belanja' => $request->kelompok_belanja,
+                  'asal_perolehan' => $request->asal_perolehan,
+                  'nomor_bukti_perolehan' => $request->nomor_bukti_perolehan,
+                  'merk' => $request->merk,
+                  'sumber_dana' => $request->sumber_dana,
+                  'pic' => $request->pic,
+                  'kode_ruangan' => $request->kode_ruangan,
+                  'kondisi' => $request->kondisi,
+                  'unit' => $request->unit,
+                  'status' => 'Aktif',
+                  'gedung' => $request->gedung,
+                  'foto' => $fotoaset,
+                  'tahun_pengadaan' => $request->tahun_pengadaan,
+                  'ruangan' => $request->ruangan,
+                  'catatan' => $request->catatan,
+              ]);
+              $activity = AktivitasSistem::create([
+                  'user_id' => Auth::user()->id,
+                  'user_activity' => Auth::user()->name.' melakukan penambahan aset',
+
+                  'user_role' => session('role'),
+              ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
             } else {
                 $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar!';
-            return redirect(route('data-aset.create'))->with('error',$message);
+                return redirect(route('data-aset.create'))->with('error',$message);
             }
 
         }
@@ -212,8 +232,19 @@ class DataAsetController extends Controller
             'nomor_sp2d' => 'numeric',
             'nup' => 'numeric'
         ]);
+
         $current_data = DataAset::where('id', $id)->first();
         $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup)->first();
+
+        $fotoaset = NULL;
+
+        if ($request->foto != NULL) {
+            $fileFotoAset = $request->foto;
+            $fileName_fotoAset = time().'_'.$fileFotoAset->getClientOriginalName();
+            $fileFotoAset->move(public_path('storage/foto-aset'), $fileName_fotoAset);
+
+            $fotoaset = $fileName_fotoAset;
+        }
 
         if ($cekdata == NULL) {
             function RemoveSpecialChar($str) {
@@ -247,6 +278,7 @@ class DataAsetController extends Controller
                 'kondisi' => $request->kondisi,
                 'unit' => $request->unit,
                 'gedung' => $request->gedung,
+                'foto' => $fotoaset,
                 'tahun_pengadaan' => $request->tahun_pengadaan,
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,
@@ -292,6 +324,7 @@ class DataAsetController extends Controller
                 'kondisi' => $request->kondisi,
                 'unit' => $request->unit,
                 'gedung' => $request->gedung,
+                'foto' => $fotoaset,
                 'tahun_pengadaan' => $request->tahun_pengadaan,
                 'ruangan' => $request->ruangan,
                 'catatan' => $request->catatan,

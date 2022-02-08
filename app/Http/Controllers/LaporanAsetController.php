@@ -36,7 +36,7 @@ class LaporanAsetController extends Controller
         foreach ($datapeminjaman as $key => $value) {
           $databarang = ListBarangPinjam::where('no_peminjaman', $value->no_peminjaman)->get();
           foreach ($databarang as $key => $item) {
-             $totalBarangPinjam =+ 1;
+             $totalBarangPinjam += 1;
           }
         }
         $totalBarangTidakPinjam = $jumlahaset - $totalBarangPinjam;
@@ -44,10 +44,60 @@ class LaporanAsetController extends Controller
         $dataaset = DataAset::all();
         $hargatotal = 0;
         foreach ($dataaset as $key => $value) {
-            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_total']);
+            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_satuan']);
         }
 
         $hargatotal = 'Rp ' . convert($hargatotal);
+
+        //bulan
+        $Januari = 0;
+        $Februari = 0;
+        $Maret = 0;
+        $April = 0;
+        $Mei = 0;
+        $Juni = 0;
+        $Juli = 0;
+        $Agustus = 0;
+        $September = 0;
+        $Oktober = 0;
+        $November = 0;
+        $Desember = 0;
+        $hargaAsetByTahun = 0;
+
+        foreach ($dataaset as $key => $value) {
+          $date = strtotime($value->created_at);
+          if (date("Y", $date) == $currentTahun) {
+            $hargaAsetByTahun += RemoveSpecialChar($value['harga_satuan']);
+            if (date("n", $date) == 1) {
+                $Januari += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 2) {
+                $Februari += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 3) {
+                $Maret += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 4) {
+                $April += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 5) {
+                $Mei += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 6) {
+                $Juni += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 7) {
+                $Juli += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 8) {
+                $Agustus += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 9) {
+                $September += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 10) {
+                $Oktober += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 11) {
+                $November += RemoveSpecialChar($value['harga_satuan']);
+            } elseif (date("n", $date) == 12) {
+                $Desember += RemoveSpecialChar($value['harga_satuan']);
+            }
+          }
+        }
+
+        $hargaAsetByTahun = 'Rp ' . convert($hargaAsetByTahun);
+        // dd($Desember);
 
         return view('laporan-aset.index', compact('jumlahaset',
         'kondisiAsetBaik',
@@ -56,7 +106,20 @@ class LaporanAsetController extends Controller
         'totalBarangPinjam',
         'totalBarangTidakPinjam',
         'hargatotal',
-        'currentTahun'));
+        'currentTahun',
+        'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember',
+        'hargaAsetByTahun'));
     }
 
     /**
