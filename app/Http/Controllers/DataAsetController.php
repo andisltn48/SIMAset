@@ -633,7 +633,7 @@ class DataAsetController extends Controller
             $data = $data->where('status', $request->status);
         }
         if ($request->koderuangan != null) {
-            $dataaset = $data->where('kode_ruangan', $request->koderuangan);
+            $data = $data->where('kode_ruangan', $request->koderuangan);
         }
         if ($request->tahunpengadaan != null) {
             $data = $data->where('tahun_pengadaan', $request->ruangan);

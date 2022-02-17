@@ -149,7 +149,7 @@ class PeminjamanController extends Controller
             \Session::forget('tempo-data');
             $user = User::where('role_id', '4')->get();
             $details = [
-                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi'
+                'body' => 'Permintaan peminjaman dengan no peminjaman: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi'
             ];
             foreach ($user as $key => $value) {
                 Notification::send($value, new PeminjamNotification($details));
@@ -192,7 +192,7 @@ class PeminjamanController extends Controller
             ]);
             $user = User::where('role_id', '4')->get();
             $details = [
-                'body' => 'Permintaan peminjaman dengan no: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi'
+                'body' => 'Permintaan peminjaman dengan no peminjaman: '.$datapeminjaman->no_peminjaman.' menunggu konfirmasi'
             ];
             foreach ($user as $key => $value) {
                 Notification::send($value, new PeminjamNotification($details));
@@ -297,7 +297,7 @@ class PeminjamanController extends Controller
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {
                         $keyword = request()->get('search')['value'];
-                        $query->where('nama_peminjam', 'like', "%" . $keyword . "%");
+                        $query->where('no_peminjaman', 'like', "%" . $keyword . "%");
 
             });}
             $datatables->orderColumn('updated_at', function ($query, $order) {
@@ -328,7 +328,7 @@ class PeminjamanController extends Controller
     public function get_data_peminjaman(Request $request)
     {
         if ($request->id != NULL) {
-            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman');
+            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman')->orWhere('status_peminjaman', 'Peminjaman Selesai');
             $datatables = Datatables::of($datapeminjaman);
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {
@@ -348,7 +348,7 @@ class PeminjamanController extends Controller
             ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
             ->toJson();
         } else {
-            $datapeminjaman = DataPeminjaman::where('status_peminjaman', 'Dalam Peminjaman');
+            $datapeminjaman = DataPeminjaman::where('status_peminjaman', 'Dalam Peminjaman')->orWhere('status_peminjaman', 'Peminjaman Selesai');
             $datatables = Datatables::of($datapeminjaman);
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {
@@ -366,6 +366,7 @@ class PeminjamanController extends Controller
             ->escapeColumns([])
             ->addColumn('download_surat_balasan','peminjaman-admin.button-datatable.download-surat-balasan')
             ->addColumn('list_barang','peminjaman-admin.button-datatable.detail-barang')
+            ->addColumn('action','peminjaman-admin.button-datatable.action-peminjaman')
             ->toJson();
         }
 
@@ -457,5 +458,38 @@ class PeminjamanController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Berhasil melakukan konfirmasi');
+    }
+
+    public function done_peminjaman($id)
+    {
+      $data = DataPeminjaman::find($id);
+
+      $data->update([
+        'status_peminjaman' => 'Peminjaman Selesai'
+      ]);
+      $activity = AktivitasSistem::create([
+          'user_id' => Auth::user()->id,
+          'user_activity' => Auth::user()->name.' melakukan konfirmasi selesai peminjaman',
+
+          'user_role' => session('role'),
+      ]);
+      return redirect()->back()->with('success', 'Berhasil menyelesaikan peminjaman');
+    }
+
+    public function destroy_peminjaman($id)
+    {
+      $data = DataPeminjaman::find($id);
+      $data2 = ListBarangPinjam::where('no_peminjaman', $data->no_peminjaman)->get();
+      foreach ($data2 as $key => $value) {
+        $value->delete();
+      }
+      $data->delete();
+      $activity = AktivitasSistem::create([
+          'user_id' => Auth::user()->id,
+          'user_activity' => Auth::user()->name.' melakukan hapus data peminjaman',
+
+          'user_role' => session('role'),
+      ]);
+      return redirect()->back()->with('success', 'Berhasil menghapus peminjaman');
     }
 }

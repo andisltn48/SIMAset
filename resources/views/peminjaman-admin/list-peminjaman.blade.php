@@ -37,6 +37,7 @@
                         <th>Status Peminjaman</th>
                         <th>Surat Balasan</th>
                         <th>Updated_At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
             </table>
@@ -131,6 +132,11 @@
                 searchable: 'false',
                 className: "dt-nowrap",
                 data: 'updated_at'
+            }, {
+                width: '10rem',
+                searchable: 'false',
+                className: "dt-nowrap",
+                data: 'action'
             }, ],
         });
         var no_peminjamans;

@@ -21,14 +21,14 @@
                                     <div class="row mt-3 d-flex flex-column align-items-center">
                                         @if (session('error'))
                                             <div class="alert alert-danger alert-dismissible show fade">
-                                                <div class="alert-body text-white">
+                                                <div class="alert-body text-dark">
                                                     {{ session('error') }}
                                                 </div>
                                             </div>
                                         @endif
                                         @if (session('success'))
                                             <div class="alert alert-success alert-dismissible show fade">
-                                                <div class="alert-body text-white">
+                                                <div class="alert-body text-dark">
                                                     {{ session('success') }}
                                                 </div>
                                             </div>

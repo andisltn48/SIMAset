@@ -158,6 +158,10 @@ class AuthController extends Controller
 
     public function emailVerifyForm()
     {
+        $user = User::find(Auth::user()->id);
+        if ($user->email_verified_at != NULL) {
+          return redirect('/')->with('error', 'Email anda sudah di verifikasi silahkan melakukan login ulang');
+        }
         return view('emailVerify');
     }
 
