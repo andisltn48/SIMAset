@@ -137,7 +137,7 @@
                     'previous': '<i class="fa fa-angle-left"></i>',
                     'next': '<i class="fa fa-angle-right"></i>'
                 },
-                searchPlaceholder: "Cari nama peminjam"
+                searchPlaceholder: "Cari no peminjaman"
             },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [

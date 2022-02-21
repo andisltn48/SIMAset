@@ -55,7 +55,6 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
     Route::get('/import-data-aset','DataAsetController@getdataimport')->name('data-aset.getdataimport');
     Route::get('/detail-import-aset','DataAsetController@getdatadetailimport')->name('data-aset.getdatadetailimport');
-    Route::get('/export-data-aset','DataAsetController@export_excel')->name('data-aset.export_excel');
     Route::get('/template-import','DataAsetController@import_template')->name('data-aset.import-template');
     Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
     Route::get('/detail-import/{id}','DataAsetController@detail_riwayat_import')->name('data-aset.detail-riwayat-import');
@@ -74,11 +73,6 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras']], function(){
-    //route data aset
-    Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
-    Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
-    Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
-    Route::get('/get-ruangan','DataAsetController@get_ruangan')->name('data-aset.get-ruangan');
 
     //route peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
@@ -90,6 +84,17 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
     Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');
     Route::post('/confirm-request/{no_permintaan}','PeminjamanController@confirm_request')->name('peminjaman.confirm-request');
+    Route::get('/done-peminjaman/{id}','PeminjamanController@done_peminjaman')->name('peminjaman.done-peminjaman');
+    Route::post('/destroy-peminjaman/{id}','PeminjamanController@destroy_peminjaman')->name('peminjaman.destroy-peminjaman');
+});
+
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras,BMN']], function(){
+    //route data aset
+    Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
+    Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
+    Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
+    Route::get('/get-ruangan','DataAsetController@get_ruangan')->name('data-aset.get-ruangan');
+    Route::get('/export-data-aset','DataAsetController@export_excel')->name('data-aset.export_excel');
 
 });
 
