@@ -35,6 +35,9 @@ class AuthController extends Controller
             if ($role->name == 'Peminjam') {
                 return redirect('form-peminjaman');
             }
+            if ($role->name == 'Pengaju') {
+                return redirect('form-pengajuan');
+            }
             return redirect('data-aset');
         }
         return redirect('/')->with('error', 'Email atau Password anda salah!');

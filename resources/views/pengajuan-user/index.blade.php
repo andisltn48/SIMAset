@@ -2,27 +2,27 @@
     <div class="mt-4 card shadow p-3 mb-5 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Tambah Aset</h5>
+                <h5 class="fw-bold">Form Pengajuan Aset</h5>
             </div>
-            <div class="col button text-end">
+            {{-- <div class="col button text-end">
                 <a href="{{ route('data-aset.index') }}"><button class="btn btn-block btn-success">Data
                         Aset</button></a>
-            </div>
+            </div> --}}
         </div>
         <hr>
         <div>
-            <form action="{{ route('data-aset.store') }}" method="POST">
+            <form action="{{ route('pengajuan.store-pengajuan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if (session('error'))
-                    <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
-                        <div class="alert-body">
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        <div class="alert-body text-white">
                             {{ session('error') }}
                         </div>
                     </div>
                 @endif
                 @if (session('success'))
-                    <div id="alert-div" class="alert alert-success alert-dismissible show fade">
-                        <div class="alert-body">
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body text-white">
                             {{ session('success') }}
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                             <p>NUP Awal<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="form-group">
-                            <input value="{{ old('nup_awal') }}" name="nup_awal" type="text" class="form-control" required>
+                            <input id="nup-awal" value="{{ old('nup_awal') }}" name="nup_awal" type="number" class="form-control" required>
                         </div>
                         <div class="text-danger">
                             @error('nup_awal')
@@ -80,7 +80,7 @@
                             <p>NUP Akhir</p>
                         </div>
                         <div class="form-group">
-                            <input value="{{ old('nup_akhir') }}" name="nup_akhir" type="text" class="form-control">
+                            <input id="nup-akhir" value="{{ old('nup_akhir') }}" name="nup_akhir" type="number" class="form-control" oninput="nupAkhir();">
                         </div>
                         <div class="text-danger">
                             @error('nup_akhir')
@@ -93,7 +93,7 @@
                             <p>Jumlah Barang<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="form-group">
-                            <input value="{{ old('jumlah_barang') }}" name="jumlah_barang" type="text"
+                            <input id="jumlah" value="{{ old('jumlah_barang') }}" name="jumlah_barang" type="number"
                                 class="form-control" required>
                         </div>
                         <div class="text-danger">
@@ -283,7 +283,25 @@
                             <p>Ruangan</p>
                         </div>
                         <div class="form-group">
-                            <input name="ruangan" value="{{ old('ruangan') }}" type="text" class="form-control">
+                            <input id="ruangan" name="ruangan" value="{{ old('ruangan') }}" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col m-1">
+                        <div class="">
+                            <p>Tahun Pengadaan<sup class="text-danger">*</sup></p>
+                        </div>
+                        <div class="form-group">
+                            <input required name="tahun_pengadaan" value="{{ old('tahun_pengadaan') }}" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex row-tambah mt-3">
+                    <div class="col m-1">
+                        <div class="">
+                            <p>Foto Aset</p>
+                        </div>
+                        <div class="form-group">
+                            <input accept="image/*" class="form-control-file" name="foto" type="file">
                         </div>
                     </div>
                 </div>
@@ -343,7 +361,41 @@
         // var value = kode_ruangan.options[kode_ruangan.selectedIndex];
         function ruanganselect(){
           console.log($('#filter-koderuangan').val());
+          let value = $('#filter-koderuangan').val();
+            if ( value.length > 0) {
+                $('#ruangan').attr('readonly', true);
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('pengajuan.get-ruangan') }}",
+                    type: "get",
+                    data: {
+                        kode: value
+                    },
+                    success: function(response) {
+                        console.log(response.data);
+                        if (response) {
+                            $('#ruangan').val(response.data);
+                        }
+                    },
+                });
+            } else {
+                $('#ruangan').removeAttr('readonly')
+            }
         }
-        
+
+        function nupAkhir() {
+            let nupawal = $('#nup-awal').val();
+            let nupakhir = $('#nup-akhir').val();
+            if ( nupakhir.length > 0) {
+                console.log();
+                $('#jumlah').attr('readonly', true)
+                $('#jumlah').val(nupakhir-nupawal+1);
+            } else {
+                $('#jumlah').removeAttr('readonly')
+            }
+        }
+
     </script>
 </x-app-layout>

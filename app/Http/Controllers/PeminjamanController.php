@@ -97,7 +97,6 @@ class PeminjamanController extends Controller
 
     public function storepermintaan(Request $request)
     {
-
         $validate = $request->validate([
             'surat_peminjaman' => 'required',
             'datadiri_penanggungjawab' => 'required',

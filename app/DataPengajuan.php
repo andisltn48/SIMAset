@@ -8,11 +8,11 @@ class DataPengajuan extends Model
 {
     public $table = 'data_pengajuan';
     protected $fillable = [
+        'id_pengaju',
         'nama_barang',
         'kode',
         'nup',
         'uraian_barang',
-        'jumlah',
         'harga_satuan',
         'harga_total',
         'nilai_tagihan',
@@ -27,11 +27,13 @@ class DataPengajuan extends Model
         'kode_ruangan',
         'kondisi',
         'unit',
-        'status_pengajuan',
         'gedung',
         'tahun_pengadaan',
+        'foto',
         'ruangan',
-        'catatan'
+        'catatan',
+        'status_pengajuan',
+        'no_pengajuan'
     ];
 
     public function getUpdatedAtAttribute($value)

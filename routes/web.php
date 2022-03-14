@@ -70,6 +70,11 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::resource('data-ruangan', ManajemenRuanganController::class);
     Route::get('/get-data-ruangan','ManajemenRuanganController@get_data_ruangan')->name('data-ruangan.get-data-ruangan');
     Route::post('/impor-data-ruangan','ManajemenRuanganController@importexcel')->name('data-ruangan.impor-data-ruangan');
+
+    //route pengajuan
+    Route::resource('pengajuan', PengajuanController::class);
+    Route::get('/get-pengajuan-admin','PengajuanController@get_data_pengajuan')->name('pengajuan.getdatapengajuan-admin');
+    Route::post('/confirm-request-pengajuan/{no_permintaan}','PengajuanController@confirm_request')->name('pengajuan.confirm-request');
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras']], function(){
@@ -115,9 +120,15 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], func
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
 });
 
+
+
 Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], function(){
-    //route peminjaman
+    //route pengajuan
     Route::get('/form-pengajuan','PengajuanController@formpengajuan')->name('pengajuan.form');
+    Route::post('/store-permintaan','PengajuanController@storepengajuan')->name('pengajuan.store-pengajuan');
+    Route::get('/get-ruangan-pengaju','PengajuanController@get_ruangan')->name('pengajuan.get-ruangan');
+    Route::get('/list-peminjaman','PengajuanController@list_pengajuan')->name('pengajuan.list-pengajuan');
+    Route::get('/get-pengajuan','PengajuanController@get_data_pengajuan_user')->name('pengajuan.getdatapengajuan');
 });
 
 Route::group(['middleware' => ['auth']], function(){

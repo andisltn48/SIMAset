@@ -38,7 +38,7 @@
 
             @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN')
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link " href="{{route('pengajuan.index')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-clipboard text-dark text-sm opacity-10"></i>
@@ -124,6 +124,28 @@
                             <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Daftar Peminjaman</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (session('role') == 'Pengaju')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('pengajuan.form') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fab fa-wpforms text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Form Pengajuan</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('pengajuan.list-pengajuan') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Daftar Pengajuan</span>
                     </a>
                 </li>
             @endif
