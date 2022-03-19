@@ -20,7 +20,6 @@ Route::get('news-detail', function () {
     return view('news-detail');
 });
 Route::post('/validate','AuthController@login')->name('auth.login');
-Route::get('/logout', 'AuthController@logout')->name('auth.logout');
 Route::post('/register-store', 'AuthController@register')->name('auth.register');
 
 Route::get('/register', function () {
@@ -120,14 +119,12 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], func
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
 });
 
-
-
 Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], function(){
     //route pengajuan
     Route::get('/form-pengajuan','PengajuanController@formpengajuan')->name('pengajuan.form');
-    Route::post('/store-permintaan','PengajuanController@storepengajuan')->name('pengajuan.store-pengajuan');
+    Route::post('/store-pengajuan','PengajuanController@storepengajuan')->name('pengajuan.store-pengajuan');
     Route::get('/get-ruangan-pengaju','PengajuanController@get_ruangan')->name('pengajuan.get-ruangan');
-    Route::get('/list-peminjaman','PengajuanController@list_pengajuan')->name('pengajuan.list-pengajuan');
+    Route::get('/list-pengajuan','PengajuanController@list_pengajuan')->name('pengajuan.list-pengajuan');
     Route::get('/get-pengajuan','PengajuanController@get_data_pengajuan_user')->name('pengajuan.getdatapengajuan');
 });
 
@@ -138,4 +135,5 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('verify-email/{token}', 'AuthController@submitEmailVerify')->name('email.verify.submit');
     Route::get('mark-read', 'NotificationController@markNotification')->name('notif.mark-read');
     Route::get('clearnotif', 'NotificationController@clearNotification')->name('notif.clearnotif');
+    Route::get('/logout', 'AuthController@logout')->name('auth.logout');
 });

@@ -45,7 +45,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->flush();
         Auth::logout();
         return redirect('/');
     }
@@ -53,9 +52,10 @@ class AuthController extends Controller
     public function register(Request $request){
         $request->validate(
             [
-                'password' => ['min:6','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/','confirmed'],
+                'name' => ['required'],
+                'password' => ['min:6','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/','confirmed','required'],
                 'password_confirmation' => ['required'],
-                'email' => ['unique:users,email']
+                'email' => ['unique:users,email','required']
             ],
             [
                 'password.regex' => 'Must contain at least one uppercase/lowercase letters and one number'
@@ -77,7 +77,9 @@ class AuthController extends Controller
             'user_role' => 'Peminjam',
         ]);
 
-        return redirect('/')->with('success', 'Berhasil membuat akun');
+        if ($user) {
+            return redirect(route('register'))->with('success', 'Berhasil membuat akun');
+        }
     }
 
     public function showForgetPasswordForm()

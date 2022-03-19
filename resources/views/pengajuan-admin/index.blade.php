@@ -246,7 +246,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('pengajuan.getdatapengajuan') }}",
+                url: "{{ route('pengajuan.getdatapengajuan-admin') }}",
             },
             columns: [{
                 data: 'DT_RowIndex',
