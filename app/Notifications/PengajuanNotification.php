@@ -9,8 +9,8 @@ use Illuminate\Notifications\Notification;
 
 class PengajuanNotification extends Notification
 {
+    
     use Queueable;
-
     private $details;
 
     /**

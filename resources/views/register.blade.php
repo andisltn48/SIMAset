@@ -25,7 +25,7 @@
                                 @endif
                                 @if (session('success'))
                                     <div class="alert alert-success alert-dismissible show fade">
-                                        <div class="alert-body text-white">
+                                        <div class="alert-body text-dark">
                                             {{ session('success') }}
                                         </div>
                                     </div>
