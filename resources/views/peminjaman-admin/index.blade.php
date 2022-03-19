@@ -81,7 +81,7 @@
             <div class="modal-content">
                 <!-- heading modal -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Detail data aset</h4>
+                    <h4 class="modal-title">Konfirmasi Peminjam</h4>
                     <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-times"></i></span>
                     </button>

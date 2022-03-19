@@ -15,11 +15,11 @@ class CreateDataPengajuanTable extends Migration
     {
         Schema::create('data_pengajuan', function (Blueprint $table) {
             $table->id();
+            $table->string('id_pengaju');
             $table->string('nama_barang');
             $table->string('kode');
             $table->string('nup');
             $table->string('uraian_barang');
-            $table->string('jumlah');
             $table->bigInteger('harga_satuan');
             $table->bigInteger('harga_total');
             $table->bigInteger('nilai_tagihan');
@@ -39,6 +39,8 @@ class CreateDataPengajuanTable extends Migration
             $table->string('ruangan')->nullable();
             $table->string('catatan')->nullable();
             $table->string('status_pengajuan');
+            $table->string('no_pengajuan');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

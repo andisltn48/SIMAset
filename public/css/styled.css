@@ -585,6 +585,10 @@ a {
     .card-daftar-ruangan, .card-daftar-unit {
         min-width: 65% !important;
     }
+
+    .status-pengajuan{
+        max-width: 15vw !important;
+    }
 }
 
 

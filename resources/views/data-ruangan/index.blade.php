@@ -263,7 +263,7 @@
         });
         $.fn.DataTable.ext.pager.numbers_length = 5;
 
-
+        var harga_produk = $("#harga_produk_"+id).text()
 
         $(document).on('click', '.btn-edit-ruangan', function(event) {
             // return confirm($(this).data('tanggalSP2D'));

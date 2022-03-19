@@ -44,7 +44,7 @@ class DataAsetController extends Controller
         $rusakringan = DataAset::where('kondisi', 'Rusak Ringan')->count();
         $rusakberat = DataAset::where('kondisi', 'Rusak Berat')->count();
         $unit = Unit::all();
-        return view('data-aset/index', ['unit'=>$unit, 'dataruangan'=>$dataruangan], compact('hargatotal', 'jumlahaset', 'baik', 'rusakringan', 'rusakberat'));
+        return view('data-aset.index', ['unit'=>$unit, 'dataruangan'=>$dataruangan], compact('hargatotal', 'jumlahaset', 'baik', 'rusakringan', 'rusakberat'));
     }
 
     public function create()
@@ -404,6 +404,7 @@ class DataAsetController extends Controller
             $dataaset = $dataaset->where('kondisi', $request->kondisi);
         }
         if ($request->input('koderuangan') != null) {
+            // echo($request->koderuangan);
             $dataaset = $dataaset->where('kode_ruangan', $request->koderuangan);
         }
         if ($request->input('tahunpengadaan') != null) {
@@ -653,7 +654,7 @@ class DataAsetController extends Controller
 
         $hargatotal = 0;
         foreach ($data as $key => $value) {
-            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_total']);
+            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_satuan']);
         }
 
         $hargatotal = 'Rp ' . convertharga($hargatotal);
