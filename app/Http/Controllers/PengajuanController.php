@@ -456,4 +456,9 @@ class PengajuanController extends Controller
             'data' => $ruangan->nama_ruangan,
         ]);
     }
+
+    public function import_index()
+    {
+        return view('pengajuan-user.import');
+    }
 }

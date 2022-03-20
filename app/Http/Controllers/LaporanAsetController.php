@@ -14,7 +14,7 @@ class LaporanAsetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         function convert($harga)
         {
@@ -26,7 +26,13 @@ class LaporanAsetController extends Controller
 
             return $res;
         }
-        $currentTahun = date("Y");
+
+        if ($request->tahun != NULL) {
+            $currentTahun = $request->tahun;
+        } else {   
+            $currentTahun = date("Y");
+        }
+
         $jumlahaset = DataAset::all()->count();
         $kondisiAsetBaik = DataAset::where('kondisi', 'Baik')->count();
         $kondisiAsetRusakRingan = DataAset::where('kondisi', 'Rusak Ringan')->count();
