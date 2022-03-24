@@ -126,6 +126,13 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], funct
     Route::get('/get-ruangan-pengaju','PengajuanController@get_ruangan')->name('pengajuan.get-ruangan');
     Route::get('/list-pengajuan','PengajuanController@list_pengajuan')->name('pengajuan.list-pengajuan');
     Route::get('/get-pengajuan','PengajuanController@get_data_pengajuan_user')->name('pengajuan.getdatapengajuan');
+    Route::get('/import-pengajuan','PengajuanController@import_index')->name('pengajuan.import');
+    Route::get('/template-import-pengajuan','PengajuanController@import_template')->name('pengajuan.import-template');
+    Route::post('/pengajuan-data-aset-import','PengajuanController@import_data')->name('pengajuan.import-data-aset');
+    Route::get('/import-pengajuan-data-aset','PengajuanController@getdataimport')->name('pengajuan.getdataimport');
+    Route::get('/detail-import-aset-pengajuan','PengajuanController@getdatadetailimport')->name('pengajuan.getdatadetailimport');
+    Route::get('/detail-import-pengajuan/{id}','PengajuanController@detail_riwayat_import')->name('pengajuan.detail-riwayat-import');
+    Route::post('/destroy-log-import-pengajuan/{id}','PengajuanController@destroy_log_import')->name('pengajuan.destroy-log-import');
 });
 
 Route::group(['middleware' => ['auth']], function(){

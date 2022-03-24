@@ -12,6 +12,9 @@ use Notification;
 use App\DataAset;
 use Auth;
 use App\AktivitasSistem;
+use App\DetailLogImportPengajuan;
+use App\LogImportPengajuan;
+use App\Imports\PengajuanDataAsetImport;
 use App\Notifications\PengajuanNotification;
 
 class PengajuanController extends Controller
@@ -121,15 +124,6 @@ class PengajuanController extends Controller
         ->escapeColumns([])
         ->addColumn('action','pengajuan-admin.button-datatable.action')
         ->toJson();
-
-        // $dataPengajuan = DataPengajuan::select('data_pengajuan.*');
-        // $datatables = Datatables::of($dataPengajuan);
-        // $datatables->orderColumn('created_at', function ($query, $order) {
-        //     $query->orderBy('log_import.created_at', $order);
-        // });
-        // return $datatables->addIndexColumn()
-        // ->addColumn('action','data-aset.log-import.action')
-        // ->toJson();
     }
 
     public function get_data_pengajuan_user(Request $request)
@@ -166,15 +160,6 @@ class PengajuanController extends Controller
         ->escapeColumns([])
         ->addColumn('action','pengajuan-admin.button-datatable.action')
         ->toJson();
-
-        // $dataPengajuan = DataPengajuan::select('data_pengajuan.*');
-        // $datatables = Datatables::of($dataPengajuan);
-        // $datatables->orderColumn('created_at', function ($query, $order) {
-        //     $query->orderBy('log_import.created_at', $order);
-        // });
-        // return $datatables->addIndexColumn()
-        // ->addColumn('action','data-aset.log-import.action')
-        // ->toJson();
     }
 
     public function list_pengajuan()
@@ -330,7 +315,8 @@ class PengajuanController extends Controller
         if ($request->jumlah_barang > 1) {
             for ($current_nup; $current_nup <= $nup_akhir ; $current_nup++) {
                 $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
-                if ($cekdata->count() == 0) {
+                $cekdata2 = DataPengajuan::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
+                if ($cekdata->count() == 0 AND $cekdata2->count() == 0) {
                 // echo 'halo';
                 $dataPengajuanSave = DataPengajuan::create([
                     'id_pengaju' => Auth::user()->id,
@@ -363,7 +349,7 @@ class PengajuanController extends Controller
                 ]);
                 $no_pengajuan = $no_pengajuan+1; 
                 } else {
-                    return redirect(route('pengajuan.form'))->with('error','Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$current_nup.' telah terdaftar!');
+                    return redirect(route('pengajuan.form'))->with('error','Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$current_nup.' telah terdaftar atau telah diajukan!');
                 }
 
             }
@@ -386,7 +372,8 @@ class PengajuanController extends Controller
             return redirect(route('pengajuan.form'))->with('success','Data Aset berhasil diajukan');
         } else {
             $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
-            if ($cekdata->count() == 0) {
+            $cekdata2 = DataPengajuan::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
+            if ($cekdata->count() == 0 AND $cekdata2->count() == 0 ) {
                 $fotoaset = NULL;
 
                 if ($request->foto != NULL) {
@@ -441,7 +428,7 @@ class PengajuanController extends Controller
                 }
                 return redirect(route('pengajuan.form'))->with('success','Data Aset berhasil diajukan');
             } else {
-                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar!';
+                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar atau telah diajukan!';
                 return redirect(route('pengajuan.form '))->with('error',$message);
             }
 
@@ -455,5 +442,118 @@ class PengajuanController extends Controller
         return response()->json([
             'data' => $ruangan->nama_ruangan,
         ]);
+    }
+
+    public function import_index()
+    {
+        return view('pengajuan-user.import');
+    }
+
+    public function import_template(){
+        $filepath = public_path('template-import-aset/Template-Data-Aset.xlsx');
+        return response()->download($filepath);
+    }
+
+    public function import_data(Request $request){
+
+        $request->validate([
+            'fileimport' => 'required',
+        ],[
+            'fileimport.required' => 'Masukkan file impor!'
+        ]);
+
+        $importsdata = LogImportPengajuan::create([
+            'user_id' => Auth::user()->id,
+            'total' => '',
+            'success' => '',
+            'failed' => ''
+        ]);
+
+        $importId = $importsdata->id;
+
+        $file = $request->file('fileimport')->getRealPath();
+        $import = new PengajuanDataAsetImport($importId);
+        $import->import($file);
+
+        $currentrow= 0;
+        $freewalk=0;
+
+        if ($import->failures()->isNotEmpty()) {
+            foreach ($import->failures() as $rows) {
+                // dd($rows->values()["no"]);
+                $failed = DetailLogImportPengajuan::create([
+                    'row' => $rows->values()["no"],
+                    'nama' => $rows->values()["nama_barang"],
+                    'status' => 'Failed',
+                    'message' => $rows->errors()[0],
+                    'import_id' => $importId
+                ]);
+            }
+        }
+
+        $total = DetailLogImportPengajuan::where('import_id', $importId)->get()->count();
+        $success = DetailLogImportPengajuan::where('import_id', $importId)->where('status', 'Success')->get()->count();
+        $failed = DetailLogImportPengajuan::where('import_id', $importId)->where('status', 'Failed')->get()->count();
+
+        $importsdata = LogImportPengajuan::where('id', $importId)->update([
+            'total' => $total,
+            'success' => $success,
+            'failed' => $failed,
+        ]);
+
+        if ($importsdata != NULL) {
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan impor pengajuan data aset',
+
+                'user_role' => session('role'),
+            ]);
+            return redirect()->back()->with('success', 'Berhasil melakukan impor');
+        }
+
+    }
+
+    public function getdataimport(Request $request){
+        $logimport = LogImportPengajuan::where('user_id', Auth::user()->id)->select('log_import_pengajuan.*');
+        $datatables = Datatables::of($logimport);
+        $datatables->orderColumn('created_at', function ($query, $order) {
+            $query->orderBy('log_import_pengajuan.created_at', $order);
+        });
+        return $datatables->addIndexColumn()
+        ->addColumn('action','pengajuan-user.log-import.action')
+        ->toJson();
+    }
+
+    public function detail_riwayat_import($id){
+        $import_id = $id;
+        return view('pengajuan-user.detail-log-import', compact('import_id'));
+    }
+
+    public function destroy_log_import(Request $request,$id)
+    {
+        $riwayat = LogImportPengajuan::where('id', $id)->first();
+        $detailriwayat = DetailLogImportPengajuan::where('import_id', $riwayat->id)->get();
+
+        foreach ($detailriwayat as $key => $value) {
+            $value->delete();
+        }
+        $riwayat = $riwayat->delete();
+        if ($riwayat) {
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan hapus riwayat impor',
+
+                'user_role' => session('role'),
+            ]);
+            return redirect(route('data-aset.import'))->with('success','Riwayat impor berhasil dihapus');
+        }
+    }
+
+    public function getdatadetailimport(Request $request){
+        $logdetailimport = DetailLogImportPengajuan::where('import_id', $request->id)->get();
+        $datatables = Datatables::of($logdetailimport);
+
+        return $datatables->addIndexColumn()
+        ->toJson();
     }
 }
