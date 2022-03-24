@@ -494,7 +494,7 @@ class DataAsetController extends Controller
     }
 
     public function import_template(){
-        $filepath = public_path('template-import-aset/DATA ASET-Template.xlsx');
+        $filepath = public_path('template-import-aset/Template-Data-Aset.xlsx');
         return response()->download($filepath);
     }
 
@@ -521,33 +521,6 @@ class DataAsetController extends Controller
         $currentrow= 0;
         $freewalk=0;
 
-        // if ($import->failures()->isNotEmpty()) {
-        //     foreach ($import->failures() as $rows) {
-        //         if ($freewalk==0) {
-        //             $failed = DetailLogImport::create([
-        //                 'row' => $rows->values()["no"],
-        //                 'nama' => $rows->values()["nama_barang"],
-        //                 'status' => 'Failed',
-        //                 'message' => $rows->errors()[0],
-        //                 'import_id' => $importId
-        //             ]);
-
-        //             $freewalk = $freewalk+1;
-        //         } else {
-        //             if ($rows->row() != $currentrow) {
-        //                 $failed = DetailLogImport::create([
-        //                     'row' => $rows->values()["no"],
-        //                     'nama' => $rows->values()["nama_barang"],
-        //                     'status' => 'Failed',
-        //                     'message' => $rows->errors()[0],
-        //                     'import_id' => $importId
-        //                 ]);
-        //             }
-        //         }
-        //         $currentrow = $rows->row();
-        //     }
-        // }
-
         if ($import->failures()->isNotEmpty()) {
             foreach ($import->failures() as $rows) {
                 // dd($rows->values()["no"]);
@@ -564,37 +537,6 @@ class DataAsetController extends Controller
         $total = DetailLogImport::where('import_id', $importId)->get()->count();
         $success = DetailLogImport::where('import_id', $importId)->where('status', 'Success')->get()->count();
         $failed = DetailLogImport::where('import_id', $importId)->where('status', 'Failed')->get()->count();
-
-        // $totalCount = 0;
-        // $successCount = 0;
-        // $failedCount = 0;
-
-        // $savedRowTotal = NULL;
-        // foreach ($total as $key => $value) {
-        //     $currRowTotal = $value->row;
-        //     if ($currRowTotal != $savedRowTotal) {
-        //         $totalCount +=1;
-        //         $savedRowTotal = $currRowTotal;
-        //     }
-        // }
-
-        // $savedRowSuccess = NULL;
-        // foreach ($success as $key => $value) {
-        //     $currRowSuccess = $value->row;
-        //     if ($currRowSuccess != $savedRowSuccess) {
-        //         $successCount +=1;
-        //         $savedRowSuccess = $currRowSuccess;
-        //     }
-        // }
-
-        // $savedRowFailed = NULL;
-        // foreach ($failed as $key => $value) {
-        //     $currRowFailed = $value->row;
-        //     if ($currRowFailed != $savedRowFailed) {
-        //         $failedCount +=1;
-        //         $savedRowFailed = $currRowFailed;
-        //     }
-        // }
 
         $importsdata = LogImport::where('id', $importId)->update([
             'total' => $total,

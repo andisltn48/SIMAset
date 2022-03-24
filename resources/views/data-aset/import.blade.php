@@ -41,7 +41,7 @@
                 <div class="col">
                     <label for="exampleFormControlInput1">Choose File<sup class="text-danger">*</sup></label>
                     <div class="custom-file">
-                        <input class="form-control-file" name="fileimport" type="file"
+                        <input class="form-control-file" required name="fileimport" type="file"
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                     </div>
                     <div class="text-danger">

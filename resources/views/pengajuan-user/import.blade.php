@@ -4,10 +4,6 @@
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Impor Aset</h5>
             </div>
-            <div class="col button text-end">
-                <a href="{{ route('data-aset.index') }}"><button class="btn btn-block btn-success">Data
-                        Aset</button></a>
-            </div>
         </div>
         <hr>
         @if (session('error'))
@@ -29,19 +25,19 @@
                 <p>
 
                     File template excel untuk melakukan impor : <a
-                        href="{{ route('data-aset.import-template') }}"><button class="ms-2 btn btn-primary"> <i
+                        href="{{ route('pengajuan.import-template') }}"><button class="ms-2 btn btn-primary"> <i
                                 class="fas fa-fw fa-file-excel me-2"></i>Download Template</button></a>
 
                 </p>
             </div>
         </div>
-        <form action="{{ route('data-aset.import-data-aset') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('pengajuan.import-data-aset') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mt-5">
                 <div class="col">
                     <label for="exampleFormControlInput1">Choose File<sup class="text-danger">*</sup></label>
                     <div class="custom-file">
-                        <input class="form-control-file" name="fileimport" type="file"
+                        <input class="form-control-file" required name="fileimport" type="file"
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                     </div>
                     <div class="text-danger">
@@ -53,8 +49,6 @@
 
                 <div class="col text-start mt-3">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square me-2"></i>Impor</button>
-                    <a href="{{ route('data-aset.index') }}" class=" ms-2 btn btn-block btn-danger"><i
-                            class="fas fa-arrow-circle-left me-2"></i>Kembali</a>
                 </div>
             </div>
         </form>
@@ -96,7 +90,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('data-aset.getdataimport') }}",
+                url: "{{ route('pengajuan.getdataimport') }}",
             },
             columns: [{
                 data: 'DT_RowIndex',

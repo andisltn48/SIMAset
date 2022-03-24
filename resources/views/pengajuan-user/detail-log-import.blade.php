@@ -4,10 +4,6 @@
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Detail Riwayat Impor Aset</h5>
             </div>
-            <div class="col button text-end">
-                <a href="{{ route('data-aset.import') }}"><button class="btn btn-block btn-success">Impor
-                        Aset</button></a>
-            </div>
         </div>
         <hr>
         <div class="row p-3">
@@ -42,7 +38,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('data-aset.getdatadetailimport') }}",
+                url: "{{ route('pengajuan.getdatadetailimport') }}",
                 data: function(d) {
                     d.id = id;
                 }
