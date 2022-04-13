@@ -545,7 +545,7 @@ class PengajuanController extends Controller
 
                 'user_role' => session('role'),
             ]);
-            return redirect(route('data-aset.import'))->with('success','Riwayat impor berhasil dihapus');
+            return redirect()->back()->with('success','Riwayat impor berhasil dihapus');
         }
     }
 

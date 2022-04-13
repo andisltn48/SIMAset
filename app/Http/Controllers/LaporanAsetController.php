@@ -105,6 +105,27 @@ class LaporanAsetController extends Controller
         $hargaAsetByTahun = 'Rp ' . convert($hargaAsetByTahun);
         // dd($Desember);
 
+        
+        $currentTahunDiagram = date("Y");
+        for ($i=1; $i <= 10; $i++) { 
+            $hargaAsetByTahunDiagram = 0;
+            $listYears[] = (int)$currentTahun;
+
+            foreach ($dataaset as $key => $value) {
+                $date = strtotime($value->created_at);
+                if (date("Y", $date) == $currentTahun) {
+                  $hargaAsetByTahunDiagram += RemoveSpecialChar($value['harga_satuan']);
+                }
+            }
+
+            $listTotalHargaPerYears[] = $hargaAsetByTahunDiagram;
+
+            $currentTahun-=1;
+        }
+
+        $listTotalHargaPerYears = array_reverse($listTotalHargaPerYears);
+        $listYears = array_reverse($listYears);
+
         return view('laporan-aset.index', compact('jumlahaset',
         'kondisiAsetBaik',
         'kondisiAsetRusakRingan',
@@ -125,7 +146,9 @@ class LaporanAsetController extends Controller
         'Oktober',
         'November',
         'Desember',
-        'hargaAsetByTahun'));
+        'hargaAsetByTahun',
+        'listTotalHargaPerYears',
+        'listYears'));
     }
 
     /**

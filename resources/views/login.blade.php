@@ -60,7 +60,7 @@
                                         </div>
                                         <div class="mt-1 d-flex flex-column text-center">
 
-                                            <a href="/register">Daftar untuk peminjam</a>
+                                            <a href="{{route('register')}}">Daftar untuk peminjam</a>
                                         </div>
                                         <div class="col text-center mt-4">
                                             <button type="submit" class="btn btn-success shadow">Masuk</button>

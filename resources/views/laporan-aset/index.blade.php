@@ -61,6 +61,7 @@
                                 </div>
                                 @php
                                   $years = range(2015, strftime("%Y", time()));   
+                                  $years = array_reverse($years);
                                 @endphp
                                 <div class="form-group">
                                     <select class="form-select select2" id="filter-tahun" onchange="filter_tahun()">
@@ -84,6 +85,20 @@
                     <div class="card-body p-3">
                         <div class="chart">
                             <canvas id="lineChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3">
+            <div class="col mb-lg-0 mb-4">
+                <div class="card z-index-2 h-100 bg-light">
+                    <div class="card-header pb-0 pt-3 bg-transparent">
+                        <h6 class="text-capitalize">Total Harga Aset 10 Tahun Terakhir</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="chart">
+                            <canvas id="lineChart2" class="chart-canvas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -251,6 +266,39 @@
             }
         });
     </script>
+
+<script>
+    //chart harga aset
+    var listTotalHargaPerYears = {!! json_encode($listTotalHargaPerYears) !!};
+    var listYears = {!! json_encode($listYears) !!};
+
+    var ctxL = document.getElementById("lineChart2").getContext('2d');
+    var myLineChart = new Chart(ctxL, {
+        type: 'line',
+        data: {
+            labels: listYears,
+            datasets: [{
+                label: "Total Harga Aset",
+                data: listTotalHargaPerYears,
+                backgroundColor: [
+                    'rgba(105, 0, 132, .2)',
+                ],
+                borderColor: [
+                    'rgba(200, 99, 132, .7)',
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: true
+        }
+    });
+</script>
 
     <script>
       let tahun = $('#filter-tahun').val();
