@@ -90,11 +90,11 @@
                 <div class="row mt-3 " id="column-mobile">
                     <div class="col">
                         <div class="">
-                            <p>Surat Peminjaman<sup class="text-danger">*</sup></p>
+                            <p>Surat Peminjaman (PDF)<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="custom-file">
                             <input class="form-control-file" name="surat_peminjaman" type="file"
-                                accept=".docx,application/pdf, application/msword">
+                                accept="application/pdf">
                         </div>
                         <div class="text-danger">
                             @error('surat_peminjaman')
@@ -104,11 +104,11 @@
                     </div>
                     <div class="col" id="data-diri-penanggung-jawab">
                         <div class="">
-                            <p>Data Diri Penganggung Jawab<sup class="text-danger">*</sup></p>
+                            <p>Data Diri Penganggung Jawab (PDF)<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="custom-file">
                             <input class="form-control-file" name="datadiri_penanggungjawab" type="file"
-                                accept=".docx,application/pdf, application/msword">
+                                accept="application/pdf">
                         </div>
                         <div class="text-danger">
                             @error('datadiri_penanggungjawab')

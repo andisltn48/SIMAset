@@ -86,7 +86,7 @@
               searchPlaceholder: "Cari no peminjaman"
           },
             order: [
-                [7, "asc"]
+                [7, "desc"]
             ],
             scrollX: true,
             processing: true,

@@ -86,7 +86,7 @@
           },
           searching: false,
             order: [
-                [6, "asc"]
+                [6, "desc"]
             ],
             scrollX: true,
             processing: true,

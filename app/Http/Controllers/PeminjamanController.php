@@ -10,7 +10,10 @@ use App\User;
 use App\AktivitasSistem;
 use App\ListBarangPinjam;
 use Auth;
+Use PDF;
 use Notification;
+use Illuminate\Support\Str;
+use Mail;
 use App\Notifications\PeminjamNotification;
 
 class PeminjamanController extends Controller
@@ -387,13 +390,13 @@ class PeminjamanController extends Controller
     public function download_surat_peminjaman($no_peminjaman)
     {
         $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
-        return response()->download(public_path('storage/file-peminjaman/surat-peminjaman/'. $datapeminjaman->surat_peminjaman));
+        return response()->file(public_path('storage/file-peminjaman/surat-peminjaman/'. $datapeminjaman->surat_peminjaman));
     }
 
     public function download_surat_balasan($no_peminjaman)
     {
         $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
-        return response()->download(public_path('storage/file-peminjaman/surat-balasan/'. $datapeminjaman->surat_balasan));
+        return response()->file(public_path('storage/file-peminjaman/surat-balasan/'. $datapeminjaman->surat_balasan));
     }
 
     public function destroy_permintaan($no_peminjaman)
@@ -421,8 +424,9 @@ class PeminjamanController extends Controller
         $file_suratbalasan = $request->surat_balasan;
         $fileName_suratbalasan = time().'_'.$file_suratbalasan->getClientOriginalName();
 
-
         $datapermintaan = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        $dataPeminjam = User::where('id',$datapermintaan->id_peminjam)->first();
+        // dd($dataPeminjam);
         // dd($datapermintaan);
         if ($request->status == 'Disetujui') {
             $file_suratbalasan->move(public_path('storage/file-peminjaman/surat-balasan'), $fileName_suratbalasan);
@@ -432,6 +436,16 @@ class PeminjamanController extends Controller
                 'surat_balasan' => $fileName_suratbalasan,
                 'catatan' => $request->catatan
             ]);
+
+            $files = \Storage::path('public/file-peminjaman/surat-balasan/'.$fileName_suratbalasan);
+
+            $token = Str::random(64);
+
+            Mail::send('forgetPasswordView', ['token' => $token], function($message) use($dataPeminjam, $files){
+                $message->to($dataPeminjam->email);
+                $message->subject('Reset Password');
+                $message->attach($files);
+            });
         } else {
             $datapermintaan->update([
                 'status_permintaan' => $request->status,
