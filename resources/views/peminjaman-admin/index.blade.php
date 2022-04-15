@@ -101,13 +101,6 @@
                                 <option value="Ditolak">Tolak</option>
                             </select>
                         </div>
-                        <div class="mt-3">
-                            <p>Surat Balasan<sup class="text-danger">*</sup></p>
-                        </div>
-                        <div class="custom-file">
-                            <input class="form-control-file" name="surat_balasan" type="file"
-                                accept=".docx,application/pdf, application/msword" required>
-                        </div>
                         <div class="mt-5">
                             <div class="">
                                 <p>Catatan</p>

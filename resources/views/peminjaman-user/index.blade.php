@@ -50,15 +50,28 @@
                 <div class="row mt-3 " id="column-mobile">
                     <div class="col">
                         <div class="">
-                            <p>Tanggal Penggunaan<sup class="text-danger">*</sup></p>
+                            <p>Tanggal Awal Penggunaan<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="form-group">
                             <input
-                                value="{{ old('tanggal_penggunaan') ?? date('d-m-Y H:i:s', strtotime(old('tanggal_penggunaan'))) }}"
-                                type="datetime-local" class="form-control" name="tanggal_penggunaan"
-                                id="tanggalpenggunaan" required>
+                                value="{{ old('tanggal_awal_penggunaan') ?? date('d-m-Y H:i:s', strtotime(old('tanggal_awal_penggunaan'))) }}"
+                                type="datetime-local" class="form-control" name="tanggal_awal_penggunaan"
+                                id="tanggalawalpenggunaan" required>
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="">
+                            <p>Tanggal Akhir Penggunaan<sup class="text-danger">*</sup></p>
+                        </div>
+                        <div class="form-group">
+                            <input
+                                value="{{ old('tanggal_akhir_penggunaan') ?? date('d-m-Y H:i:s', strtotime(old('tanggal_akhir_penggunaan'))) }}"
+                                type="datetime-local" class="form-control" name="tanggal_akhir_penggunaan"
+                                id="tanggalakhirpenggunaan" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3 " id="column-mobile">
                     <div class="col" id="sarana-prasarana">
                         <div class="">
                             <p>Sarana/Prasarana <span class="text-muted">(Klik tambah jika lebih dari 1
@@ -140,7 +153,7 @@
         $(".select2").select2();
 
         let inventory_prasarana = document.querySelector('.inventory-prasarana');
-        $('#tanggalpenggunaan').on('change', function() {
+        $('#tanggalawalpenggunaan').on('change', function() {
             arr_items = [];
             document.getElementById("inventory-prasarana").innerHTML = "";
             inventory_prasarana.classList.remove('block');
@@ -148,25 +161,87 @@
                 .find('option:not(:first)')
                 .remove()
                 .end();
-            var date = new Date($('#tanggalpenggunaan').val());
+
+            var date = new Date($('#tanggalawalpenggunaan').val());
             day = date.getDate();
             month = date.getMonth() + 1;
             year = date.getFullYear();
             hour = date.getHours();
             minute = date.getMinutes();
 
-            var tanggalpenggunaan = day + "-" + month + "-" + year + " " + hour + ":" + minute;
-            // alert(tanggalpenggunaan);
+            var date2 = new Date($('#tanggalakhirpenggunaan').val());
+            day2 = date2.getDate();
+            month2 = date2.getMonth() + 1;
+            year2 = date2.getFullYear();
+            hour2 = date2.getHours();
+            minute2 = date2.getMinutes();
+
+            var tanggalawalpenggunaan = day + "-" + month + "-" + year + " " + hour + ":" + minute;
+            var tanggalakhirpenggunaan = day2 + "-" + month2 + "-" + year2 + " " + hour2 + ":" + minute2;
+            // alert(tanggalawalpenggunaan);
 
             $.ajax({
                 url: "{{ route('peminjaman.get-free-aset') }}",
                 type: "GET",
                 data: {
-                    tanggal_penggunaan: tanggalpenggunaan,
+                    tanggal_awal_penggunaan: tanggalawalpenggunaan,
+                    tanggal_akhir_penggunaan: tanggalakhirpenggunaan,
                 },
                 success: function(response) {
                     if (response) {
                         console.log(response.data);
+                        response.data.forEach(function(item, index) {
+                            // console.log(item['kode']);
+                            var textdata = item['nama_barang'] + ' || ' + item['kode'] +
+                                ' || ' + item['nup'];
+                            $('#select-sarana').append($('<option>', {
+
+                                value: item['id'],
+                                text: textdata
+                            }));
+                        });
+                    }
+                },
+            });
+        });
+
+        $('#tanggalakhirpenggunaan').on('change', function() {
+            arr_items = [];
+            document.getElementById("inventory-prasarana").innerHTML = "";
+            inventory_prasarana.classList.remove('block');
+            $('#select-sarana')
+                .find('option:not(:first)')
+                .remove()
+                .end();
+
+            var date = new Date($('#tanggalawalpenggunaan').val());
+            day = date.getDate();
+            month = date.getMonth() + 1;
+            year = date.getFullYear();
+            hour = date.getHours();
+            minute = date.getMinutes();
+
+            var date2 = new Date($('#tanggalakhirpenggunaan').val());
+            day2 = date2.getDate();
+            month2 = date2.getMonth() + 1;
+            year2 = date2.getFullYear();
+            hour2 = date2.getHours();
+            minute2 = date2.getMinutes();
+
+            var tanggalawalpenggunaan = day + "-" + month + "-" + year + " " + hour + ":" + minute;
+            var tanggalakhirpenggunaan = day2 + "-" + month2 + "-" + year2 + " " + hour2 + ":" + minute2;
+            // console.log(tanggalawalpenggunaan,tanggalakhirpenggunaan);
+
+            $.ajax({
+                url: "{{ route('peminjaman.get-free-aset') }}",
+                type: "GET",
+                data: {
+                    tanggal_awal_penggunaan: tanggalawalpenggunaan,
+                    tanggal_akhir_penggunaan: tanggalakhirpenggunaan,
+                },
+                success: function(response) {
+                    if (response) {
+                        // console.log(response.data);
                         response.data.forEach(function(item, index) {
                             // console.log(item['kode']);
                             var textdata = item['nama_barang'] + ' || ' + item['kode'] +
