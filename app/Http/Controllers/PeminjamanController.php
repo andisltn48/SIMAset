@@ -128,7 +128,8 @@ class PeminjamanController extends Controller
                 'id_peminjam' => Auth::user()['id'],
                 'no_peminjaman' => $no_peminjaman,
                 'jumlah' => count($aset_selected),
-                'tanggal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)),
+                'tanggal_awal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_awal_penggunaan)),
+                'tanggal_akhir_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_akhir_penggunaan)),
                 'surat_peminjaman' => $fileName_suratpeminjaman,
                 'surat_balasan' => '',
                 'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
@@ -176,7 +177,8 @@ class PeminjamanController extends Controller
                 'nama_penanggung_jawab' => $request->penanggung_jawab,
                 'no_peminjaman' => $no_peminjaman,
                 'jumlah' => 1,
-                'tanggal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)),
+                'tanggal_awal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_awal_penggunaan)),
+                'tanggal_akhir_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_akhir_penggunaan)),
                 'surat_peminjaman' => $fileName_suratpeminjaman,
                 'surat_balasan' => '',
                 'data_diri_penanggung_jawab' => $fileName_data_diri_penanggungjawab,
@@ -218,10 +220,13 @@ class PeminjamanController extends Controller
 
     public function get_free_aset(Request $request)
     {
+        $tanggal_awal_penggunaan = date('d-m-Y H:i', strtotime($request->tanggal_awal_penggunaan));
+        $tanggal_akhir_penggunaan = date('d-m-Y H:i', strtotime($request->tanggal_akhir_penggunaan));
         // echo "$request->tanggal_penggunaan";
         // $kode_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('kode_barang')->all();
         // $nup_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('nup_barang')->all();
-        $datapeminjaman_free = DataPeminjaman::where('tanggal_penggunaan', date('d-m-Y H:i', strtotime($request->tanggal_penggunaan)))
+        $datapeminjaman_free = DataPeminjaman::whereBetween('tanggal_awal_penggunaan', [$tanggal_awal_penggunaan,$tanggal_akhir_penggunaan])
+        ->orWhereBetween('tanggal_akhir_penggunaan', [$tanggal_awal_penggunaan,$tanggal_akhir_penggunaan])
         ->where('status_peminjaman', 'Dalam Peminjaman')->pluck('no_peminjaman')->all();
         $kode_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('kode_barang')->all();
         $nup_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('nup_barang')->all();
@@ -426,9 +431,26 @@ class PeminjamanController extends Controller
 
         $datapermintaan = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
         $dataPeminjam = User::where('id',$datapermintaan->id_peminjam)->first();
-        // dd($dataPeminjam);
-        // dd($datapermintaan);
+
         if ($request->status == 'Disetujui') {
+            
+            /*@ Reading doc file */
+            $template = new\PhpOffice\PhpWord\TemplateProcessor(public_path('template-surat-balasan/Format surat balasan.docx'));
+    
+            $tanggalPeminjaman = $datapermintaan->tanggal_awal_penggunaan+"-"+$datapermintaan->tanggal_akhir_penggunaan;
+            /*@ Replacing variables in doc file */
+            $template->setValue('peminjam', $dataPeminjam->name);
+            $template->setValue('hari_peminjaman', 'Senin');
+            $template->setValue('tanggal_peminjaman', $tanggalPeminjaman);
+
+            $saveDocPath = public_path('tempo-surat-balasan.docx');
+            $template->saveAs($saveDocPath);
+    
+            /*@ Remove temporarily created word file */
+            // if ( file_exists($saveDocPath) ) {
+            //     unlink($saveDocPath);
+            // }
+
             $file_suratbalasan->move(public_path('storage/file-peminjaman/surat-balasan'), $fileName_suratbalasan);
             $datapermintaan->update([
                 'status_permintaan' => $request->status,
@@ -437,7 +459,8 @@ class PeminjamanController extends Controller
                 'catatan' => $request->catatan
             ]);
 
-            $files = \Storage::path('public/file-peminjaman/surat-balasan/'.$fileName_suratbalasan);
+            // $files = \Storage::path('public/file-peminjaman/surat-balasan/'.$fileName_suratbalasan);
+            $files = $saveDocPath;
 
             $token = Str::random(64);
 

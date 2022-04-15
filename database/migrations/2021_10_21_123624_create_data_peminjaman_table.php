@@ -19,7 +19,8 @@ class CreateDataPeminjamanTable extends Migration
             $table->bigInteger('id_peminjam');
             $table->string('nama_penanggung_jawab');
             $table->bigInteger('no_peminjaman');
-            $table->string('tanggal_penggunaan');
+            $table->string('tanggal_awal_penggunaan');
+            $table->string('tanggal_akhir_penggunaan');
             $table->string('jumlah');
             $table->string('surat_peminjaman');
             $table->string('surat_balasan');
