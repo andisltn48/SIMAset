@@ -28,7 +28,9 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
 Route::group(['middleware' => ['auth:sanctum', 'cekroleapi:1,2,3']], function(){
     Route::get('/data-aset', [DataAsetController::class, 'index']);
+    Route::post('/data-aset', [DataAsetController::class, 'store']);
     Route::get('/data-aset/{id}', [DataAsetController::class, 'detail']);
+    Route::delete('/data-aset/{id}', [DataAsetController::class, 'destroy']);
     
     Route::get('/data-ruangan', [ManajemenRuanganController::class, 'index']);
     Route::get('/data-ruangan/{id}', [ManajemenRuanganController::class, 'detail']);
