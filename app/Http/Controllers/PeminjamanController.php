@@ -426,22 +426,33 @@ class PeminjamanController extends Controller
 
     public function confirm_request(Request $request, $no_peminjaman)
     {
-        $file_suratbalasan = $request->surat_balasan;
-        $fileName_suratbalasan = time().'_'.$file_suratbalasan->getClientOriginalName();
+        // $file_suratbalasan = $request->surat_balasan;
+        // $fileName_suratbalasan = time().'_'.$file_suratbalasan->getClientOriginalName();
 
         $datapermintaan = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
         $dataPeminjam = User::where('id',$datapermintaan->id_peminjam)->first();
+        $listbarangpinjam = ListBarangPinjam::where('no_peminjaman', $no_peminjaman)->get();
 
         if ($request->status == 'Disetujui') {
             
             /*@ Reading doc file */
             $template = new\PhpOffice\PhpWord\TemplateProcessor(public_path('template-surat-balasan/Format surat balasan.docx'));
     
-            $tanggalPeminjaman = $datapermintaan->tanggal_awal_penggunaan+"-"+$datapermintaan->tanggal_akhir_penggunaan;
+            $tanggalPeminjaman = $datapermintaan->tanggal_awal_penggunaan." s/d ".$datapermintaan->tanggal_akhir_penggunaan;
             /*@ Replacing variables in doc file */
             $template->setValue('peminjam', $dataPeminjam->name);
             $template->setValue('hari_peminjaman', 'Senin');
-            $template->setValue('tanggal_peminjaman', $tanggalPeminjaman);
+            $template->setValue('waktu_peminjaman', $tanggalPeminjaman);
+            $template->cloneRow('row',count($listbarangpinjam));
+
+            foreach ($listbarangpinjam as $key => $value) {
+                $template->setValue('row#'.($key+1), $key+1);
+                $template->setValue('nama_aset#'.($key+1), $value->nama_barang);
+                $template->setValue('kode_barang#'.($key+1), $value->kode_barang);
+                $template->setValue('nup#'.($key+1), $value->nup_barang);
+            }
+
+            // dd(count($listbarangpinjam));
 
             $saveDocPath = public_path('tempo-surat-balasan.docx');
             $template->saveAs($saveDocPath);
@@ -451,22 +462,20 @@ class PeminjamanController extends Controller
             //     unlink($saveDocPath);
             // }
 
-            $file_suratbalasan->move(public_path('storage/file-peminjaman/surat-balasan'), $fileName_suratbalasan);
+            // $file_suratbalasan->move(public_path('storage/file-peminjaman/surat-balasan'), $fileName_suratbalasan);
             $datapermintaan->update([
                 'status_permintaan' => $request->status,
                 'status_peminjaman' => 'Dalam Peminjaman',
-                'surat_balasan' => $fileName_suratbalasan,
+                'surat_balasan' => 'fileName_suratbalasan',
                 'catatan' => $request->catatan
             ]);
 
             // $files = \Storage::path('public/file-peminjaman/surat-balasan/'.$fileName_suratbalasan);
             $files = $saveDocPath;
 
-            $token = Str::random(64);
-
-            Mail::send('forgetPasswordView', ['token' => $token], function($message) use($dataPeminjam, $files){
+            Mail::send('suratBalasanView', ['dataPeminjam' => $dataPeminjam], function($message) use($dataPeminjam, $files){
                 $message->to($dataPeminjam->email);
-                $message->subject('Reset Password');
+                $message->subject('Surat balasan peminjaman');
                 $message->attach($files);
             });
         } else {
