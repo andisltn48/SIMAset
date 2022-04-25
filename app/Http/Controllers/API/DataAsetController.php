@@ -48,10 +48,16 @@ class DataAsetController extends Controller
         $dataaset = DataAset::where('data_aset.id', $id)->leftjoin('units', 'units.kode_unit', 'data_aset.unit')
         ->select('data_aset.*',  'units.nama_unit')->first();
 
-        return response()->json([
-            'message' => 'Success',
-            'data' => $dataaset   
-        ], 200);
+        if ($dataaset) {
+            return response()->json([
+                'message' => 'Success',
+                'data' => $dataaset   
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Data aset tidak ditemukan',   
+            ], 404);
+        }
     }
 
     /**
@@ -351,10 +357,12 @@ class DataAsetController extends Controller
                 $activity = AktivitasSistem::create([
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan update data aset',
-
-                    'user_role' => session('role'),
+                    'user_role' => Roles::where('id',Auth::user()->role_id)->pluck('name'),
                 ]);
-                return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
+                return response()->json([
+                    'message'=>'Data Aset berhasil diedit',
+                    'data' => DataAset::find($id)
+                ], 201);
             }
         } elseif ($cekdata->kode == $current_data->kode && $cekdata->nup == $current_data->nup) {
             function RemoveSpecialChar($str) {
@@ -398,14 +406,18 @@ class DataAsetController extends Controller
                 $activity = AktivitasSistem::create([
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan update data aset',
-
-                    'user_role' => session('role'),
+                    'user_role' => Roles::where('id',Auth::user()->role_id)->pluck('name'),
                 ]);
-                return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
+                return response()->json([
+                    'message'=>'Data Aset berhasil diedit',
+                    'data' => DataAset::find($id)
+                ], 201);
             }
         } else {
             $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup.' telah terdaftar!';
-            return redirect(route('data-aset.edit', $id))->with('error',$message);
+            return response()->json([
+                'message'=>$message
+            ], 400);
         }
     }
 
@@ -432,5 +444,69 @@ class DataAsetController extends Controller
                 'message'=>'Data aset tidak ditemukan'
             ], 404);
         }
+    }
+
+    public function import_data(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'file_import' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        } 
+
+        $importsdata = LogImport::create([
+            'total' => '',
+            'success' => '',
+            'failed' => ''
+        ]);
+
+        // dd()
+
+        $importId = $importsdata->id;
+
+        $file = $request->file('file_import')->getRealPath();
+        $import = new DataAsetImport($importId);
+        $import->import($file);
+
+        $currentrow= 0;
+        $freewalk=0;
+
+        if ($import->failures()->isNotEmpty()) {
+            foreach ($import->failures() as $rows) {
+                // dd($rows->values()["no"]);
+                $failed = DetailLogImport::create([
+                    'row' => $rows->values()["no"],
+                    'nama' => $rows->values()["nama_barang"],
+                    'status' => 'Failed',
+                    'message' => $rows->errors()[0],
+                    'import_id' => $importId
+                ]);
+            }
+        }
+
+        $total = DetailLogImport::where('import_id', $importId)->get()->count();
+        $success = DetailLogImport::where('import_id', $importId)->where('status', 'Success')->get()->count();
+        $failed = DetailLogImport::where('import_id', $importId)->where('status', 'Failed')->get()->count();
+
+        $importsdata = LogImport::where('id', $importId)->update([
+            'total' => $total,
+            'success' => $success,
+            'failed' => $failed,
+        ]);
+
+        if ($importsdata != NULL) {
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan impor data aset',
+                'user_role' => Roles::where('id',Auth::user()->role_id)->pluck('name'),
+            ]);
+            // return redirect(route('data-aset.import'))->with('success', 'Berhasil melakukan impor');
+            return response()->json([
+                'message'=>'Berhasil melakukan impor'
+            ], 201);
+        }
+
     }
 }
