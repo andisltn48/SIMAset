@@ -36,6 +36,14 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::get('/get-aktivitas-sistem','AktivitasSistemController@get_aktivitas')->name('aktivitas-sistem.get-aktivitas');
     Route::post('/test','AktivitasSistemController@test')->name('test');
 
+    Route::resource('laporan-aset', LaporanAsetController::class);
+});
+
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin']], function () {
+    //route unit
+    Route::resource('unit', ManajemenUnitController::class);
+    Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
+
     Route::resource('manajemen-user', ManajemenUserController::class);
     Route::get('/get-superadmin','ManajemenUserController@get_superadmin')->name('manajemen-user.get-superadmin');
     Route::get('/get-admin','ManajemenUserController@get_admin')->name('manajemen-user.get-admin');
@@ -43,8 +51,6 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::get('/get-sarpras','ManajemenUserController@get_sarpras')->name('manajemen-user.get-sarpras');
     Route::get('/get-peminjam','ManajemenUserController@get_peminjam')->name('manajemen-user.get-peminjam');
     Route::get('/get-pengaju','ManajemenUserController@get_pengaju')->name('manajemen-user.get-pengaju');
-
-    Route::resource('laporan-aset', LaporanAsetController::class);
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,BMN']], function(){
@@ -59,11 +65,6 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/detail-import/{id}','DataAsetController@detail_riwayat_import')->name('data-aset.detail-riwayat-import');
     Route::post('/destroy-log-import/{id}','DataAsetController@destroy_log_import')->name('data-aset.destroy-log-import');
     Route::post('/data-aset-import','DataAsetController@import_data')->name('data-aset.import-data-aset');
-
-    //route unit
-    Route::resource('unit', ManajemenUnitController::class);
-    Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
-
 
     //route ruangan
     Route::resource('data-ruangan', ManajemenRuanganController::class);
