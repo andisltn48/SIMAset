@@ -36,6 +36,14 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::get('/get-aktivitas-sistem','AktivitasSistemController@get_aktivitas')->name('aktivitas-sistem.get-aktivitas');
     Route::post('/test','AktivitasSistemController@test')->name('test');
 
+    Route::resource('laporan-aset', LaporanAsetController::class);
+});
+
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin']], function () {
+    //route unit
+    Route::resource('unit', ManajemenUnitController::class);
+    Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
+
     Route::resource('manajemen-user', ManajemenUserController::class);
     Route::get('/get-superadmin','ManajemenUserController@get_superadmin')->name('manajemen-user.get-superadmin');
     Route::get('/get-admin','ManajemenUserController@get_admin')->name('manajemen-user.get-admin');
@@ -43,8 +51,6 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::get('/get-sarpras','ManajemenUserController@get_sarpras')->name('manajemen-user.get-sarpras');
     Route::get('/get-peminjam','ManajemenUserController@get_peminjam')->name('manajemen-user.get-peminjam');
     Route::get('/get-pengaju','ManajemenUserController@get_pengaju')->name('manajemen-user.get-pengaju');
-
-    Route::resource('laporan-aset', LaporanAsetController::class);
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,BMN']], function(){
@@ -59,11 +65,6 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/detail-import/{id}','DataAsetController@detail_riwayat_import')->name('data-aset.detail-riwayat-import');
     Route::post('/destroy-log-import/{id}','DataAsetController@destroy_log_import')->name('data-aset.destroy-log-import');
     Route::post('/data-aset-import','DataAsetController@import_data')->name('data-aset.import-data-aset');
-
-    //route unit
-    Route::resource('unit', ManajemenUnitController::class);
-    Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
-
 
     //route ruangan
     Route::resource('data-ruangan', ManajemenRuanganController::class);
@@ -86,6 +87,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/list-peminjaman-admin','PeminjamanController@list_peminjaman_admin')->name('peminjaman.list-peminjaman-admin');
     Route::get('/download-surat-peminjaman-admin/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman-admin');
     Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
+    Route::get('/download-data-diri-penanggung-jawab-admin/{no_peminjaman}','PeminjamanController@download_data_diri_penanggung_jawab')->name('peminjaman.download-data-diri-penanggung-jawab-admin');
     Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');
     Route::post('/confirm-request/{no_permintaan}','PeminjamanController@confirm_request')->name('peminjaman.confirm-request');
     Route::get('/done-peminjaman/{id}','PeminjamanController@done_peminjaman')->name('peminjaman.done-peminjaman');
@@ -116,6 +118,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], func
     Route::get('/data-from-nopeminjam','PeminjamanController@data_from_no_peminjam')->name('peminjaman.data-from-nopeminjam');
     Route::get('/download-surat-peminjaman/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman');
     Route::get('/download-surat-balasan/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan');
+    Route::get('/download-template-surat-peminjaman','PeminjamanController@download_template_surat_peminjaman')->name('peminjaman.download-template-surat-peminjaman');
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
 });
 

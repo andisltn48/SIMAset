@@ -19,7 +19,7 @@
                 <h5 class="fw-bold">Form Peminjaman</h5>
             </div>
             <div class="col button" style="text-align: end">
-                <a href="{{ route('peminjaman.template-surat') }}"><button class="btn btn-block btn-primary">Download
+                <a href="{{ route('peminjaman.download-template-surat-peminjaman') }}"><button class="btn btn-block btn-primary">Download
                         Template Surat</button></a>
             </div>
         </div>
@@ -203,6 +203,8 @@
                     }
                 },
             });
+
+            $('#tanggalakhirpenggunaan').attr('min', $('#tanggalawalpenggunaan').val());
         });
 
         $('#tanggalakhirpenggunaan').on('change', function() {

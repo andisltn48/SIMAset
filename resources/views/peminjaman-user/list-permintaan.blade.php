@@ -31,7 +31,8 @@
                         <th>No</th>
                         <th>Daftar Barang</th>
                         <th>Jumlah Barang</th>
-                        <th>Tanggal Penggunaan</th>
+                        <th>Tanggal Awal Penggunaan</th>
+                        <th>Tanggal Akhir Penggunaan</th>
                         <th>Status</th>
                         <th>Surat Peminjaman</th>
                         <th>Updated_At</th>
@@ -86,7 +87,7 @@
           },
           searching: false,
             order: [
-                [6, "desc"]
+                [7, "desc"]
             ],
             scrollX: true,
             processing: true,
@@ -110,7 +111,10 @@
                 data: 'jumlah',
             }, {
                 className: "dt-nowrap",
-                data: 'tanggal_penggunaan'
+                data: 'tanggal_awal_penggunaan'
+            }, {
+                className: "dt-nowrap",
+                data: 'tanggal_akhir_penggunaan'
             }, {
                 className: "dt-nowrap",
                 data: 'status_permintaan'

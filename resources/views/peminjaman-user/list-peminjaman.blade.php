@@ -33,7 +33,8 @@
                         <th>No Peminjaman</th>
                         <th>Daftar Barang</th>
                         <th>Jumlah Barang</th>
-                        <th>Tanggal Penggunaan</th>
+                        <th>Tanggal Awal Penggunaan</th>
+                        <th>Tanggal Akhir Penggunaan</th>
                         <th>Status Peminjaman</th>
                         <th>Surat Balasan</th>
                         <th>Updated_At</th>
@@ -86,7 +87,7 @@
               searchPlaceholder: "Cari no peminjaman"
           },
             order: [
-                [7, "desc"]
+                [8, "desc"]
             ],
             scrollX: true,
             processing: true,
@@ -118,7 +119,12 @@
                 width: '15rem',
                 searchable: 'false',
                 className: "dt-nowrap",
-                data: 'tanggal_penggunaan'
+                data: 'tanggal_awal_penggunaan'
+            }, {
+                width: '15rem',
+                searchable: 'false',
+                className: "dt-nowrap",
+                data: 'tanggal_akhir_penggunaan'
             }, {
                 searchable: 'false',
                 className: "dt-nowrap",

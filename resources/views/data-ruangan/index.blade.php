@@ -159,7 +159,7 @@
                             <div class="form-group">
                                 <label class="text-dark fw">Kode Ruangan<sup class="text-danger">*</sup></label>
                                 <input class="form-control " name="kode_ruangan" id="kode-ruangan-edit"
-                                     required>
+                                     readonly>
                             </div>
                         </div>
                         <div class="mb-2">
@@ -263,7 +263,6 @@
         });
         $.fn.DataTable.ext.pager.numbers_length = 5;
 
-        var harga_produk = $("#harga_produk_"+id).text()
 
         $(document).on('click', '.btn-edit-ruangan', function(event) {
             // return confirm($(this).data('tanggalSP2D'));
@@ -273,6 +272,8 @@
             var pj = $(this).data('pj');
             var nip = $(this).data('nip');
             var kodegedung = $(this).data('kodegedung');
+
+            console.log(koderuangan)
 
 
             $('#form-edit').attr('action', link);
