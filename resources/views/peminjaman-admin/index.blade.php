@@ -34,10 +34,11 @@
                         <th>No Peminjaman</th>
                         <th>Daftar Barang</th>
                         <th>Jumlah Barang</th>
-                        <th>Tanggal Penggunaan</th>
+                        <th>Tanggal Awal Penggunaan</th>
+                        <th>Tanggal Akhir Penggunaan</th>
                         <th>Status</th>
                         <th>Surat Peminjaman</th>
-                        <th>Surat Balasan</th>
+                        <th>Data Diri Penanggung Jawab</th>
                         <th>Updated_At</th>
                         <th>Action</th>
                     </tr>
@@ -134,7 +135,7 @@
             },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
-                [9, "desc"]
+                [10, "desc"]
             ],
             scrollX: true,
             processing: true,
@@ -163,7 +164,11 @@
                 searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'tanggal_penggunaan',
+                data: 'tanggal_awal_penggunaan',
+                searchable: false
+            }, {
+                className: "dt-nowrap",
+                data: 'tanggal_akhir_penggunaan',
                 searchable: false
             }, {
                 className: "dt-nowrap",
@@ -174,7 +179,7 @@
                 searchable: false
             }, {
                 className: "dt-nowrap",
-                data: 'download_surat_balasan',
+                data: 'download_data_diri_penanggung_jawab',
                 searchable: false
             }, {
                 className: "dt-nowrap",

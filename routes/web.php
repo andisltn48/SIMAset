@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/list-peminjaman-admin','PeminjamanController@list_peminjaman_admin')->name('peminjaman.list-peminjaman-admin');
     Route::get('/download-surat-peminjaman-admin/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman-admin');
     Route::get('/download-surat-balasan-admin/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan-admin');
+    Route::get('/download-data-diri-penanggung-jawab-admin/{no_peminjaman}','PeminjamanController@download_data_diri_penanggung_jawab')->name('peminjaman.download-data-diri-penanggung-jawab-admin');
     Route::post('/destroy-permintaan-admin/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan-admin');
     Route::post('/confirm-request/{no_permintaan}','PeminjamanController@confirm_request')->name('peminjaman.confirm-request');
     Route::get('/done-peminjaman/{id}','PeminjamanController@done_peminjaman')->name('peminjaman.done-peminjaman');
@@ -117,6 +118,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], func
     Route::get('/data-from-nopeminjam','PeminjamanController@data_from_no_peminjam')->name('peminjaman.data-from-nopeminjam');
     Route::get('/download-surat-peminjaman/{no_peminjaman}','PeminjamanController@download_surat_peminjaman')->name('peminjaman.download-surat-peminjaman');
     Route::get('/download-surat-balasan/{no_peminjaman}','PeminjamanController@download_surat_balasan')->name('peminjaman.download-surat-balasan');
+    Route::get('/download-template-surat-peminjaman','PeminjamanController@download_template_surat_peminjaman')->name('peminjaman.download-template-surat-peminjaman');
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
 });
 

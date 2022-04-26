@@ -284,13 +284,13 @@ class PeminjamanController extends Controller
             return $datatables->addIndexColumn()
             ->editColumn('status_permintaan', function(DataPeminjaman $datapeminjaman) {
                 if ($datapeminjaman->status_permintaan == 'Belum Dikonfirmasi') {
-                    return '<div style="background: rgb(203, 214, 255);" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                    return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
                 if ($datapeminjaman->status_permintaan == 'Disetujui') {
-                    return '<div style="background: rgb(197, 255, 205);" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                    return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
                 if ($datapeminjaman->status_permintaan == 'Ditolak') {
-                    return '<div style="background: rgb(255, 185, 185);" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
+                    return '<div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
             })
             ->escapeColumns([])
@@ -324,7 +324,7 @@ class PeminjamanController extends Controller
             })
             ->escapeColumns([])
             ->addColumn('download_surat_peminjaman','peminjaman-admin.button-datatable.download-surat-peminjaman')
-            ->addColumn('download_surat_balasan','peminjaman-admin.button-datatable.download-surat-balasan')
+            ->addColumn('download_data_diri_penanggung_jawab','peminjaman-admin.button-datatable.download-data-diri-penanggungjawab')
             ->addColumn('list_barang','peminjaman-admin.button-datatable.detail-barang')
             ->addColumn('action','peminjaman-admin.button-datatable.action')
             ->toJson();
@@ -348,7 +348,7 @@ class PeminjamanController extends Controller
             });
             return $datatables->addIndexColumn()
             ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
-                return '<div style="background: rgb(197, 255, 205);" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
+                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
             })
             ->escapeColumns([])
             ->addColumn('download_surat_balasan','peminjaman-user.button-datatable.download-surat-balasan')
@@ -391,6 +391,10 @@ class PeminjamanController extends Controller
         // ]);
 
     }
+    public function download_template_surat_peminjaman()
+    {
+        return response()->file(public_path('template-surat-peminjaman/Format surat peminjaman.docx'));
+    }
 
     public function download_surat_peminjaman($no_peminjaman)
     {
@@ -398,10 +402,16 @@ class PeminjamanController extends Controller
         return response()->file(public_path('storage/file-peminjaman/surat-peminjaman/'. $datapeminjaman->surat_peminjaman));
     }
 
+    public function download_data_diri_penanggung_jawab($no_peminjaman)
+    {
+        $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        return response()->file(public_path('storage/file-peminjaman/data-diri-penanggungjawab/'. $datapeminjaman->data_diri_penanggung_jawab));
+    }
+
     public function download_surat_balasan($no_peminjaman)
     {
         $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
-        return response()->file(public_path('storage/file-peminjaman/surat-balasan/'. $datapeminjaman->surat_balasan));
+        return response()->file(public_path('storage/file-peminjaman/surat-balasan/'. $datapeminjaman->surat_balasan.'.docx'));
     }
 
     public function destroy_permintaan($no_peminjaman)
@@ -454,7 +464,8 @@ class PeminjamanController extends Controller
 
             // dd(count($listbarangpinjam));
 
-            $saveDocPath = public_path('tempo-surat-balasan.docx');
+            $timeNow = time();
+            $saveDocPath = public_path('storage\file-peminjaman\surat-balasan\surat-balasan-'.$timeNow.'.docx');
             $template->saveAs($saveDocPath);
     
             /*@ Remove temporarily created word file */
@@ -466,7 +477,7 @@ class PeminjamanController extends Controller
             $datapermintaan->update([
                 'status_permintaan' => $request->status,
                 'status_peminjaman' => 'Dalam Peminjaman',
-                'surat_balasan' => 'fileName_suratbalasan',
+                'surat_balasan' => 'surat-balasan-'.$timeNow,
                 'catatan' => $request->catatan
             ]);
 
