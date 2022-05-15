@@ -4,6 +4,7 @@ namespace Tests\Unit\IterasiPertama;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginAdminTest extends TestCase
 {
