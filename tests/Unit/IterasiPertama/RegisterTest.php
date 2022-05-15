@@ -13,18 +13,18 @@ class RegisterTest extends TestCase
      *
      * @return void
      */
-    // public function testRegister()
-    // {
-    //     $value = [
-    //         'name' => 'andilan',
-    //         'email' => 'blursseesww@itk.ac.id',
-    //         'password' => 'Superadmin12345',
-    //         'password_confirmation' => 'Superadmin12345'
-    //     ];
+    public function testRegister()
+    {
+        $value = [
+            'name' => 'andilan',
+            'email' => 'newAkunTester4@itk.ac.id',
+            'password' => 'Superadmin12345',
+            'password_confirmation' => 'Superadmin12345'
+        ];
 
-    //     $response = $this->post(route('auth.register'), $value);
+        $response = $this->post(route('auth.register'), $value);
         
-    //     $response->assertStatus(302);
-    //     $response->assertRedirect(route('register'));
-    // }
+        $response->assertStatus(302);
+        $response->assertRedirect(route('register'));
+    }
 }

@@ -20,18 +20,17 @@ class AuthController extends Controller
 
     public function login(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user_id = Auth::user()->id;
-            $user = User::where('id', $user_id)->first();
-            $role = Roles::where('id',$user->role_id)->first();
+            $user = User::find(Auth::user()->id);
+            $role = Roles::find($user->role_id);
             session(['role' => $role->name]);
 
             $activity = AktivitasSistem::create([
-                'user_id' => $user_id,
+                'user_id' => Auth::user()->id,
                 'user_activity' => $user->name.' melakukan login ke dalam sistem',
 
                 'user_role' => session('role'),
             ]);
-            // dd($role->name);
+
             if ($role->name == 'Peminjam') {
                 return redirect('form-peminjaman');
             }
