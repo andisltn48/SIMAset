@@ -243,7 +243,7 @@
                 },
                 success: function(response) {
                     if (response) {
-                        // console.log(response.data);
+                        console.log(response.data);  
                         response.data.forEach(function(item, index) {
                             // console.log(item['kode']);
                             var textdata = item['nama_barang'] + ' || ' + item['kode'] +

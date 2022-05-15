@@ -220,22 +220,69 @@ class PeminjamanController extends Controller
 
     public function get_free_aset(Request $request)
     {
-        $tanggal_awal_penggunaan = date('d-m-Y H:i', strtotime($request->tanggal_awal_penggunaan));
-        $tanggal_akhir_penggunaan = date('d-m-Y H:i', strtotime($request->tanggal_akhir_penggunaan));
-        // echo "$request->tanggal_penggunaan";
-        // $kode_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('kode_barang')->all();
-        // $nup_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('nup_barang')->all();
-        $datapeminjaman_free = DataPeminjaman::whereBetween('tanggal_awal_penggunaan', [$tanggal_awal_penggunaan,$tanggal_akhir_penggunaan])
-        ->orWhereBetween('tanggal_akhir_penggunaan', [$tanggal_awal_penggunaan,$tanggal_akhir_penggunaan])
-        ->where('status_peminjaman', 'Dalam Peminjaman')->pluck('no_peminjaman')->all();
-        $kode_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('kode_barang')->all();
-        $nup_barang = ListBarangPinjam::where('no_peminjaman', $datapeminjaman_free)->pluck('nup_barang')->all();
-        $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
-        $dataaset2 = DataAset::where('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
-        $fixdata = $dataaset1->merge($dataaset2);
-        return response()->json([
-            'data' => $fixdata,
-        ]);
+        // $datapeminjaman_free = DataPeminjaman::where('status_peminjaman', '!=', 'Peminjaman Selesai');
+        if ($request->tanggal_awal_penggunaan != NULL && $request->tanggal_akhir_penggunaan != NULL) {
+            $tanggal_awal_penggunaan = date('d-m-Y H:i', strtotime($request->tanggal_awal_penggunaan));
+            $tanggal_akhir_penggunaan = date('d-m-Y H:i', strtotime($request->tanggal_akhir_penggunaan));
+            $tanggal_akhir_penggunaan =  new \DateTime($tanggal_akhir_penggunaan);
+            $tanggal_akhir_penggunaan->modify('+1 Minute');
+
+            $period = new \DatePeriod(
+                new \DateTime($tanggal_awal_penggunaan),
+                new \DateInterval('PT1M'),
+                $tanggal_akhir_penggunaan,
+            );
+
+            // $period = iterator_to_array($period);
+
+            foreach ($period as $key => $value) {
+                $arrDates[] = $value->format('d-m-Y H:i');  
+            }
+
+            $datapeminjaman = DataPeminjaman::where('status_peminjaman', '!=', 'Peminjaman Selesai')->select('no_peminjaman', 'tanggal_awal_penggunaan', 'tanggal_akhir_penggunaan')->get();
+
+            $arrDates2 = null;
+            $arrNoPeminjaman = null;
+            foreach ($datapeminjaman as $key => $value) {
+                $tanggal_akhir_penggunaans =  new \DateTime($value->tanggal_akhir_penggunaan);
+                $tanggal_akhir_penggunaans->modify('+1 Minute');
+                $periods = new \DatePeriod(
+                    new \DateTime($value->tanggal_awal_penggunaan),
+                    new \DateInterval('PT1M'),
+                    $tanggal_akhir_penggunaans,
+                );
+
+                foreach ($periods as $dataPeriod) {
+                    $arrDates2[] = $dataPeriod->format('d-m-Y H:i');  
+                }
+
+                foreach ($arrDates2 as $dataDates) {
+                    if (in_array($dataDates,$arrDates)) {
+                        $arrNoPeminjaman[] = $value->no_peminjaman;
+                        break;
+                    }
+                }
+                $arrDates2 = null;
+
+            }
+            
+            // // echo "$request->tanggal_penggunaan";
+            // // $kode_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('kode_barang')->all();
+            // // $nup_barang = DataPeminjaman::where('tanggal_penggunaan', $request->tanggal_penggunaan)->pluck('nup_barang')->all();
+            // // $datapeminjaman_free = DataPeminjaman::whereIn('tanggal_awal_penggunaan', $arrDates)
+            // // ->orWhereIn('tanggal_akhir_penggunaan',$arrDates)
+            // // ->where('status_peminjaman', '!=', 'Peminjaman Selesai')
+            // // ->get();
+            $kode_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('kode_barang')->all();
+            $nup_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('nup_barang')->all();
+            $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
+            $dataaset2 = DataAset::whereIn('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
+            $fixdata = $dataaset1->merge($dataaset2);
+            return response()->json([
+                'data' => $fixdata,
+            ]);
+        }
+        
     }
 
     public function temporary_data(Request $request){
@@ -450,8 +497,31 @@ class PeminjamanController extends Controller
     
             $tanggalPeminjaman = $datapermintaan->tanggal_awal_penggunaan." s/d ".$datapermintaan->tanggal_akhir_penggunaan;
             /*@ Replacing variables in doc file */
+            $currentDay = date('d');
+            $currentMonth = date('m');
+            $currentYear = date('Y');
+
+            $arrayMonth = ['1'=>'Januari',
+            '2'=>'Februari',
+            '3'=>'Maret',
+            '4'=>'April',
+            '5'=>'Mei',
+            '6'=>'Juni',
+            '7'=>'Juli',
+            '8'=>'Agustus',
+            '9'=>'September',
+            '10'=>'Oktober',
+            '11'=>'November',
+            '12'=>'Desember'];
+
+            foreach ($arrayMonth as $key => $value) {
+                if($currentMonth == $key){
+                    $currentMonth = $value;
+                }
+            }
+
             $template->setValue('peminjam', $dataPeminjam->name);
-            $template->setValue('hari_peminjaman', 'Senin');
+            $template->setValue('tanggal_sekarang', $currentDay.' '.$currentMonth.' '.$currentYear);
             $template->setValue('waktu_peminjaman', $tanggalPeminjaman);
             $template->cloneRow('row',count($listbarangpinjam));
 
@@ -459,7 +529,7 @@ class PeminjamanController extends Controller
                 $template->setValue('row#'.($key+1), $key+1);
                 $template->setValue('nama_aset#'.($key+1), $value->nama_barang);
                 $template->setValue('kode_barang#'.($key+1), $value->kode_barang);
-                $template->setValue('nup#'.($key+1), $value->nup_barang);
+                $template->setValue('waktu_peminjaman#'.($key+1), $tanggalPeminjaman);
             }
 
             // dd(count($listbarangpinjam));
