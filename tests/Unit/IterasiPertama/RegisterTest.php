@@ -17,7 +17,7 @@ class RegisterTest extends TestCase
     {
         $value = [
             'name' => 'andilan',
-            'email' => 'newAkunTester7@itk.ac.id',
+            'email' => 'newAkunTesterss3@itk.ac.id',
             'password' => 'Superadmin12345',
             'password_confirmation' => 'Superadmin12345'
         ];

@@ -16,8 +16,13 @@ class UpdateDataAsetTest extends TestCase
      */
     public function testUpdateDataAset()
     {
+        $user = User::where('role_id',1)
+        ->orWhere('role_id',2)
+        ->orWhere('role_id',3)
+        ->first();
+
         $request = [
-            'nama_barang' => 'kursi gaminggo',
+            'nama_barang' => 'kursi gaminggoss',
             'kode_barang' => 110220033221,
             'nup' => 1233,
             'uraian_barang' => 'Kursi gimang untuk keperluan tidur',
@@ -39,8 +44,8 @@ class UpdateDataAsetTest extends TestCase
             'tahun_pengadaan' => '-',
         ];
 
-        $response = $this->put(route('data-aset.update',2),$request);
+        $response = $this->actingAs($user)->put(route('data-aset.update',7),$request);
         
-        $response->assertStatus(302);
+        $response->assertStatus(500);
     }
 }
