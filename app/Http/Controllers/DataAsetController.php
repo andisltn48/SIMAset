@@ -17,6 +17,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class DataAsetController extends Controller
 {
+    public function RemoveSpecialChar($str) {
+        $res = str_replace( array( '.' ), '', $str);
+
+        return $res;
+    }
+
     public function index()
     {
         function convert($harga)
@@ -24,17 +30,12 @@ class DataAsetController extends Controller
             return strrev(implode('.', str_split(strrev(strval($harga)), 3)));
         };
 
-        function RemoveSpecialChar($str) {
-            $res = str_replace( array( '.' ), '', $str);
-
-            return $res;
-        }
 
         $dataruangan = DataRuangan::all();
         $dataaset = DataAset::all();
         $hargatotal = 0;
         foreach ($dataaset as $key => $value) {
-            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_satuan']);
+            $hargatotal = $hargatotal + $this->RemoveSpecialChar($value['harga_satuan']);
         }
 
         $hargatotal = 'Rp ' . convert($hargatotal);
@@ -90,15 +91,10 @@ class DataAsetController extends Controller
             ]);
         }
 
-        function RemoveSpecialChar($str) {
-            $res = str_replace( array( '.' ), '', $str);
 
-            return $res;
-        }
-
-        $harga_satuan = RemoveSpecialChar($request->harga_satuan);
-        $harga_total = RemoveSpecialChar($request->harga_total);
-        $nilai_tagihan = RemoveSpecialChar($request->nilai_tagihan);
+        $harga_satuan = $this->RemoveSpecialChar($request->harga_satuan);
+        $harga_total = $this->RemoveSpecialChar($request->harga_total);
+        $nilai_tagihan = $this->RemoveSpecialChar($request->nilai_tagihan);
         $date_sp2d = date('d-m-Y H:i:s', strtotime($request->tanggal_sp2d));
 
         $current_nup= $request->nup_awal;
@@ -247,15 +243,10 @@ class DataAsetController extends Controller
         }
 
         if ($cekdata == NULL) {
-            function RemoveSpecialChar($str) {
-                $res = str_replace( array( '.' ), '', $str);
 
-                return $res;
-            }
-
-            $harga_satuan = RemoveSpecialChar($request->harga_satuan);
-            $harga_total = RemoveSpecialChar($request->harga_total);
-            $nilai_tagihan = RemoveSpecialChar($request->nilai_tagihan);
+            $harga_satuan = $this->RemoveSpecialChar($request->harga_satuan);
+            $harga_total = $this->RemoveSpecialChar($request->harga_total);
+            $nilai_tagihan = $this->RemoveSpecialChar($request->nilai_tagihan);
             $date_sp2d = date('d-m-Y H:i:s', strtotime($request->tanggal_sp2d));
 
             $dataaset_save = DataAset::where('id',$id)->update([
@@ -293,15 +284,10 @@ class DataAsetController extends Controller
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
             }
         } elseif ($cekdata->kode == $current_data->kode && $cekdata->nup == $current_data->nup) {
-            function RemoveSpecialChar($str) {
-                $res = str_replace( array( '.' ), '', $str);
 
-                return $res;
-            }
-
-            $harga_satuan = RemoveSpecialChar($request->harga_satuan);
-            $harga_total = RemoveSpecialChar($request->harga_total);
-            $nilai_tagihan = RemoveSpecialChar($request->nilai_tagihan);
+            $harga_satuan = $this->RemoveSpecialChar($request->harga_satuan);
+            $harga_total = $this->RemoveSpecialChar($request->harga_total);
+            $nilai_tagihan = $this->RemoveSpecialChar($request->nilai_tagihan);
             $date_sp2d = date('d-m-Y H:i:s', strtotime($request->tanggal_sp2d));
 
             $dataaset_save = DataAset::where('id',$id)->update([
@@ -588,15 +574,10 @@ class DataAsetController extends Controller
             $data = $data->where('nup', $request->nup);
         }
 
-        function RemoveSpecialChar($str) {
-            $res = str_replace( array( '.' ), '', $str);
-
-            return $res;
-        }
 
         $hargatotal = 0;
         foreach ($data as $key => $value) {
-            $hargatotal = $hargatotal + RemoveSpecialChar($value['harga_satuan']);
+            $hargatotal = $hargatotal + $this->RemoveSpecialChar($value['harga_satuan']);
         }
 
         $hargatotal = 'Rp ' . convertharga($hargatotal);

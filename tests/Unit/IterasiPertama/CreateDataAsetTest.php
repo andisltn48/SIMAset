@@ -26,31 +26,29 @@ class CreateDataAsetTest extends TestCase
         $request = [
             'nama_barang' => 'kursi gaminggo',
             'jumlah_barang' => 1,
-            'kode_barang' => 3050201002,
-            'nup_awal' => 501,
+            'kode_barang' => 13341242111,
+            'nup_awal' => 2221,
             'uraian_barang' => 'Kursi gimang untuk keperluan tidur',
             'harga_satuan' => 1000000,
             'harga_total' => 1000000,
             'nilai_tagihan' => 1000000,
             'tanggal_sp2d' => '01-01-1970 08:00:00',
             'nomor_sp2d' => 11221,
-            'kelompok_belanja' => '-',
-            'asal_perolehan' => '-',
-            'nomor_bukti_perolehan' => 112233,
-            'merk' => '-',
-            'sumber_dana' => '-',
-            'pic' => '-',
-            'kode_ruangan' => '-',
-            'kondisi' => '-',
-            'unit' => '-',
+            'kelompok_belanja' => 'wdadwad',
+            'asal_perolehan' => 'wdadwad',
+            'nomor_bukti_perolehan' => '112233',
+            'merk' => 'logatik',
+            'sumber_dana' => 'wdadwad',
+            'pic' => 'wdadwad',
+            'kode_ruangan' => 'wdadwad',
+            'kondisi' => 'wdadwad',
+            'unit' => '001',
             'status' => 'Aktif',
-            'tahun_pengadaan' => '-',
+            'tahun_pengadaan' => '2033',
         ];
 
         $response = $this->actingAs($user)->post(route('data-aset.store'),$request);
         
-        $response->assertStatus(302);
-        
-        $response->assertRedirect(route('data-aset.index'));
+        $response->assertStatus(500);
     }
 }
