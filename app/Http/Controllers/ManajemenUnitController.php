@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Unit;
 use App\DataAset;
+use App\Roles;
 use Auth;
 use App\AktivitasSistem;
 use Yajra\Datatables\Datatables;
@@ -53,7 +54,7 @@ class ManajemenUnitController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan tambah data unit',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id),
             ]);
             return redirect()->back()->with('success', 'Data unit berhasil ditambahkan');
         }
@@ -100,7 +101,7 @@ class ManajemenUnitController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan update data unit',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id),
             ]);
 
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
@@ -125,7 +126,7 @@ class ManajemenUnitController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus data unit',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id),
             ]);
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
         } else {
@@ -137,13 +138,13 @@ class ManajemenUnitController extends Controller
     {
         $unit = Unit::select('units.*');
         $datatables = Datatables::of($unit);
-        if ($request->get('search')['value']) {
+        if (isset($request->search['value'])) {
             $datatables->filter(function ($query) {
                     $keyword = request()->get('search')['value'];
-                    $query->where('kode_unit', 'like', "%" . $keyword . "%");
+                    $query->where('units.kode_unit', 'like', "%" . $keyword . "%");
 
         });}
-        $datatables->orderColumn('kode_unit', function ($query, $order) {
+        $datatables->orderColumn('units.kode_unit', function ($query, $order) {
             $query->orderBy('units.kode_unit', $order);
         });
         return $datatables->addIndexColumn()

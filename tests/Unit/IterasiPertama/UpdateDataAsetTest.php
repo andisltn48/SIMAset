@@ -22,7 +22,7 @@ class UpdateDataAsetTest extends TestCase
         ->first();
 
         $request = [
-            'nama_barang' => 'kursi gaminggoss',
+            'nama_barang' => 'kursi gamilose',
             'kode_barang' => 110220033221,
             'nup' => 1233,
             'uraian_barang' => 'Kursi gimang untuk keperluan tidur',
@@ -46,6 +46,6 @@ class UpdateDataAsetTest extends TestCase
 
         $response = $this->actingAs($user)->put(route('data-aset.update',7),$request);
         
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 }

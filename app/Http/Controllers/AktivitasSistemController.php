@@ -38,7 +38,7 @@ class AktivitasSistemController extends Controller
         $aktivitas = AktivitasSistem::leftjoin('users','users.id','aktivitas_sistem.user_id')
         ->select('aktivitas_sistem.*','users.name');
         $datatables = Datatables::of($aktivitas);
-        if ($request->get('search')['value']) {
+        if (isset($request->search['value'])) {
             $datatables->filter(function ($query) {
                     $keyword = request()->get('search')['value'];
                     $query->where('users.name', 'like', "%" . $keyword . "%");

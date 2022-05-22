@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class HapusUnitTest extends TestCase
+class LihatAktivitasSistemTest extends TestCase
 {
     // use WithoutMiddleware;
     /**
@@ -14,15 +14,14 @@ class HapusUnitTest extends TestCase
      *
      * @return void
      */
-    public function testHapusUnit()
+    public function testLihatAktivitasSistem()
     {
         $user = User::where('role_id',1)
-        ->orWhere('role_id',2)
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('unit.destroy',16));
+        ->get(route('aktivitas-sistem.get-aktivitas'));
         
-        $response->assertStatus(302);
+        $response->assertStatus(200);
     }
 }

@@ -23,7 +23,7 @@ class LihatDataAsetTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('data-aset.index'));
+        ->get(route('data-aset.getdatatable'));
         
         $response->assertStatus(200);
     }
