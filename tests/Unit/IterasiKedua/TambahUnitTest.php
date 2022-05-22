@@ -28,6 +28,6 @@ class TambahUnitTest extends TestCase
         $response = $this->actingAs($user)
         ->post(route('unit.store'), $request);
         
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 }

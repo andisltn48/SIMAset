@@ -26,7 +26,7 @@ class CreateDataAsetTest extends TestCase
         $request = [
             'nama_barang' => 'kursi gaminggo',
             'jumlah_barang' => 1,
-            'kode_barang' => 13341242111,
+            'kode_barang' => 1334132211899111,
             'nup_awal' => 2221,
             'uraian_barang' => 'Kursi gimang untuk keperluan tidur',
             'harga_satuan' => 1000000,
@@ -49,6 +49,6 @@ class CreateDataAsetTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('data-aset.store'),$request);
         
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 }

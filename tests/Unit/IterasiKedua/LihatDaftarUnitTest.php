@@ -21,7 +21,7 @@ class LihatDaftarUnitTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('unit.index'));
+        ->get(route('unit.get-data-unit'));
         
         $response->assertStatus(200);
     }

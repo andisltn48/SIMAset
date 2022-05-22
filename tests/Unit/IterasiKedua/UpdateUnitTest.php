@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\IterasiPertama;
+namespace Tests\Unit\IterasiKedua;
 
 use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class DeleteDataAsetTest extends TestCase
+class UpdateUnitTest extends TestCase
 {
     // use WithoutMiddleware;
     /**
@@ -14,17 +14,19 @@ class DeleteDataAsetTest extends TestCase
      *
      * @return void
      */
-    public function testDeleteDataAset()
+    public function testUpdateUnit()
     {
         $user = User::where('role_id',1)
         ->orWhere('role_id',2)
-        ->orWhere('role_id',3)
         ->first();
 
-        // dd($user);
+        $request = [
+            'kode' => '005',
+            'nama' => 'BUMNS Abis Update'
+        ];
 
-        
-        $response = $this->actingAs($user)->delete(route('data-aset.destroy',20));
+        $response = $this->actingAs($user)
+        ->put(route('unit.update',17), $request);
         
         $response->assertStatus(302);
     }
