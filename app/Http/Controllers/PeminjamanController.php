@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use CloudConvert\Laravel\Facades\CloudConvert;
 use App\DataPeminjaman;
 use App\DataAset;
 use App\User;
@@ -240,7 +241,7 @@ class PeminjamanController extends Controller
             }
 
             $datapeminjaman = DataPeminjaman::where('status_peminjaman', '!=', 'Peminjaman Selesai')->select('no_peminjaman', 'tanggal_awal_penggunaan', 'tanggal_akhir_penggunaan')->get();
-
+            
             $arrDates2 = null;
             $arrNoPeminjaman = null;
             foreach ($datapeminjaman as $key => $value) {
@@ -257,7 +258,9 @@ class PeminjamanController extends Controller
                 }
 
                 foreach ($arrDates2 as $dataDates) {
+                    
                     if (in_array($dataDates,$arrDates)) {
+                        // dd($dataDates);
                         $arrNoPeminjaman[] = $value->no_peminjaman;
                         break;
                     }
@@ -273,14 +276,23 @@ class PeminjamanController extends Controller
             // // ->orWhereIn('tanggal_akhir_penggunaan',$arrDates)
             // // ->where('status_peminjaman', '!=', 'Peminjaman Selesai')
             // // ->get();
-            $kode_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('kode_barang')->all();
-            $nup_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('nup_barang')->all();
-            $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
-            $dataaset2 = DataAset::whereIn('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
-            $fixdata = $dataaset1->merge($dataaset2);
+            // dd($arrNoPeminjaman);
+            
+            if ($arrNoPeminjaman) {
+                $kode_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('kode_barang')->all();
+            
+                $nup_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('nup_barang')->all();
+                $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
+                $dataaset2 = DataAset::whereIn('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
+                $fixdata = $dataaset1->merge($dataaset2);
+            } else {
+                $fixdata = DataAset::all();
+            }
+            
             return response()->json([
                 'data' => $fixdata,
             ]);
+            
         }
         
     }
@@ -382,7 +394,7 @@ class PeminjamanController extends Controller
     public function get_data_peminjaman(Request $request)
     {
         if ($request->id != NULL) {
-            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_peminjaman', 'Dalam Peminjaman')->orWhere('status_peminjaman', 'Peminjaman Selesai');
+            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_permintaan', '!=', 'Belum Dikonfirmasi');
             $datatables = Datatables::of($datapeminjaman);
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {
@@ -395,14 +407,21 @@ class PeminjamanController extends Controller
             });
             return $datatables->addIndexColumn()
             ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
-                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
+                if ($datapeminjaman->status_peminjaman == 'Dalam Peminjaman') {
+                    return '<div style="background: rgb(255,255,51); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
+                } elseif ($datapeminjaman->status_peminjaman == 'Ditolak') {
+                    return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_peminjaman.'</div>';
+                } else {
+                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
+                }
+                
             })
             ->escapeColumns([])
             ->addColumn('download_surat_balasan','peminjaman-user.button-datatable.download-surat-balasan')
             ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
             ->toJson();
         } else {
-            $datapeminjaman = DataPeminjaman::where('status_peminjaman', 'Dalam Peminjaman')->orWhere('status_peminjaman', 'Peminjaman Selesai');
+            $datapeminjaman = DataPeminjaman::where('status_permintaan','!=','Belum Dikonfirmasi');
             $datatables = Datatables::of($datapeminjaman);
             if ($request->get('search')['value']) {
                 $datatables->filter(function ($query) {
@@ -415,7 +434,14 @@ class PeminjamanController extends Controller
             });
             return $datatables->addIndexColumn()
             ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
-                return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_peminjaman.'</div>';
+                if ($datapeminjaman->status_peminjaman == 'Dalam Peminjaman') {
+                    return '<div style="background: rgb(255,255,51); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
+                } elseif ($datapeminjaman->status_peminjaman == 'Ditolak') {
+                    return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_peminjaman.'</div>';
+                } else {
+                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
+                }
+                
             })
             ->escapeColumns([])
             ->addColumn('download_surat_balasan','peminjaman-admin.button-datatable.download-surat-balasan')
@@ -443,21 +469,21 @@ class PeminjamanController extends Controller
         return response()->file(public_path('template-surat-peminjaman/Format surat peminjaman.docx'));
     }
 
-    public function download_surat_peminjaman($no_peminjaman)
+    public function download_surat_peminjaman($surat_peminjaman)
     {
-        $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        $datapeminjaman = DataPeminjaman::where('surat_peminjaman', $surat_peminjaman)->first();
         return response()->file(public_path('storage/file-peminjaman/surat-peminjaman/'. $datapeminjaman->surat_peminjaman));
     }
 
-    public function download_data_diri_penanggung_jawab($no_peminjaman)
+    public function download_data_diri_penanggung_jawab($data_diri_penanggung_jawab)
     {
-        $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        $datapeminjaman = DataPeminjaman::where('data_diri_penanggung_jawab', $data_diri_penanggung_jawab)->first();
         return response()->file(public_path('storage/file-peminjaman/data-diri-penanggungjawab/'. $datapeminjaman->data_diri_penanggung_jawab));
     }
 
-    public function download_surat_balasan($no_peminjaman)
+    public function download_surat_balasan($surat_balasan)
     {
-        $datapeminjaman = DataPeminjaman::where('no_peminjaman', $no_peminjaman)->first();
+        $datapeminjaman = DataPeminjaman::where('surat_balasan', $surat_balasan)->first();
         return response()->file(public_path('storage/file-peminjaman/surat-balasan/'. $datapeminjaman->surat_balasan.'.docx'));
     }
 
@@ -493,7 +519,7 @@ class PeminjamanController extends Controller
         if ($request->status == 'Disetujui') {
             
             /*@ Reading doc file */
-            $template = new\PhpOffice\PhpWord\TemplateProcessor(public_path('template-surat-balasan/Format surat balasan.docx'));
+            $template = new\PhpOffice\PhpWord\TemplateProcessor(public_path('template-surat-balasan/Format surat balasan disetujui.docx'));
     
             $tanggalPeminjaman = $datapermintaan->tanggal_awal_penggunaan." s/d ".$datapermintaan->tanggal_akhir_penggunaan;
             /*@ Replacing variables in doc file */
@@ -522,7 +548,7 @@ class PeminjamanController extends Controller
 
             $template->setValue('peminjam', $dataPeminjam->name);
             $template->setValue('tanggal_sekarang', $currentDay.' '.$currentMonth.' '.$currentYear);
-            $template->setValue('waktu_peminjaman', $tanggalPeminjaman);
+            $template->setValue('waktu_permintaan', $datapermintaan->created_at);
             $template->cloneRow('row',count($listbarangpinjam));
 
             foreach ($listbarangpinjam as $key => $value) {
@@ -537,6 +563,7 @@ class PeminjamanController extends Controller
             $timeNow = time();
             $saveDocPath = public_path('storage\file-peminjaman\surat-balasan\surat-balasan-'.$timeNow.'.docx');
             $template->saveAs($saveDocPath);
+
     
             /*@ Remove temporarily created word file */
             // if ( file_exists($saveDocPath) ) {
@@ -554,16 +581,75 @@ class PeminjamanController extends Controller
             // $files = \Storage::path('public/file-peminjaman/surat-balasan/'.$fileName_suratbalasan);
             $files = $saveDocPath;
 
-            Mail::send('suratBalasanView', ['dataPeminjam' => $dataPeminjam], function($message) use($dataPeminjam, $files){
+            Mail::send('suratBalasanView', ['dataPeminjam' => $dataPeminjam, 'status' => 'disetujui'], function($message) use($dataPeminjam, $files){
                 $message->to($dataPeminjam->email);
                 $message->subject('Surat balasan peminjaman');
                 $message->attach($files);
             });
         } else {
+
+            $template = new\PhpOffice\PhpWord\TemplateProcessor(public_path('template-surat-balasan/Format surat balasan ditolak.docx'));
+    
+            $tanggalPeminjaman = $datapermintaan->tanggal_awal_penggunaan." s/d ".$datapermintaan->tanggal_akhir_penggunaan;
+            /*@ Replacing variables in doc file */
+            $currentDay = date('d');
+            $currentMonth = date('m');
+            $currentYear = date('Y');
+
+            $arrayMonth = ['1'=>'Januari',
+            '2'=>'Februari',
+            '3'=>'Maret',
+            '4'=>'April',
+            '5'=>'Mei',
+            '6'=>'Juni',
+            '7'=>'Juli',
+            '8'=>'Agustus',
+            '9'=>'September',
+            '10'=>'Oktober',
+            '11'=>'November',
+            '12'=>'Desember'];
+
+            foreach ($arrayMonth as $key => $value) {
+                if($currentMonth == $key){
+                    $currentMonth = $value;
+                }
+            }
+
+            $template->setValue('peminjam', $dataPeminjam->name);
+            $template->setValue('tanggal_sekarang', $currentDay.' '.$currentMonth.' '.$currentYear);
+            $template->setValue('waktu_permintaan', $datapermintaan->created_at);
+            $template->cloneRow('row',count($listbarangpinjam));
+
+            foreach ($listbarangpinjam as $key => $value) {
+                $template->setValue('row#'.($key+1), $key+1);
+                $template->setValue('nama_aset#'.($key+1), $value->nama_barang);
+                $template->setValue('kode_barang#'.($key+1), $value->kode_barang);
+                $template->setValue('waktu_peminjaman#'.($key+1), $tanggalPeminjaman);
+            }
+
+            // dd(count($listbarangpinjam));
+
+            $timeNow = time();
+            $saveDocPath = public_path('storage\file-peminjaman\surat-balasan\surat-balasan-'.$timeNow.'.docx');
+            $template->saveAs($saveDocPath);
+
+            
             $datapermintaan->update([
                 'status_permintaan' => $request->status,
+                'status_peminjaman' => 'Ditolak',
+                'surat_balasan' => 'surat-balasan-'.$timeNow,
                 'catatan' => $request->catatan
             ]);
+            
+
+            // $files = \Storage::path('public/file-peminjaman/surat-balasan/'.$fileName_suratbalasan);
+            $files = $saveDocPath;
+
+            Mail::send('suratBalasanView', ['dataPeminjam' => $dataPeminjam, 'status' => 'ditolak'], function($message) use($dataPeminjam, $files){
+                $message->to($dataPeminjam->email);
+                $message->subject('Surat balasan peminjaman');
+                $message->attach($files);
+            });
         }
 
 

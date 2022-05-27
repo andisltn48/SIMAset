@@ -419,6 +419,7 @@ class DataAsetController extends Controller
         });
         return $datatables->addIndexColumn()
         ->addColumn('action','data-aset.action')
+        // ->editColumn('name', "Hi !")
         ->toJson();
     }
 
