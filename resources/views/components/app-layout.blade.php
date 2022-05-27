@@ -43,6 +43,7 @@
 
     <script src="{{ asset('template') }}/assets/js/plugins/chartjs.min.js"></script>
     <link href="{{ asset('template') }}/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{{ asset('css') }}/style.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('template') }}/assets/css/argon-dashboard.css" rel="stylesheet" />
 

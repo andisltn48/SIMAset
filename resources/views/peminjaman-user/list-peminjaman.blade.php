@@ -37,6 +37,7 @@
                         <th>Tanggal Akhir Penggunaan</th>
                         <th>Status Peminjaman</th>
                         <th>Surat Balasan</th>
+                        <th>Catatan</th>
                         <th>Updated_At</th>
                     </tr>
                 </thead>
@@ -87,7 +88,7 @@
               searchPlaceholder: "Cari no peminjaman"
           },
             order: [
-                [8, "desc"]
+                [9, "desc"]
             ],
             scrollX: true,
             processing: true,
@@ -133,6 +134,10 @@
                 searchable: 'false',
                 className: "dt-nowrap",
                 data: 'download_surat_balasan'
+            }, {
+                searchable: 'false',
+                className: "dt-nowrap",
+                data: 'catatan'
             }, {
                 width: '10rem',
                 searchable: 'false',

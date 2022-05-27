@@ -44,4 +44,17 @@ class DataPengajuan extends Model
     {
         return date('d-m-Y H:i:s', strtotime($value));
     }
+    
+    public function getHargaSatuanAttribute($value)
+    {
+        return strrev(implode('.', str_split(strrev(strval($value)), 3)));
+    }
+    public function getHargaTotalAttribute($value)
+    {
+        return strrev(implode('.', str_split(strrev(strval($value)), 3)));
+    }
+    public function getNilaiTagihanAttribute($value)
+    {
+        return strrev(implode('.', str_split(strrev(strval($value)), 3)));
+    }
 }

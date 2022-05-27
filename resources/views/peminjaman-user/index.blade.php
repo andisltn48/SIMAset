@@ -1,4 +1,9 @@
 <x-app-layout title="Form Peminjaman">
+    <div class="loading" id="loading">
+        <div class='uil-ring-css' style='transform:scale(0.79)'>
+          <div></div>
+        </div>
+    </div>
     <div class=" card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
@@ -237,6 +242,13 @@
             $.ajax({
                 url: "{{ route('peminjaman.get-free-aset') }}",
                 type: "GET",
+                cache: false,
+                beforeSend: function(){
+                    $('#loading').show();
+                },
+                complete: function(){
+                    $('#loading').hide();
+                },
                 data: {
                     tanggal_awal_penggunaan: tanggalawalpenggunaan,
                     tanggal_akhir_penggunaan: tanggalakhirpenggunaan,
