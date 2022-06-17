@@ -9,6 +9,7 @@ use Auth;
 use App\AktivitasSistem;
 use Yajra\Datatables\Datatables;
 
+use App\Imports\DataUnitImport;
 use Illuminate\Http\Request;
 
 class ManajemenUnitController extends Controller
@@ -54,7 +55,7 @@ class ManajemenUnitController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan tambah data unit',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect()->back()->with('success', 'Data unit berhasil ditambahkan');
         }
@@ -101,7 +102,7 @@ class ManajemenUnitController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan update data unit',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
 
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
@@ -126,7 +127,7 @@ class ManajemenUnitController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus data unit',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect()->back()->with('success', 'Data unit berhasil diupdate');
         } else {
@@ -150,5 +151,47 @@ class ManajemenUnitController extends Controller
         return $datatables->addIndexColumn()
         ->addColumn('action','unit.action')
         ->toJson();
+    }
+
+    public function importexcel(Request $request){
+        $file = $request->file('fileimport')->getRealPath();
+        $import = new DataUnitImport();
+        $import->import($file);
+        $main_array = [];
+        $message = '';
+        if ($import->failures()->isNotEmpty()) {
+            foreach ($import->failures() as $rows) {
+              $seccond_array = [
+                'kode' => $rows->values()["kode_unit"],
+                'nama' => $rows->values()["nama_unit"],
+                'message' => $rows->errors()[0]
+              ];
+
+              $main_arrays[] = $seccond_array;
+            //   array_push($main_arrays, $seccond_array);
+              // var_dump($rows->values()["kode"]);
+            }
+        } else {
+            $main_arrays = NULL;
+        }
+
+        $activity = AktivitasSistem::create([
+            'user_id' => Auth::user()->id,
+            'user_activity' => Auth::user()->name.' melakukan impor data unit',
+
+            'user_role' => session('role'),
+        ]);
+    // $myJSON = json_encode($json_failed);
+        if ($main_arrays != NULL) {
+            return redirect()->back()->with('error',$main_arrays);
+        } else {
+            return redirect()->back()->with('success', 'berhasil melakukan import data ruangan');
+        }
+
+    }
+
+    public function import_template(){
+        $filepath = public_path('template-import-unit/template-impor-unit.xlsx');
+        return response()->download($filepath);
     }
 }

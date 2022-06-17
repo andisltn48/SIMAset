@@ -17,6 +17,7 @@
         <div class="row header-peminjaman">
             <div class="col-12 col-md-8 title">
                 <h5 class="fw-bold">Daftar Peminjaman</h5>
+                <p>*Silahkan melakukan cek secara berkala pada email anda untuk surat balasan</p>
             </div>
             <div class="col button" style="text-align: end">
                 <a href="{{ route('peminjaman.list-permintaan-peminjaman') }}"><button

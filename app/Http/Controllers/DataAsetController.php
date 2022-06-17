@@ -142,7 +142,7 @@ class DataAsetController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penambahan aset',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
 
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
@@ -188,7 +188,7 @@ class DataAsetController extends Controller
                   'user_id' => Auth::user()->id,
                   'user_activity' => Auth::user()->name.' melakukan penambahan aset',
 
-                  'user_role' => Roles::find(Auth::user()->role_id),
+                  'user_role' => Roles::find(Auth::user()->role_id)->name,
               ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil ditambahkan');
             } else {
@@ -280,7 +280,7 @@ class DataAsetController extends Controller
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan update data aset',
 
-                    'user_role' => Roles::find(Auth::user()->role_id),
+                    'user_role' => Roles::find(Auth::user()->role_id)->name,
                 ]);
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
             }
@@ -322,7 +322,7 @@ class DataAsetController extends Controller
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan update data aset',
 
-                    'user_role' => Roles::find(Auth::user()->role_id),
+                    'user_role' => Roles::find(Auth::user()->role_id)->name,
                 ]);
                 return redirect(route('data-aset.index'))->with('success','Data Aset berhasil diedit');
             }
@@ -340,7 +340,7 @@ class DataAsetController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus data aset',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect(route('data-aset.index'))->with('success','Data Aset berhasil dihapus');
         }
@@ -360,7 +360,7 @@ class DataAsetController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus riwayat impor',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect(route('data-aset.import'))->with('success','Riwayat impor berhasil dihapus');
         }
@@ -475,7 +475,7 @@ class DataAsetController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan export excel data aset',
 
-            'user_role' => Roles::find(Auth::user()->role_id),
+            'user_role' => Roles::find(Auth::user()->role_id)->name,
         ]);
         return (new DataAsetExport($unit,$kondisi,$koderuangan,$tahunpengadaan,$kodebarang,$nup))->download('Data-Aset.xlsx');
         // return (new DataAsetExport)->download('app.xls');
@@ -537,7 +537,7 @@ class DataAsetController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan impor data aset',
 
-                'user_role' => Roles::find(Auth::user()->role_id),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect(route('data-aset.import'))->with('success', 'Berhasil melakukan impor');
         }

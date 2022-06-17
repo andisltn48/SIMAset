@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \stdClass;
 use App\DataRuangan;
+use App\Roles;
 use App\AktivitasSistem;
 use App\DataAset;
 use Auth;
@@ -60,7 +61,7 @@ class ManajemenRuanganController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penambahan data ruangan',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect()->back()->with('success', 'Data ruangan berhasil ditambahkan');
         }
@@ -124,7 +125,7 @@ class ManajemenRuanganController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan update data ruangan',
 
-            'user_role' => session('role'),
+            'user_role' => Roles::find(Auth::user()->role_id)->name,
         ]);
         return redirect()->back()->with('success', 'Data ruangan berhasil diedit');
 
@@ -147,7 +148,7 @@ class ManajemenRuanganController extends Controller
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan hapus data ruangan',
 
-                    'user_role' => session('role'),
+                    'user_role' => Roles::find(Auth::user()->role_id)->name,
                 ]);
                 return redirect()->back()->with('success', 'Data ruangan berhasil dihapus');
             }
@@ -161,7 +162,7 @@ class ManajemenRuanganController extends Controller
     public function get_data_ruangan(Request $request){
         $dataruangan = DataRuangan::select('data_ruangan.*');
         $datatables = Datatables::of($dataruangan);
-        if ($request->get('search')['value']) {
+        if (isset($request->search['value'])) {
             $datatables->filter(function ($query) {
                     $keyword = request()->get('search')['value'];
                     $query->where('kode_ruangan', 'like', "%" . $keyword . "%");
@@ -201,7 +202,7 @@ class ManajemenRuanganController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan impor data ruangan',
 
-            'user_role' => session('role'),
+            'user_role' => Roles::find(Auth::user()->role_id)->name,
         ]);
     // $myJSON = json_encode($json_failed);
         if ($main_arrays != NULL) {
@@ -210,5 +211,10 @@ class ManajemenRuanganController extends Controller
             return redirect()->back()->with('success', 'berhasil melakukan import data ruangan');
         }
 
+    }
+
+    public function import_template(){
+        $filepath = public_path('template-import-ruangan/template-impor-ruangan.xlsx');
+        return response()->download($filepath);
     }
 }

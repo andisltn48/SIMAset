@@ -124,6 +124,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        
                         <label for="exampleFormControlInput1">Choose File<sup class="text-danger">*</sup></label>
                         <div class="custom-file">
                             <input required class="form-control-file" name="fileimport" type="file"
@@ -131,6 +132,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <a href="{{ route('data-ruangan.impor-ruangan-template') }}"><button type="button" class="mt-1 btn btn-primary"> <i
+                            class="fas fa-fw fa-file-excel me-2"></i>Download Template</button></a>
                         <button type="submit" class="btn btn-primary">Impor</button>
                     </div>
                 </form>

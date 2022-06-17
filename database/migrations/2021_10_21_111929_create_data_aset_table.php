@@ -16,12 +16,12 @@ class CreateDataAsetTable extends Migration
         Schema::create('data_aset', function (Blueprint $table) {
             $table->id();
             $table->string('nama_barang');
-            $table->bigInteger('kode');
+            $table->string('kode');
             $table->string('nup');
             $table->string('uraian_barang');
-            $table->bigInteger('harga_satuan');
-            $table->bigInteger('harga_total');
-            $table->bigInteger('nilai_tagihan');
+            $table->string('harga_satuan');
+            $table->string('harga_total');
+            $table->string('nilai_tagihan');
             $table->string('tanggal_SP2D');
             $table->string('nomor_SP2D');
             $table->string('kelompok_belanja');

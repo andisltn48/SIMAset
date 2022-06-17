@@ -37,12 +37,16 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::post('/test','AktivitasSistemController@test')->name('test');
 
     Route::resource('laporan-aset', LaporanAsetController::class);
+    
+    Route::resource('manajemen-user', ManajemenUserController::class);
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin']], function () {
     //route unit
     Route::resource('unit', ManajemenUnitController::class);
     Route::get('/get-data-unit','ManajemenUnitController@get_data_unit')->name('unit.get-data-unit');
+    Route::post('/impor-data-unit','ManajemenUnitController@importexcel')->name('unit.impor-data-unit');
+    Route::get('/impor-unit-template','ManajemenUnitController@import_template')->name('unit.impor-unit-template');
 
     Route::resource('manajemen-user', ManajemenUserController::class);
     Route::get('/get-superadmin','ManajemenUserController@get_superadmin')->name('manajemen-user.get-superadmin');
@@ -53,7 +57,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::get('/get-pengaju','ManajemenUserController@get_pengaju')->name('manajemen-user.get-pengaju');
 });
 
-Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,BMN']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin']], function(){
     //route data aset
     Route::resource('data-aset', DataAsetController::class);
     Route::get('/impor-aset','DataAsetController@import')->name('data-aset.import');
@@ -70,6 +74,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::resource('data-ruangan', ManajemenRuanganController::class);
     Route::get('/get-data-ruangan','ManajemenRuanganController@get_data_ruangan')->name('data-ruangan.get-data-ruangan');
     Route::post('/impor-data-ruangan','ManajemenRuanganController@importexcel')->name('data-ruangan.impor-data-ruangan');
+    Route::get('/impor-ruangan-template','ManajemenRuanganController@import_template')->name('data-ruangan.impor-ruangan-template');
 
     //route pengajuan
     Route::resource('pengajuan', PengajuanController::class);
@@ -94,7 +99,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
     Route::post('/destroy-peminjaman/{id}','PeminjamanController@destroy_peminjaman')->name('peminjaman.destroy-peminjaman');
 });
 
-Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras,BMN']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras']], function(){
     //route data aset
     Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
     Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
@@ -104,7 +109,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
 
 });
 
-Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Unit,Peminjam']], function(){
     //route peminjaman
     Route::get('/form-peminjaman','PeminjamanController@formpeminjaman')->name('peminjaman.form');
     Route::get('/get-free-aset','PeminjamanController@get_free_aset')->name('peminjaman.get-free-aset');
@@ -122,7 +127,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Peminjam']], func
     Route::post('/destroy-permintaan/{no_permintaan}','PeminjamanController@destroy_permintaan')->name('peminjaman.destroy-permintaan');
 });
 
-Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], function(){
+Route::group(['middleware' => ['auth','emailverified','cekrole:Unit']], function(){
     //route pengajuan
     Route::get('/form-pengajuan','PengajuanController@formpengajuan')->name('pengajuan.form');
     Route::post('/store-pengajuan','PengajuanController@storepengajuan')->name('pengajuan.store-pengajuan');
@@ -136,6 +141,8 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Pengaju']], funct
     Route::get('/detail-import-aset-pengajuan','PengajuanController@getdatadetailimport')->name('pengajuan.getdatadetailimport');
     Route::get('/detail-import-pengajuan/{id}','PengajuanController@detail_riwayat_import')->name('pengajuan.detail-riwayat-import');
     Route::post('/destroy-log-import-pengajuan/{id}','PengajuanController@destroy_log_import')->name('pengajuan.destroy-log-import');
+    Route::delete('/destroy-pengajuan/{id}','PengajuanController@destroy')->name('pengajuan.destroy-pengajuan');
+
 });
 
 Route::group(['middleware' => ['auth']], function(){

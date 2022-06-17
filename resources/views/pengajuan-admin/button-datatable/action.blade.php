@@ -11,10 +11,10 @@
     </div>
     @endif
     <div>
-        <form action="" method="POST">
-            {{-- {{route('pengajuan.destroy-permintaan', $model->no_pengajuan)}} --}}
+        <form action="{{route('pengajuan.destroy', $model->id)}}" method="POST">
+            @method('delete')
             @csrf
-            <button type="submit" class="btn btn-block btn-danger" onclick="return confirm('Apakah anda yakin untuk menghapus permintaan ini?');"><i
+            <button type="submit" class="btn btn-block btn-danger" onclick="return confirm('Apakah anda yakin untuk menghapus pengajuan ini?');"><i
             class="fas fa-trash-alt me-2"></i>Hapus</button>
         </form>
     </div>

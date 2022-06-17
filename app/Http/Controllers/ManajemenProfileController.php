@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use App\AktivitasSistem;
+use App\Roles;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 class ManajemenProfileController extends Controller
@@ -96,7 +97,7 @@ class ManajemenProfileController extends Controller
               'user_id' => Auth::user()->id,
               'user_activity' => Auth::user()->name.' melakukan update data akun',
 
-              'user_role' => session('role'),
+              'user_role' =>  Roles::find(Auth::user()->role_id)->name,
           ]);
 
 
@@ -110,7 +111,7 @@ class ManajemenProfileController extends Controller
               'user_id' => Auth::user()->id,
               'user_activity' => Auth::user()->name.' melakukan update data akun',
 
-              'user_role' => session('role'),
+              'user_role' =>  Roles::find(Auth::user()->role_id)->name,
           ]);
 
 

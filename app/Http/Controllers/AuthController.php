@@ -34,7 +34,7 @@ class AuthController extends Controller
             if ($role->name == 'Peminjam') {
                 return redirect('form-peminjaman');
             }
-            if ($role->name == 'Pengaju') {
+            if ($role->name == 'Unit') {
                 return redirect('form-pengajuan');
             }
             return redirect('data-aset');

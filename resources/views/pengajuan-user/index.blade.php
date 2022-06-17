@@ -2,7 +2,7 @@
     <div class="mt-4 card shadow p-3 mb-5 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Form Pengajuan Aset</h5>
+                <h5 class="fw-bold">Form Pencatatan Aset</h5>
             </div>
             {{-- <div class="col button text-end">
                 <a href="{{ route('data-aset.index') }}"><button class="btn btn-block btn-success">Data
@@ -108,7 +108,7 @@
                         </div>
                         <div class="form-group">
                             <input value="{{ old('harga_satuan') }}" name="harga_satuan" type="text"
-                                class="form-control" id="rupiah" required>
+                                class="form-control harga_satuan" oninput="hargaTotal()" id="rupiah" required>
                         </div>
                     </div>
                     <div class="col m-1">
@@ -116,8 +116,8 @@
                             <p>Harga Total<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="form-group">
-                            <input value="{{ old('harga_total') }}" name="harga_total" type="text"
-                                class="form-control" id="rupiah" required>
+                            <input readonly value="{{ old('harga_total') }}" name="harga_total" type="text"
+                                class="form-control harga_total" id="rupiah" required>
                         </div>
                     </div>
                 </div>
@@ -383,6 +383,15 @@
             } else {
                 $('#ruangan').removeAttr('readonly')
             }
+        }
+
+        function hargaTotal() {
+            let jumlah = $('#jumlah').val();
+            let harga = $('.harga_satuan').val();
+
+            harga = harga.split('.').join('');
+            let totalHarga = harga*jumlah; 
+            $('.harga_total').val(formatRupiah('' + totalHarga));
         }
 
         function nupAkhir() {
