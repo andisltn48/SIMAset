@@ -67,7 +67,7 @@ class ManajemenUserController extends Controller
           'user_id' => Auth::user()->id,
           'user_activity' => Auth::user()->name.' melakukan tambah akun',
 
-          'user_role' => session('role'),
+          'user_role' => Roles::find(Auth::user()->role_id)->name,
       ]);
 
       return redirect()->back()->with('success', 'Berhasil membuat akun');
@@ -127,7 +127,7 @@ class ManajemenUserController extends Controller
               'user_id' => Auth::user()->id,
               'user_activity' => Auth::user()->name.' melakukan update user',
 
-              'user_role' => session('role'),
+              'user_role' => Roles::find(Auth::user()->role_id)->name,
           ]);
 
 
@@ -141,7 +141,7 @@ class ManajemenUserController extends Controller
               'user_id' => Auth::user()->id,
               'user_activity' => Auth::user()->name.' melakukan update user',
 
-              'user_role' => session('role'),
+              'user_role' => Roles::find(Auth::user()->role_id)->name,
           ]);
 
 
@@ -164,7 +164,7 @@ class ManajemenUserController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan delete user',
 
-            'user_role' => session('role'),
+            'user_role' => Roles::find(Auth::user()->role_id)->name,
         ]);
 
 
@@ -176,7 +176,7 @@ class ManajemenUserController extends Controller
       $user = User::where('role_id',1)
       ->select('users.*');
       $datatables = Datatables::of($user);
-      if ($request->get('search')['value']) {
+      if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];
             $query->where('users.email', 'like', "%" . $keyword . "%");
@@ -196,7 +196,7 @@ class ManajemenUserController extends Controller
       $user = User::where('role_id',2)
       ->select('users.*');
       $datatables = Datatables::of($user);
-      if ($request->get('search')['value']) {
+      if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];
             $query->where('users.email', 'like', "%" . $keyword . "%");
@@ -211,32 +211,14 @@ class ManajemenUserController extends Controller
       ->toJson();
     }
 
-    public function get_bmn(Request $request)
-    {
-      $user = User::where('role_id',3)
-      ->select('users.*');
-      $datatables = Datatables::of($user);
-      if ($request->get('search')['value']) {
-          $datatables->filter(function ($query) {
-            $keyword = request()->get('search')['value'];
-            $query->where('users.email', 'like', "%" . $keyword . "%");
-
-      });}
-      $datatables->orderColumn('updated_at', function ($query, $order) {
-          $query->orderBy('users.updated_at', $order);
-      });
-      return $datatables->addIndexColumn()
-      ->escapeColumns([])
-      ->addColumn('action','manajemen-user.action')
-      ->toJson();
-    }
+    
 
     public function get_sarpras(Request $request)
     {
       $user = User::where('role_id',4)
       ->select('users.*');
       $datatables = Datatables::of($user);
-      if ($request->get('search')['value']) {
+      if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];
             $query->where('users.email', 'like', "%" . $keyword . "%");
@@ -256,7 +238,7 @@ class ManajemenUserController extends Controller
       $user = User::where('role_id',5)
       ->select('users.*');
       $datatables = Datatables::of($user);
-      if ($request->get('search')['value']) {
+      if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];
             $query->where('users.email', 'like', "%" . $keyword . "%");
@@ -274,10 +256,10 @@ class ManajemenUserController extends Controller
 
     public function get_pengaju(Request $request)
     {
-      $user = User::where('role_id',6)
+      $user = User::where('role_id',5)
       ->select('users.*');
       $datatables = Datatables::of($user);
-      if ($request->get('search')['value']) {
+      if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];
             $query->where('users.email', 'like', "%" . $keyword . "%");

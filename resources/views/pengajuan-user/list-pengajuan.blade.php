@@ -16,12 +16,12 @@
         @endif
         <div class="row header-peminjaman">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Daftar Pengajuan</h5>
+                <h5 class="fw-bold">Daftar Pencatatan</h5>
             </div>
         </div>
         <div class="row status-pengajuan">
             <div class="title-filter">
-                <p>Status Pengajuan</p>
+                <p>Status Pencatatan</p>
             </div>
             <div class="form-group">
                 <select class="form-select select2" id="filter-status">
@@ -38,14 +38,14 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>No Pengajuan</th>
+                        <th>No Pencatatan</th>
                         <th>Nama Barang</th>
                         <th>Kode Barang</th>
                         <th>Uraian Barang</th>
                         <th>NUP</th>
                         <th>Harga Satuan</th>
                         <th>Total Harga</th>
-                        <th>Status Pengajuan</th>
+                        <th>Status Pencatatan</th>
                         <th>Asal Perolehan</th>
                         <th>Unit</th>
                         <th>Kondisi</th>
@@ -60,13 +60,14 @@
         $(".select2").select2();
         let status_pengajuan = $('#filter-unit').val();
         // window.alert(id);
+        var id = {!! json_encode($id_unit) !!};
         let table = $('#tableListPengajuan').DataTable({
             language: {
                 'paginate': {
                     'previous': '<i class="fa fa-angle-left"></i>',
                     'next': '<i class="fa fa-angle-right"></i>'
                 },
-                searchPlaceholder: "Cari no pengajuan"
+                searchPlaceholder: "Cari no pencatatan"
             },
             pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
             order: [
@@ -79,6 +80,7 @@
                 url: "{{ route('pengajuan.getdatapengajuan') }}",
                 data: function(d) {
                     d.status_pengajuan = status_pengajuan;
+                    d.id = id;
                 }
             },
             columns: [{

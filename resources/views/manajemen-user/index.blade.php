@@ -26,8 +26,7 @@
 
         <div class="tab d-flex row-filter">
             <button class="m-1 btn btn-primary tablinks active" onclick="openTab(event, 'Peminjam')">Peminjam</button>
-            <button class="m-1 btn btn-primary tablinks" onclick="openTab(event, 'Pengaju')">Pengaju</button>
-            <button class="m-1 btn btn-primary tablinks" onclick="openTab(event, 'BMN')">BMN</button>
+            <button class="m-1 btn btn-primary tablinks" onclick="openTab(event, 'Unit')">Unit</button>
             <button class="m-1 btn btn-primary tablinks" onclick="openTab(event, 'Sarpras')">Sapras</button>
             <button class="m-1 btn btn-primary tablinks" onclick="openTab(event, 'Admin')">Admin</button>
             <button class="m-1 btn btn-primary tablinks" onclick="openTab(event, 'SuperAdmin')">SuperAdmin</button>
@@ -57,15 +56,15 @@
           </div>
         </div>
 
-        <div id="Pengaju" class="tabcontent">
+        <div id="Unit" class="tabcontent">
           <div class="row header-peminjaman">
               <div class="col-12 col-md-8 title">
-                  <h5 class="fw-bold">Daftar Pengaju</h5>
+                  <h5 class="fw-bold">Daftar Unit</h5>
               </div>
           </div>
           <hr>
           <div class="row p-3">
-              <table id="tablePengaju" class=" ps-1 table table-bordered" style="width: 100%">
+              <table id="tableUnit" class=" ps-1 table table-bordered" style="width: 100%">
                   <thead>
                       <tr>
                           <th>No</th>
@@ -80,28 +79,7 @@
           </div>
         </div>
 
-        <div id="BMN" class="tabcontent">
-          <div class="row header-peminjaman">
-              <div class="col-12 col-md-8 title">
-                  <h5 class="fw-bold">Daftar BMN</h5>
-              </div>
-          </div>
-          <hr>
-          <div class="row p-3">
-              <table id="tableBMN" class=" ps-1 table table-bordered" style="width: 100%">
-                  <thead>
-                      <tr>
-                          <th>No</th>
-                          <th>Email</th>
-                          <th>Name</th>
-                          <th>Created At</th>
-                          <th>Update At</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-              </table>
-          </div>
-        </div>
+        
 
         <div id="Sarpras" class="tabcontent">
           <div class="row header-peminjaman">
@@ -406,49 +384,6 @@
             }],
         });
 
-        let tableBMN = $('#tableBMN').DataTable({
-            language: {
-                'paginate': {
-                    'previous': '<i class="fa fa-angle-left"></i>',
-                    'next': '<i class="fa fa-angle-right"></i>'
-                },
-                searchPlaceholder: "Cari email user"
-            },
-            pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
-            order: [
-                [4, "desc"]
-            ],
-            scrollX: true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('manajemen-user.get-bmn') }}",
-            },
-            columns: [{
-                data: 'DT_RowIndex',
-                name: 'DT_Row_Index',
-                orderable: false,
-                searchable: false
-            }, {
-                className: "dt-nowrap",
-                data: 'email',
-            }, {
-                className: "dt-nowrap",
-                data: 'name',
-            }, {
-                className: "dt-nowrap",
-                data: 'created_at',
-                searchable: false
-            }, {
-                className: "dt-nowrap",
-                data: 'updated_at',
-                searchable: false
-            }, {
-                className: "dt-nowrap",
-                data: 'action',
-                searchable: false
-            }],
-        });
 
         let tableSarpras = $('#tableSarpras').DataTable({
             language: {
@@ -538,7 +473,7 @@
             }],
         });
 
-        let tablePengaju = $('#tablePengaju').DataTable({
+        let tableUnit = $('#tableUnit').DataTable({
             language: {
                 'paginate': {
                     'previous': '<i class="fa fa-angle-left"></i>',
@@ -606,10 +541,9 @@
 
           tableSuperAdmin.ajax.reload(null, false)
           tableAdmin.ajax.reload(null, false)
-          tableBMN.ajax.reload(null, false)
           tableSarpras.ajax.reload(null, false)
           tablePeminjam.ajax.reload(null, false)
-          tablePengaju.ajax.reload(null, false)
+          tableUnit.ajax.reload(null, false)
         }
 
         $(document).on('click', '.btn-edit-user', function(event) {

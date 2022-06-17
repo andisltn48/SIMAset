@@ -8,6 +8,7 @@ use App\DataPengajuan;
 use App\User;
 use App\Unit;
 use App\DataRuangan;
+use App\Roles;
 use Notification;
 use App\DataAset;
 use Auth;
@@ -92,7 +93,9 @@ class PengajuanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $dataPengajuan = DataPengajuan::find($id);
+        $dataPengajuan->delete();
+        return redirect()->back()->with('success','Berhasil menghapus pengajuan aset');
     }
 
     public function get_data_pengajuan(Request $request)
@@ -100,7 +103,7 @@ class PengajuanController extends Controller
         $dataPengajuan = DataPengajuan::where('status_pengajuan','Belum Dikonfirmasi')->leftjoin('units', 'units.kode_unit', 'data_pengajuan.unit')
         ->select('data_pengajuan.*',  'units.nama_unit');
         $datatables = Datatables::of($dataPengajuan);
-        if ($request->get('search')['value']) {
+        if (isset($request->search['value'])) {
             $datatables->filter(function ($query) {
                     $keyword = request()->get('search')['value'];
                     $query->where('no_pengajuan', 'like', "%" . $keyword . "%");
@@ -128,7 +131,7 @@ class PengajuanController extends Controller
 
     public function get_data_pengajuan_user(Request $request)
     {
-        $dataPengajuan = DataPengajuan::leftjoin('units', 'units.kode_unit', 'data_pengajuan.unit')
+        $dataPengajuan = DataPengajuan::where('id_pengaju', $request->id)->leftjoin('units', 'units.kode_unit', 'data_pengajuan.unit')
         ->select('data_pengajuan.*',  'units.nama_unit');
 
         if ($request->status_pengajuan != NULL) {
@@ -136,7 +139,7 @@ class PengajuanController extends Controller
         }
 
         $datatables = Datatables::of($dataPengajuan);
-        if ($request->get('search')['value']) {
+        if (isset($request->search['value'])) {
             $datatables->filter(function ($query) {
                     $keyword = request()->get('search')['value'];
                     $query->where('no_pengajuan', 'like', "%" . $keyword . "%");
@@ -158,13 +161,13 @@ class PengajuanController extends Controller
             }
         })
         ->escapeColumns([])
-        ->addColumn('action','pengajuan-admin.button-datatable.action')
+        ->addColumn('action','pengajuan-user.action')
         ->toJson();
     }
 
     public function list_pengajuan()
     {
-        return view('pengajuan-user.list-pengajuan');
+        return view('pengajuan-user.list-pengajuan',['id_unit' => Auth::user()->id]);
     }
 
     public function confirm_request(Request $request, $no_pengajuan)
@@ -211,7 +214,7 @@ class PengajuanController extends Controller
                   'user_id' => Auth::user()->id,
                   'user_activity' => Auth::user()->name.' melakukan menyetujui pengajuan aset',
 
-                  'user_role' => session('role'),
+                  'user_role' => Roles::find(Auth::user()->role_id)->name,
               ]);
             return redirect()->back()->with('success','Data Aset berhasil ditambahkan');
             } else {
@@ -227,7 +230,7 @@ class PengajuanController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan penolakan pengajuan aset',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
         }
 
@@ -244,7 +247,7 @@ class PengajuanController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan konfirmasi permintaan peminjaman',
 
-            'user_role' => session('role'),
+            'user_role' => Roles::find(Auth::user()->role_id)->name,
         ]);
 
         return redirect()->back()->with('success', 'Berhasil melakukan konfirmasi');
@@ -366,7 +369,7 @@ class PengajuanController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan pengajuan aset',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
 
             return redirect(route('pengajuan.form'))->with('success','Data Aset berhasil diajukan');
@@ -417,7 +420,7 @@ class PengajuanController extends Controller
                     'user_id' => Auth::user()->id,
                     'user_activity' => Auth::user()->name.' melakukan penambahan aset',
 
-                    'user_role' => session('role'),
+                    'user_role' => Roles::find(Auth::user()->role_id)->name,
                 ]);
                 $user = User::where('role_id', '3')->get();
                 $details = [
@@ -506,7 +509,7 @@ class PengajuanController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan impor pengajuan data aset',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect()->back()->with('success', 'Berhasil melakukan impor');
         }
@@ -543,7 +546,7 @@ class PengajuanController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan hapus riwayat impor',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
             return redirect()->back()->with('success','Riwayat impor berhasil dihapus');
         }

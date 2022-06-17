@@ -12,7 +12,7 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
-            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN' || session('role') == 'Sarpras')
+            @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'Sarpras')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('data-aset.index') }}">
                         <div
@@ -43,7 +43,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-clipboard text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Daftar Pengajuan</span>
+                        <span class="nav-link-text ms-1">Daftar Pencatatan</span>
                     </a>
                 </li>
 
@@ -106,46 +106,14 @@
                 </li>
             @endif
 
-            @if (session('role') == 'Peminjam')
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ route('peminjaman.form') }}">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fab fa-wpforms text-primary text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Form Peminjaman</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ route('peminjaman.list-peminjaman') }}">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Daftar Peminjaman</span>
-                    </a>
-                </li>
-            @endif
-
-            @if (session('role') == 'Pengaju')
+            @if (session('role') == 'Unit')
                 <li class="nav-item">
                     <a class="nav-link " href="{{ route('pengajuan.form') }}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fab fa-wpforms text-primary text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Form Pengajuan</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ route('pengajuan.list-pengajuan') }}">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Daftar Pengajuan</span>
+                        <span class="nav-link-text ms-1">Form Pencatatan</span>
                     </a>
                 </li>
 
@@ -155,7 +123,45 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fab fa-wpforms text-primary text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Impor</span>
+                        <span class="nav-link-text ms-1">Impor Pencatatan</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (session('role') == 'Peminjam' || session('role') == 'Unit')
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('peminjaman.form') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fab fa-wpforms text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Form Peminjaman</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (session('role') == 'Unit')
+
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('pengajuan.list-pengajuan') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Daftar Pencatatan</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (session('role') == 'Peminjam' || session('role') == 'Unit')
+
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('peminjaman.list-peminjaman') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-medical-alt text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Daftar Peminjaman</span>
                     </a>
                 </li>
             @endif

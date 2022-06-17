@@ -68,6 +68,7 @@
                     </div>
                     <div class="row mt-5">
                         <div class="col text-center">
+                            <a data-toggle="modal" data-target="#modal-import" class="btn btn-block btn-success">Impor</a>
                             <button type="submit" class="me-3 btn btn-primary"><i
                                     class="fas fa-save me-2"></i>Simpan</button>
                         </div>
@@ -76,6 +77,36 @@
             </form>
         </div>
     </div>
+    <div id="modal-import" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Impor Unit</h5>
+                    <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                    </button>
+                </div>
+                <form class="" action="{{ route('unit.impor-data-unit') }}" method="post"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        
+                        <label for="exampleFormControlInput1">Choose File<sup class="text-danger">*</sup></label>
+                        <div class="custom-file">
+                            <input required class="form-control-file" name="fileimport" type="file"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ route('unit.impor-unit-template') }}"><button type="button" class="mt-1 btn btn-primary"> <i
+                            class="fas fa-fw fa-file-excel me-2"></i>Download Template</button></a>
+                        <button type="submit" class="btn btn-primary">Impor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-unit-edit" class="modal fade bd-example-modal-lg" role="dialog">
         <div class="modal-dialog modal-lg">
             <!-- konten modal-->
