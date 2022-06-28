@@ -20,6 +20,7 @@ use App\Http\Controllers\API\PeminjamanController;
 */
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register-sA-Api', [AuthController::class, 'registerSA']);
 Route::get('/authenticate', [AuthController::class, 'not_authenticated'])->name('authenticate');
 
 Route::group(['middleware' => ['auth:sanctum']], function(){ 
