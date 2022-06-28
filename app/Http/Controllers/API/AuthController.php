@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use Validator;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\AktivitasSistem;
 
 class AuthController extends Controller
 {
@@ -133,5 +137,43 @@ class AuthController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function registerSA(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'password' => ['min:6','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/','confirmed','required'],
+            'password_confirmation' => ['required'],
+            'email' => ['unique:users,email','required']
+        ],
+        [
+            'password.regex' => 'Must contain at least one uppercase/lowercase letters and one number'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        } 
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'remember_token' => \Str::random(50),
+            'role_id' => '1',
+        ]);
+        
+        $activity = AktivitasSistem::create([
+            'user_id' => $user->id,
+            'user_activity' => $user->name.' melakukan registrasi ke dalam sistem',
+
+            'user_role' => 'Super Admin',
+        ]);
+
+        if ($user) {
+            return response()->json([
+                'statusCode' => 201,
+                'message' => 'create SA account successfully'
+            ], 201);
+        }
     }
 }

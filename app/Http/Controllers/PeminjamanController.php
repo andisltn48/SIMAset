@@ -10,6 +10,7 @@ use App\DataAset;
 use App\User;
 use App\AktivitasSistem;
 use App\ListBarangPinjam;
+use App\Roles;
 use Auth;
 Use PDF;
 use Notification;
@@ -163,7 +164,7 @@ class PeminjamanController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan permintaan peminjaman',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name
             ]);
 
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
@@ -207,7 +208,7 @@ class PeminjamanController extends Controller
                 'user_id' => Auth::user()->id,
                 'user_activity' => Auth::user()->name.' melakukan permintaan peminjaman',
 
-                'user_role' => session('role'),
+                'user_role' => Roles::find(Auth::user()->role_id)->name
             ]);
 
             return redirect()->back()->with('success', ' Permintaan peminjaman berhasil dilakukan');
@@ -331,7 +332,7 @@ class PeminjamanController extends Controller
         if ($request->id != NULL) {
             $datapeminjaman = DataPeminjaman::where('status_permintaan','Belum Dikonfirmasi')->where('id_peminjam', $request->id);
             $datatables = Datatables::of($datapeminjaman);
-            if ($request->get('search')['value']) {
+            if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
                         $keyword = request()->get('search')['value'];
                         $query->where('no_peminjaman', 'like', "%" . $keyword . "%");
@@ -360,7 +361,7 @@ class PeminjamanController extends Controller
         } else {
             $datapeminjaman = DataPeminjaman::where('status_permintaan','Belum Dikonfirmasi')->select('data_peminjaman.*');
             $datatables = Datatables::of($datapeminjaman);
-            if ($request->get('search')['value']) {
+            if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
                         $keyword = request()->get('search')['value'];
                         $query->where('no_peminjaman', 'like', "%" . $keyword . "%");
@@ -396,7 +397,7 @@ class PeminjamanController extends Controller
         if ($request->id != NULL) {
             $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_permintaan', '!=', 'Belum Dikonfirmasi');
             $datatables = Datatables::of($datapeminjaman);
-            if ($request->get('search')['value']) {
+            if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
                         $keyword = request()->get('search')['value'];
                         $query->where('no_peminjaman', 'like', "%" . $keyword . "%");
@@ -423,7 +424,7 @@ class PeminjamanController extends Controller
         } else {
             $datapeminjaman = DataPeminjaman::where('status_permintaan','!=','Belum Dikonfirmasi');
             $datatables = Datatables::of($datapeminjaman);
-            if ($request->get('search')['value']) {
+            if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
                         $keyword = request()->get('search')['value'];
                         $query->where('nama_peminjam', 'like', "%" . $keyword . "%");
@@ -501,7 +502,7 @@ class PeminjamanController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan hapus permintaan peminjaman',
 
-            'user_role' => session('role'),
+            'user_role' => Roles::find(Auth::user()->role_id)->name
         ]);
 
         return redirect()->back()->with('success', 'Berhasil menghapus permintaan');
@@ -666,7 +667,7 @@ class PeminjamanController extends Controller
             'user_id' => Auth::user()->id,
             'user_activity' => Auth::user()->name.' melakukan konfirmasi permintaan peminjaman',
 
-            'user_role' => session('role'),
+            'user_role' => Roles::find(Auth::user()->role_id)->name
         ]);
 
         return redirect()->back()->with('success', 'Berhasil melakukan konfirmasi');
@@ -683,7 +684,7 @@ class PeminjamanController extends Controller
           'user_id' => Auth::user()->id,
           'user_activity' => Auth::user()->name.' melakukan konfirmasi selesai peminjaman',
 
-          'user_role' => session('role'),
+          'user_role' => Roles::find(Auth::user()->role_id)->name
       ]);
       return redirect()->back()->with('success', 'Berhasil menyelesaikan peminjaman');
     }
@@ -700,7 +701,7 @@ class PeminjamanController extends Controller
           'user_id' => Auth::user()->id,
           'user_activity' => Auth::user()->name.' melakukan hapus data peminjaman',
 
-          'user_role' => session('role'),
+          'user_role' => Roles::find(Auth::user()->role_id)->name
       ]);
       return redirect()->back()->with('success', 'Berhasil menghapus peminjaman');
     }

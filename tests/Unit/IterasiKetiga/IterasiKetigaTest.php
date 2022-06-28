@@ -69,7 +69,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('data-ruangan.destroy',72));
+        ->delete(route('data-ruangan.destroy',27));
         
         $response->assertStatus(302);
     }
