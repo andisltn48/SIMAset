@@ -108,7 +108,7 @@
                         </div>
                         <div class="form-group">
                             <input value="{{ old('harga_satuan') }}" name="harga_satuan" type="text"
-                                class="form-control" id="rupiah" required>
+                                class="form-control harga_satuan" oninput="hargaTotal()" id="rupiah" required>
                         </div>
                     </div>
                     <div class="col m-1">
@@ -116,8 +116,8 @@
                             <p>Harga Total<sup class="text-danger">*</sup></p>
                         </div>
                         <div class="form-group">
-                            <input value="{{ old('harga_total') }}" name="harga_total" type="text"
-                                class="form-control" id="rupiah" required>
+                            <input readonly value="{{ old('harga_total') }}" name="harga_total" type="text"
+                                class="form-control harga_total" id="rupiah" required>
                         </div>
                     </div>
                 </div>
@@ -394,6 +394,15 @@
             } else {
                 $('#jumlah').removeAttr('readonly')
             }
+        }
+
+        function hargaTotal() {
+            let jumlah = $('#jumlah').val();
+            let harga = $('.harga_satuan').val();
+
+            harga = harga.split('.').join('');
+            let totalHarga = harga*jumlah; 
+            $('.harga_total').val(formatRupiah('' + totalHarga));
         }
 
     </script>
