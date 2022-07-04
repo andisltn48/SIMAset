@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\DataAsetController;
+use App\Http\Controllers\API\DataInventarisController;
 use App\Http\Controllers\API\ManajemenRuanganController;
 use App\Http\Controllers\API\ManajemenUnitController;
 use App\Http\Controllers\API\PeminjamanController;
@@ -28,12 +28,12 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'cekroleapi:1,2,3']], function(){
-    Route::get('/data-aset', [DataAsetController::class, 'index']);
-    Route::post('/data-aset', [DataAsetController::class, 'store']);
-    Route::get('/data-aset/{id}', [DataAsetController::class, 'detail']);
-    Route::delete('/data-aset/{id}', [DataAsetController::class, 'destroy']);
-    Route::put('/data-aset/{id}', [DataAsetController::class, 'update']);
-    Route::post('/data-aset/import-excel', [DataAsetController::class, 'import_data']);
+    Route::get('/data-inventaris', [DataInventarisController::class, 'index']);
+    Route::post('/data-inventaris', [DataInventarisController::class, 'store']);
+    Route::get('/data-inventaris/{id}', [DataInventarisController::class, 'detail']);
+    Route::delete('/data-inventaris/{id}', [DataInventarisController::class, 'destroy']);
+    Route::put('/data-inventaris/{id}', [DataInventarisController::class, 'update']);
+    Route::post('/data-inventaris/import-excel', [DataInventarisController::class, 'import_data']);
     
     Route::get('/data-ruangan', [ManajemenRuanganController::class, 'index']);
     Route::get('/data-ruangan/{id}', [ManajemenRuanganController::class, 'detail']);

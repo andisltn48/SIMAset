@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DataPeminjaman;
-use App\DataAset;
+use App\DataInventaris;
 use App\User;
 use App\AktivitasSistem;
 use App\Roles;
@@ -87,7 +87,7 @@ class PeminjamanController extends Controller
 
             foreach ($listbarangpinjam as $key => $value) {
                 $template->setValue('row#'.($key+1), $key+1);
-                $template->setValue('nama_aset#'.($key+1), $value->nama_barang);
+                $template->setValue('nama_inventaris#'.($key+1), $value->nama_barang);
                 $template->setValue('kode_barang#'.($key+1), $value->kode_barang);
                 $template->setValue('nup#'.($key+1), $value->nup_barang);
             }
@@ -153,7 +153,7 @@ class PeminjamanController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_peminjam' =>'required',
             'penanggung_jawab' => 'required',
-            'id_aset' => 'required',
+            'id_inventaris' => 'required',
             'tanggal_awal_penggunaan' => 'required',
             'tanggal_akhir_penggunaan' =>'required',
             'surat_peminjaman' => 'required',
@@ -180,12 +180,12 @@ class PeminjamanController extends Controller
 
         // dd(\Session::get('tempo-data'));
     
-        $dataaset = DataAset::where('id', $request->id_aset)->first();
+        $datainventaris = DataInventaris::where('id', $request->id_inventaris)->first();
 
-        if (!$dataaset) {
+        if (!$datainventaris) {
             if (!$datapermintaan) {
                 return response()->json([
-                    'message' => 'Data aset tidak ditemukan', 
+                    'message' => 'Data inventaris tidak ditemukan', 
                 ], 404);
             }
         }
@@ -206,11 +206,11 @@ class PeminjamanController extends Controller
         ]);
         $listbarangpinjam = ListBarangPinjam::create([
             'no_peminjaman' => $no_peminjaman,
-            'id_barang' => $dataaset->id,
-            'nama_barang' => $dataaset->nama_barang,
-            'kode_barang' => $dataaset->kode,
-            'nup_barang' => $dataaset->nup,
-            'kondisi' => $dataaset->kondisi
+            'id_barang' => $datainventaris->id,
+            'nama_barang' => $datainventaris->nama_barang,
+            'kode_barang' => $datainventaris->kode,
+            'nup_barang' => $datainventaris->nup,
+            'kondisi' => $datainventaris->kondisi
         ]);
         $user = User::where('role_id', '4')->get();
         $details = [

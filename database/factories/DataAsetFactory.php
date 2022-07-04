@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\DataAset;
+use App\DataInventaris;
 use Faker\Generator as Faker;
 
-$factory->define(DataAset::class, function (Faker $faker) {
+$factory->define(DataInventaris::class, function (Faker $faker) {
     return [
         'nama_barang' => $faker->title,
         'kode'=> $faker->title,

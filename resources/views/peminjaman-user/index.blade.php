@@ -80,7 +80,7 @@
                     <div class="col" id="sarana-prasarana">
                         <div class="">
                             <p>Sarana/Prasarana <span class="text-muted">(Klik tambah jika lebih dari 1
-                                    aset)</span><sup class="text-danger">*</sup></p>
+                                    sarana/prasarana)</span><sup class="text-danger">*</sup></p>
 
                         </div>
                         <div class="form-group d-flex">

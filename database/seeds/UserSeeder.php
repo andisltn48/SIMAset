@@ -13,10 +13,11 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Superadmin',
-            'email' => 'superadmin@itk.ac.id',
-            'password' => Hash::make('Superadmin12345'),
+            'email' => 'SAemailSecret@itk.ac.id',
+            'password' => Hash::make('Sup3r4Dm1n'),
             'remember_token' => Str::random(50),
-            'role_id' => '1'
+            'role_id' => '1',
+            'email_verified_at' => date('Y-m-d H:i:s')
         ]);
     }
 }

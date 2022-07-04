@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class IterasiKeempatTest extends TestCase
 {
-    // use WithoutMiddleware;
+    use WithoutMiddleware;
     /**
      * A basic unit test example.
      *
@@ -32,17 +32,6 @@ class IterasiKeempatTest extends TestCase
 
         $response = $this->actingAs($user)
         ->get(route('manajemen-user.get-admin'));
-        
-        $response->assertStatus(200);
-    }
-
-    public function testLihatDaftarBmn()
-    {
-        $user = User::where('role_id',1)
-        ->first();
-
-        $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-bmn'));
         
         $response->assertStatus(200);
     }
@@ -109,7 +98,24 @@ class IterasiKeempatTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-        ->put(route('manajemen-user.update',48),$request);
+        ->put(route('manajemen-user.update',15),$request);
+        
+        $response->assertStatus(302);
+    }
+
+    public function testUpdatePasswordUser()
+    {
+        $user = User::where('role_id',1)
+        ->first();
+
+        $request = [
+            'name' => 'test Update Password', 
+            'password' => 'userTesting12345',
+            'password_confirmation' => 'userTesting12345',
+        ];
+
+        $response = $this->actingAs($user)
+        ->put(route('manajemen-user.update',15),$request);
         
         $response->assertStatus(302);
     }
@@ -120,14 +126,14 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('manajemen-user.destroy',47));
+        ->delete(route('manajemen-user.destroy',19));
         
         $response->assertStatus(302);
     }
 
     public function testUpdateProfileByUser()
     {
-        $user = User::where('email','admin@gmail.com')
+        $user = User::where('email','unit@gmail.com')
         ->first();
 
         $request = [

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class IterasiKetigaTest extends TestCase
 {
-    // use WithoutMiddleware;
+    use WithoutMiddleware;
     /**
      * A basic unit test example.
      *
@@ -58,7 +58,18 @@ class IterasiKetigaTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-        ->put(route('data-ruangan.update',73), $request);
+        ->put(route('data-ruangan.update',2), $request);
+        
+        $response->assertStatus(302);
+    }
+
+    public function testHapusDataRuanganAlreadyUse()
+    {
+        $user = User::where('role_id',1)
+        ->first();
+
+        $response = $this->actingAs($user)
+        ->delete(route('data-ruangan.destroy',2));
         
         $response->assertStatus(302);
     }
@@ -69,7 +80,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('data-ruangan.destroy',27));
+        ->delete(route('data-ruangan.destroy',5));
         
         $response->assertStatus(302);
     }

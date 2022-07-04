@@ -1,13 +1,9 @@
-<x-app-layout title="Tambah Aset">
+<x-app-layout title="Tambah Data Inventaris">
     <div class="mt-4 card shadow p-3 mb-5 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Form Pencatatan Aset</h5>
+                <h5 class="fw-bold">Form Pencatatan Inventaris</h5>
             </div>
-            {{-- <div class="col button text-end">
-                <a href="{{ route('data-aset.index') }}"><button class="btn btn-block btn-success">Data
-                        Aset</button></a>
-            </div> --}}
         </div>
         <hr>
         <div>
@@ -298,7 +294,7 @@
                 <div class="d-flex row-tambah mt-3">
                     <div class="col m-1">
                         <div class="">
-                            <p>Foto Aset</p>
+                            <p>Foto</p>
                         </div>
                         <div class="form-group">
                             <input accept="image/*" class="form-control-file" name="foto" type="file">
@@ -319,7 +315,7 @@
                 <div class="d-flex row-tambah justify-content-center  mt-5">
                         <button type="submit" class="m-2 btn btn-primary"><i
                                 class="fas fa-save me-2"></i>Simpan</button>
-                        <a href="{{ route('data-aset.index') }}" class="m-2 btn btn-block btn-danger"><i
+                        <a href="{{ route('data-inventaris.index') }}" class="m-2 btn btn-block btn-danger"><i
                                 class="fas fa-arrow-circle-left me-2"></i>Kembali</a>
                 </div>
             </form>

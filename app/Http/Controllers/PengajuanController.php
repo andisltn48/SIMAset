@@ -10,12 +10,12 @@ use App\Unit;
 use App\DataRuangan;
 use App\Roles;
 use Notification;
-use App\DataAset;
+use App\DataInventaris;
 use Auth;
 use App\AktivitasSistem;
 use App\DetailLogImportPengajuan;
 use App\LogImportPengajuan;
-use App\Imports\PengajuanDataAsetImport;
+use App\Imports\PengajuanDataInventarisImport;
 use App\Notifications\PengajuanNotification;
 
 class PengajuanController extends Controller
@@ -95,7 +95,7 @@ class PengajuanController extends Controller
     {
         $dataPengajuan = DataPengajuan::find($id);
         $dataPengajuan->delete();
-        return redirect()->back()->with('success','Berhasil menghapus pengajuan aset');
+        return redirect()->back()->with('success','Berhasil menghapus pengajuan inventaris');
     }
 
     public function get_data_pengajuan(Request $request)
@@ -181,10 +181,10 @@ class PengajuanController extends Controller
                 'catatan' => $request->catatan
             ]);
 
-            $cekdata = DataAset::where('kode', $datapengajuan->kode_barang)->where('nup', $datapengajuan->nup)->get();
+            $cekdata = DataInventaris::where('kode', $datapengajuan->kode_barang)->where('nup', $datapengajuan->nup)->get();
             if ($cekdata->count() == 0) {
               
-              $dataaset_save = DataAset::create([
+              $datainventaris_save = DataInventaris::create([
                   'nama_barang' => $datapengajuan->nama_barang,
                   'kode' => $datapengajuan->kode,
                   'nup' => $datapengajuan->nup,
@@ -212,13 +212,13 @@ class PengajuanController extends Controller
               ]);
               $activity = AktivitasSistem::create([
                   'user_id' => Auth::user()->id,
-                  'user_activity' => Auth::user()->name.' melakukan menyetujui pengajuan aset',
+                  'user_activity' => Auth::user()->name.' melakukan menyetujui pengajuan inventaris',
 
                   'user_role' => Roles::find(Auth::user()->role_id)->name,
               ]);
-            return redirect()->back()->with('success','Data Aset berhasil ditambahkan');
+            return redirect()->back()->with('success','Data Inventaris berhasil ditambahkan');
             } else {
-                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar!';
+                $message = 'Data Inventaris dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar!';
                 return redirect()->back()->with('error',$message);
             }
         } else {
@@ -228,7 +228,7 @@ class PengajuanController extends Controller
             ]);
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
-                'user_activity' => Auth::user()->name.' melakukan penolakan pengajuan aset',
+                'user_activity' => Auth::user()->name.' melakukan penolakan pengajuan inventaris',
 
                 'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);
@@ -267,33 +267,25 @@ class PengajuanController extends Controller
 
     public function storepengajuan(Request $request)
     {
-        $fotoaset = NULL;
+        $fotoinventaris = NULL;
 
         if ($request->foto != NULL) {
-            $fileFotoAset = $request->foto;
-            $fileName_fotoAset = time().'_'.$fileFotoAset->getClientOriginalName();
-            $fileFotoAset->move(public_path('storage/foto-aset'), $fileName_fotoAset);
+            $fileFotoInventaris = $request->foto;
+            $fileName_fotoInventaris = time().'_'.$fileFotoInventaris->getClientOriginalName();
+            $fileFotoInventaris->move(public_path('storage/foto-inventaris'), $fileName_fotoInventaris);
 
-            $fotoaset = $fileName_fotoAset;
+            $fotoinventaris = $fileName_fotoInventaris;
         }
 
-        // dd($request);
-        if ($request->nup_akhir == NULL) {
-            $validate = $request->validate([
-                'kode_barang' => 'numeric',
-                'jumlah_barang' => 'numeric',
-                'nomor_sp2d' => 'numeric',
-                'nup_awal' => 'numeric',
-            ]);
-        } else {
-            $validate = $request->validate([
-                'kode_barang' => 'numeric',
-                'jumlah_barang' => 'numeric',
-                'nomor_sp2d' => 'numeric',
-                'nup_awal' => 'numeric',
-                'nup_akhir' => 'numeric'
-            ]);
-        }
+        
+        $validate = $request->validate([
+            'kode_barang' => 'numeric',
+            'jumlah_barang' => 'numeric',
+            'nomor_sp2d' => 'numeric',
+            'nup_awal' => 'numeric',
+            'nup_akhir' => 'numeric'
+        ]);
+        
 
         function RemoveSpecialChar($str) {
             $res = str_replace( array( '.' ), '', $str);
@@ -315,48 +307,54 @@ class PengajuanController extends Controller
         $current_nup= $request->nup_awal;
         $nup_akhir = $request->nup_akhir;
 
-        if ($request->jumlah_barang > 1) {
-            for ($current_nup; $current_nup <= $nup_akhir ; $current_nup++) {
-                $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
-                $cekdata2 = DataPengajuan::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
-                if ($cekdata->count() == 0 AND $cekdata2->count() == 0) {
-                // echo 'halo';
-                $dataPengajuanSave = DataPengajuan::create([
-                    'id_pengaju' => Auth::user()->id,
-                    'nama_barang' => $request->nama_barang,
-                    'kode' => $request->kode_barang,
-                    'nup' => $current_nup,
-                    'uraian_barang' => $request->uraian_barang,
-                    'harga_satuan' => $harga_satuan,
-                    'harga_total' => $harga_total,
-                    'nilai_tagihan' => $nilai_tagihan,
-                    'tanggal_SP2D' => $date_sp2d,
-                    'nomor_SP2D' => $request->nomor_sp2d,
-                    'kelompok_belanja' => $request->kelompok_belanja,
-                    'asal_perolehan' => $request->asal_perolehan,
-                    'nomor_bukti_perolehan' => $request->nomor_bukti_perolehan,
-                    'merk' => $request->merk,
-                    'sumber_dana' => $request->sumber_dana,
-                    'pic' => $request->pic,
-                    'kode_ruangan' => $request->kode_ruangan,
-                    'kondisi' => $request->kondisi,
-                    'unit' => $request->unit,
-                    'status' => 'Aktif',
-                    'gedung' => $request->gedung,
-                    'tahun_pengadaan' => $request->tahun_pengadaan,
-                    'ruangan' => $request->ruangan,
-                    'foto' => $fotoaset,
-                    'catatan' => $request->catatan,
-                    'status_pengajuan' => 'Belum Dikonfirmasi',
-                    'no_pengajuan' => $no_pengajuan,
-                ]);
-                $no_pengajuan = $no_pengajuan+1; 
-                } else {
-                    return redirect(route('pengajuan.form'))->with('error','Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$current_nup.' telah terdaftar atau telah diajukan!');
-                }
+        $cekdata = DataInventaris::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
+        $cekdata2 = DataPengajuan::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
+        if ($cekdata->count() == 0 AND $cekdata2->count() == 0 ) {
+            $fotoinventaris = NULL;
 
+            if ($request->foto != NULL) {
+                $fileFotoInventaris = $request->foto;
+                $fileName_fotoInventaris = time().'_'.$fileFotoInventaris->getClientOriginalName();
+                $fileFotoInventaris->move(public_path('storage/foto-inventaris'), $fileName_fotoInventaris);
+
+                $fotoinventaris = $fileName_fotoInventaris;
             }
+            $dataPengajuanSave = DataPengajuan::create([
+                'id_pengaju' => Auth::user()->id,
+                'nama_barang' => $request->nama_barang,
+                'kode' => $request->kode_barang,
+                'nup' => $current_nup,
+                'uraian_barang' => $request->uraian_barang,
+                'harga_satuan' => $harga_satuan,
+                'harga_total' => $harga_total,
+                'nilai_tagihan' => $nilai_tagihan,
+                'tanggal_SP2D' => $date_sp2d,
+                'nomor_SP2D' => $request->nomor_sp2d,
+                'kelompok_belanja' => $request->kelompok_belanja,
+                'asal_perolehan' => $request->asal_perolehan,
+                'nomor_bukti_perolehan' => $request->nomor_bukti_perolehan,
+                'merk' => $request->merk,
+                'sumber_dana' => $request->sumber_dana,
+                'pic' => $request->pic,
+                'kode_ruangan' => $request->kode_ruangan,
+                'kondisi' => $request->kondisi,
+                'unit' => $request->unit,
+                'status' => 'Aktif',
+                'gedung' => $request->gedung,
+                'tahun_pengadaan' => $request->tahun_pengadaan,
+                'ruangan' => $request->ruangan,
+                'foto' => $fotoinventaris,
+                'catatan' => $request->catatan,
+                'status_pengajuan' => 'Belum Dikonfirmasi',
+                'no_pengajuan' => $no_pengajuan,
+            ]);
 
+            $activity = AktivitasSistem::create([
+                'user_id' => Auth::user()->id,
+                'user_activity' => Auth::user()->name.' melakukan penambahan inventaris',
+
+                'user_role' => Roles::find(Auth::user()->role_id)->name,
+            ]);
             $user = User::where('role_id', '3')->get();
             $details = [
                 'body' => 'Permintaan pengajuan dengan no pengajuan: '.$dataPengajuanSave->no_pengajuan.' menunggu konfirmasi'
@@ -364,78 +362,13 @@ class PengajuanController extends Controller
             foreach ($user as $key => $value) {
                 Notification::send($value, new PengajuanNotification($details));
             }
-
-            $activity = AktivitasSistem::create([
-                'user_id' => Auth::user()->id,
-                'user_activity' => Auth::user()->name.' melakukan pengajuan aset',
-
-                'user_role' => Roles::find(Auth::user()->role_id)->name,
-            ]);
-
-            return redirect(route('pengajuan.form'))->with('success','Data Aset berhasil diajukan');
+            return redirect(route('pengajuan.form'))->with('success','Data Inventaris berhasil diajukan');
         } else {
-            $cekdata = DataAset::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
-            $cekdata2 = DataPengajuan::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
-            if ($cekdata->count() == 0 AND $cekdata2->count() == 0 ) {
-                $fotoaset = NULL;
-
-                if ($request->foto != NULL) {
-                    $fileFotoAset = $request->foto;
-                    $fileName_fotoAset = time().'_'.$fileFotoAset->getClientOriginalName();
-                    $fileFotoAset->move(public_path('storage/foto-aset'), $fileName_fotoAset);
-
-                    $fotoaset = $fileName_fotoAset;
-                }
-                $dataPengajuanSave = DataPengajuan::create([
-                    'id_pengaju' => Auth::user()->id,
-                    'nama_barang' => $request->nama_barang,
-                    'kode' => $request->kode_barang,
-                    'nup' => $current_nup,
-                    'uraian_barang' => $request->uraian_barang,
-                    'harga_satuan' => $harga_satuan,
-                    'harga_total' => $harga_total,
-                    'nilai_tagihan' => $nilai_tagihan,
-                    'tanggal_SP2D' => $date_sp2d,
-                    'nomor_SP2D' => $request->nomor_sp2d,
-                    'kelompok_belanja' => $request->kelompok_belanja,
-                    'asal_perolehan' => $request->asal_perolehan,
-                    'nomor_bukti_perolehan' => $request->nomor_bukti_perolehan,
-                    'merk' => $request->merk,
-                    'sumber_dana' => $request->sumber_dana,
-                    'pic' => $request->pic,
-                    'kode_ruangan' => $request->kode_ruangan,
-                    'kondisi' => $request->kondisi,
-                    'unit' => $request->unit,
-                    'status' => 'Aktif',
-                    'gedung' => $request->gedung,
-                    'tahun_pengadaan' => $request->tahun_pengadaan,
-                    'ruangan' => $request->ruangan,
-                    'foto' => $fotoaset,
-                    'catatan' => $request->catatan,
-                    'status_pengajuan' => 'Belum Dikonfirmasi',
-                    'no_pengajuan' => $no_pengajuan,
-                ]);
-
-                $activity = AktivitasSistem::create([
-                    'user_id' => Auth::user()->id,
-                    'user_activity' => Auth::user()->name.' melakukan penambahan aset',
-
-                    'user_role' => Roles::find(Auth::user()->role_id)->name,
-                ]);
-                $user = User::where('role_id', '3')->get();
-                $details = [
-                    'body' => 'Permintaan pengajuan dengan no pengajuan: '.$dataPengajuanSave->no_pengajuan.' menunggu konfirmasi'
-                ];
-                foreach ($user as $key => $value) {
-                    Notification::send($value, new PengajuanNotification($details));
-                }
-                return redirect(route('pengajuan.form'))->with('success','Data Aset berhasil diajukan');
-            } else {
-                $message = 'Data Aset dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar atau telah diajukan!';
-                return redirect(route('pengajuan.form '))->with('error',$message);
-            }
-
+            $message = 'Data Inventaris dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar atau telah diajukan!';
+            return redirect(route('pengajuan.form '))->with('error',$message);
         }
+
+    
     }
 
     public function get_ruangan(Request $request)
@@ -453,7 +386,7 @@ class PengajuanController extends Controller
     }
 
     public function import_template(){
-        $filepath = public_path('template-import-aset/Template-Data-Aset.xlsx');
+        $filepath = public_path('template-import-data-inventaris/Template-Data-Inventaris.xlsx');
         return response()->download($filepath);
     }
 
@@ -475,7 +408,7 @@ class PengajuanController extends Controller
         $importId = $importsdata->id;
 
         $file = $request->file('fileimport')->getRealPath();
-        $import = new PengajuanDataAsetImport($importId);
+        $import = new PengajuanDataInventarisImport($importId);
         $import->import($file);
 
         $currentrow= 0;
@@ -507,7 +440,7 @@ class PengajuanController extends Controller
         if ($importsdata != NULL) {
             $activity = AktivitasSistem::create([
                 'user_id' => Auth::user()->id,
-                'user_activity' => Auth::user()->name.' melakukan impor pengajuan data aset',
+                'user_activity' => Auth::user()->name.' melakukan impor pengajuan data inventaris',
 
                 'user_role' => Roles::find(Auth::user()->role_id)->name,
             ]);

@@ -46,7 +46,7 @@
 
                     </div>
                     <span class="login100-form-title p-b-26">
-                        <div class="text-primary text-center mt-2 fw-bolder">SIM-<span class="text-dark">Aset</span>
+                        <div class="text-primary text-center mt-2 fw-bolder">SIM-<span class="text-dark">Inventaris</span>
                         </div>
                     </span>
                     @if ($errors->any())

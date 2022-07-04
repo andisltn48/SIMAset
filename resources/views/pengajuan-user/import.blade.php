@@ -1,8 +1,8 @@
-<x-app-layout title="Impor Aset">
+<x-app-layout title="Impor Inventaris">
     <div class="mt-4 card shadow p-3 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Impor Aset</h5>
+                <h5 class="fw-bold">Impor Inventaris</h5>
             </div>
         </div>
         <hr>
@@ -31,7 +31,7 @@
                 </p>
             </div>
         </div>
-        <form action="{{ route('pengajuan.import-data-aset') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('pengajuan.import-data-inventaris') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mt-5">
                 <div class="col">
@@ -56,7 +56,7 @@
     <div class="mt-4 card shadow p-3 mb-5 bg-white rounded dataaset-card" style="border-radius: 0.7rem !important">
         <div class="row container-dataaset header-dataaset">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Riwayat Impor Aset</h5>
+                <h5 class="fw-bold">Riwayat Impor Inventaris</h5>
             </div>
         </div>
         <hr>

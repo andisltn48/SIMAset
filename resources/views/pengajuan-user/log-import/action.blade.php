@@ -16,7 +16,7 @@
     </div>
     <script>
         function confirm_delete() {
-            return confirm('Apakah anda yakin untuk menghapus riwayat impor aset ini ? ');
+            return confirm('Apakah anda yakin untuk menghapus riwayat impor inventaris ini ? ');
         }
     </script>
 </div>

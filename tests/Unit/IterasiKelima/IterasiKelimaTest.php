@@ -14,9 +14,9 @@ class IterasiKelimaTest extends TestCase
      *
      * @return void
      */
-    public function testCreatePengajuanDataAset()
+    public function testCreatePengajuanDataInventaris()
     {
-        $user = User::where('role_id',6)
+        $user = User::where('role_id',5)
         ->first();
 
         // dd($user);
@@ -24,8 +24,8 @@ class IterasiKelimaTest extends TestCase
         $request = [
             'nama_barang' => 'kursi gaminggo',
             'jumlah_barang' => 1,
-            'kode_barang' => 133422111,
-            'nup_awal' => 2229,
+            'kode_barang' => 43252,
+            'nup_awal' => 9,
             'uraian_barang' => 'Kursi gimang untuk keperluan tidur',
             'harga_satuan' => 1000000,
             'harga_total' => 1000000,
@@ -50,9 +50,9 @@ class IterasiKelimaTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testGetPengajuanDataAset()
+    public function testGetPengajuanDataInventaris()
     {
-        $user = User::where('role_id',6)
+        $user = User::where('role_id',5)
         ->first();
 
         $response = $this->actingAs($user)->get(route('pengajuan.getdatapengajuan'));
@@ -60,7 +60,7 @@ class IterasiKelimaTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testConfirmPengajuanDataAset()
+    public function testTerimaPengajuanDataInventaris()
     {
         $user = User::where('role_id',1)
         ->first();
@@ -71,23 +71,34 @@ class IterasiKelimaTest extends TestCase
         ];
 
 
-        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request', 25), $request);
+        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request',12), $request);
         
         $response->assertStatus(302);
     }
 
-    public function testDeletePengajuanDataAset()
+    public function testTolakPengajuanDataInventaris()
     {
-        $user = User::where('role_id',6)
+        $user = User::where('role_id',1)
         ->first();
 
         // dd($user);
         $request = [
-            'status' => 'Disetujui' //Disetujui atau Ditolak
+            'status' => 'Ditolak' //Disetujui atau Ditolak
         ];
 
 
-        $response = $this->actingAs($user)->delete(route('pengajuan.destroy-pengajuan', 25));
+        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request',13), $request);
+        
+        $response->assertStatus(302);
+    }
+
+    public function testDeletePengajuanDataInventaris()
+    {
+        $user = User::where('role_id',5)
+        ->first();
+
+
+        $response = $this->actingAs($user)->delete(route('pengajuan.destroy-pengajuan', 8));
         
         $response->assertStatus(302);
     }

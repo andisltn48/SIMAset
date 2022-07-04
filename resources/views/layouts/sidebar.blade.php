@@ -6,7 +6,7 @@
         <a class="navbar-brand m-0" 
             target="_blank">
             {{-- <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo"> --}}
-            <span class="ms-1 fs-5 font-weight-bold">SIM-Aset</span>
+            <span class="ms-1 fs-5 font-weight-bold">SIM-Inventaris</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -14,7 +14,7 @@
         <ul class="navbar-nav">
             @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'Sarpras')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('data-aset.index') }}">
+                    <a class="nav-link" href="{{ route('data-inventaris.index') }}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-file text-primary text-sm opacity-10"></i>
@@ -96,12 +96,12 @@
 
             @if (session('role') == 'Super Admin')
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('laporan-aset.index')}}">
+                    <a class="nav-link " href="{{route('laporan-inventaris.index')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-file-medical-alt text-info text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Laporan Aset</span>
+                        <span class="nav-link-text ms-1">Laporan Data Invetaris</span>
                     </a>
                 </li>
             @endif

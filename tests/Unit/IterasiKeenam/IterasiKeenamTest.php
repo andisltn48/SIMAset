@@ -15,7 +15,7 @@ class IterasiKeenamTest extends TestCase
      *
      * @return void
      */
-    public function testCreatePeminjamanAset()
+    public function testCreatePeminjamanInventaris()
     {
         $user = User::where('role_id',5)
         ->first();
@@ -40,7 +40,7 @@ class IterasiKeenamTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testGetPeminjamanAsetAdmin()
+    public function testGetPeminjamanInventarisAdmin()
     {
         $user = User::where('role_id',1)
         ->first();
@@ -50,7 +50,7 @@ class IterasiKeenamTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testGetPeminjamanAsetUser()
+    public function testGetPeminjamanInventarisUser()
     {
         $user = User::where('role_id',5)
         ->first();
@@ -60,7 +60,7 @@ class IterasiKeenamTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testGetPermintaanPeminjamanAsetAdmin()
+    public function testGetPermintaanPeminjamanInventarisAdmin()
     {
         $user = User::where('role_id',1)
         ->first();
@@ -70,7 +70,7 @@ class IterasiKeenamTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testGetPermintaanPeminjamanAsetUser()
+    public function testGetPermintaanPeminjamanInventarisUser()
     {
         $user = User::where('role_id',1)
         ->first();
@@ -80,7 +80,7 @@ class IterasiKeenamTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testConfirmPermintaanPeminjamanAset()
+    public function testConfirmPermintaanPeminjamanInventaris()
     {
         $user = User::where('role_id',1)
         ->first();
@@ -91,27 +91,27 @@ class IterasiKeenamTest extends TestCase
         ];
 
 
-        $response = $this->actingAs($user)->post(route('peminjaman.confirm-request', 29), $request);
+        $response = $this->actingAs($user)->post(route('peminjaman.confirm-request', 3), $request);
         
         $response->assertStatus(302);
     }
 
-    public function testUpdateStatusPeminjamanAset()
+    public function testUpdateStatusPeminjamanInventaris()
     {
         $user = User::where('role_id',1)
         ->first();
 
-        $response = $this->actingAs($user)->get(route('peminjaman.done-peminjaman',37));
+        $response = $this->actingAs($user)->get(route('peminjaman.done-peminjaman',2));
         
         $response->assertStatus(302);
     }
 
-    public function testDeletePengajuanDataAset()
+    public function testDeletePengajuanDataInventaris()
     {
         $user = User::where('role_id',1)
         ->first();
 
-        $response = $this->actingAs($user)->post(route('peminjaman.destroy-peminjaman', 36));
+        $response = $this->actingAs($user)->post(route('peminjaman.destroy-peminjaman', 1));
         
         $response->assertStatus(302);
     }

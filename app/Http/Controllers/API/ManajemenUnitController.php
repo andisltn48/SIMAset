@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Unit;
 use App\AktivitasSistem;
-use App\DataAset;
+use App\DataInventaris;
 use App\Roles;
 Use Validator;
 Use Auth;
@@ -172,8 +172,8 @@ class ManajemenUnitController extends Controller
             ], 404);
         }
 
-        $dataAset = DataAset::where('unit',$unit->kode_unit)->first();
-        if (!$dataAset) {
+        $dataInventaris = DataInventaris::where('unit',$unit->kode_unit)->first();
+        if (!$dataInventaris) {
             $unit->delete();
 
             $activity = AktivitasSistem::create([

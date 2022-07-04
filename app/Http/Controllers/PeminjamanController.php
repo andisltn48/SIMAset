@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use CloudConvert\Laravel\Facades\CloudConvert;
 use App\DataPeminjaman;
-use App\DataAset;
+use App\DataInventaris;
 use App\User;
 use App\AktivitasSistem;
 use App\ListBarangPinjam;
@@ -123,13 +123,13 @@ class PeminjamanController extends Controller
 
         // dd(\Session::get('tempo-data'));
         if (\Session::get('tempo-data') != NULL) {
-            $aset_selected = \Session::get('tempo-data');
+            $inventaris_selected = \Session::get('tempo-data');
             $datapeminjaman = DataPeminjaman::create([
                 'nama_peminjam' => $request->nama_peminjam,
                 'nama_penanggung_jawab' => $request->penanggung_jawab,
                 'id_peminjam' => Auth::user()['id'],
                 'no_peminjaman' => $no_peminjaman,
-                'jumlah' => count($aset_selected),
+                'jumlah' => count($inventaris_selected),
                 'tanggal_awal_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_awal_penggunaan)),
                 'tanggal_akhir_penggunaan' => date('d-m-Y H:i', strtotime($request->tanggal_akhir_penggunaan)),
                 'surat_peminjaman' => $fileName_suratpeminjaman,
@@ -139,15 +139,15 @@ class PeminjamanController extends Controller
                 'status_peminjaman' => '-',
                 'saran' => $request->saran
             ]);
-            foreach ($aset_selected as $key => $value) {
-                $dataaset = DataAset::where('id', $value)->first();
+            foreach ($inventaris_selected as $key => $value) {
+                $datainventaris = DataInventaris::where('id', $value)->first();
                 $listbarangpinjam = ListBarangPinjam::create([
                     'no_peminjaman' => $no_peminjaman,
-                    'id_barang' => $dataaset->id,
-                    'nama_barang' => $dataaset->nama_barang,
-                    'kode_barang' => $dataaset->kode,
-                    'nup_barang' => $dataaset->nup,
-                    'kondisi' => $dataaset->kondisi
+                    'id_barang' => $datainventaris->id,
+                    'nama_barang' => $datainventaris->nama_barang,
+                    'kode_barang' => $datainventaris->kode,
+                    'nup_barang' => $datainventaris->nup,
+                    'kondisi' => $datainventaris->kondisi
                 ]);
             }
 
@@ -172,7 +172,7 @@ class PeminjamanController extends Controller
             $validate = $request->validate([
                 'sarana' => 'required'
             ]);
-            $dataaset = DataAset::where('id', $request->sarana)->first();
+            $datainventaris = DataInventaris::where('id', $request->sarana)->first();
             $datapeminjaman = DataPeminjaman::create([
                 'nama_peminjam' => $request->nama_peminjam,
                 'id_peminjam' => Auth::user()['id'],
@@ -190,11 +190,11 @@ class PeminjamanController extends Controller
             ]);
             $listbarangpinjam = ListBarangPinjam::create([
                 'no_peminjaman' => $no_peminjaman,
-                'id_barang' => $dataaset->id,
-                'nama_barang' => $dataaset->nama_barang,
-                'kode_barang' => $dataaset->kode,
-                'nup_barang' => $dataaset->nup,
-                'kondisi' => $dataaset->kondisi
+                'id_barang' => $datainventaris->id,
+                'nama_barang' => $datainventaris->nama_barang,
+                'kode_barang' => $datainventaris->kode,
+                'nup_barang' => $datainventaris->nup,
+                'kondisi' => $datainventaris->kondisi
             ]);
             $user = User::where('role_id', '4')->get();
             $details = [
@@ -220,7 +220,7 @@ class PeminjamanController extends Controller
         return view('peminjaman-user/template-surat');
     }
 
-    public function get_free_aset(Request $request)
+    public function get_free_inventaris(Request $request)
     {
         // $datapeminjaman_free = DataPeminjaman::where('status_peminjaman', '!=', 'Peminjaman Selesai');
         if ($request->tanggal_awal_penggunaan != NULL && $request->tanggal_akhir_penggunaan != NULL) {
@@ -283,11 +283,11 @@ class PeminjamanController extends Controller
                 $kode_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('kode_barang')->all();
             
                 $nup_barang = ListBarangPinjam::whereIn('no_peminjaman', $arrNoPeminjaman)->pluck('nup_barang')->all();
-                $dataaset1 = DataAset::whereNotIn('kode', $kode_barang)->get();
-                $dataaset2 = DataAset::whereIn('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
-                $fixdata = $dataaset1->merge($dataaset2);
+                $datainventaris1 = DataInventaris::whereNotIn('kode', $kode_barang)->get();
+                $datainventaris2 = DataInventaris::whereIn('kode', $kode_barang)->whereNotIn('nup', $nup_barang)->get();
+                $fixdata = $datainventaris1->merge($datainventaris2);
             } else {
-                $fixdata = DataAset::all();
+                $fixdata = DataInventaris::all();
             }
             
             return response()->json([
@@ -299,13 +299,13 @@ class PeminjamanController extends Controller
     }
 
     public function temporary_data(Request $request){
-        $dataaset = DataAset::where('id', $request->curr_id)->first();
+        $datainventaris = DataInventaris::where('id', $request->curr_id)->first();
         // $arrayBaru = $re
         $items = collect($request->items);
         \Session::put('tempo-data', $items);
         return response()->json([
             // 'data' => \Session::get('tempo-data'),
-            'data2' => $dataaset
+            'data2' => $datainventaris
 
         ]);
     }
@@ -554,7 +554,7 @@ class PeminjamanController extends Controller
 
             foreach ($listbarangpinjam as $key => $value) {
                 $template->setValue('row#'.($key+1), $key+1);
-                $template->setValue('nama_aset#'.($key+1), $value->nama_barang);
+                $template->setValue('nama_inventaris#'.($key+1), $value->nama_barang);
                 $template->setValue('kode_barang#'.($key+1), $value->kode_barang);
                 $template->setValue('waktu_peminjaman#'.($key+1), $tanggalPeminjaman);
             }
@@ -623,7 +623,7 @@ class PeminjamanController extends Controller
 
             foreach ($listbarangpinjam as $key => $value) {
                 $template->setValue('row#'.($key+1), $key+1);
-                $template->setValue('nama_aset#'.($key+1), $value->nama_barang);
+                $template->setValue('nama_inventaris#'.($key+1), $value->nama_barang);
                 $template->setValue('kode_barang#'.($key+1), $value->kode_barang);
                 $template->setValue('waktu_peminjaman#'.($key+1), $tanggalPeminjaman);
             }

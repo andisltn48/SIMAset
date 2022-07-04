@@ -51,12 +51,12 @@
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span
-                        class="nav_logo-name">SIM-Aset</span> </a>
+                        class="nav_logo-name">SIM-Inventaris</span> </a>
                 <div class="nav_list">
                     @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'BMN' || session('role') == 'Sarpras')
-                        <a href="{{ route('data-aset.index') }}" class="nav_link"> <i
+                        <a href="{{ route('data-inventaris.index') }}" class="nav_link"> <i
                                 class="fas fa-file"></i>
-                            <span class="nav_name">Data Aset</span> </a>
+                            <span class="nav_name">Data Inventaris</span> </a>
                     @endif
 
                     @if (session('role') == 'Super Admin' || session('role') == 'Admin' || session('role') == 'Sarpras')
@@ -92,7 +92,7 @@
 
                     @if (session('role') == 'Super Admin')
                         <a href="#" class="nav_link"><i class="fas fa-file-medical-alt"></i>
-                            <span class="nav_name">Laporan Aset</span> </a>
+                            <span class="nav_name">Laporan Data Inventaris</span> </a>
                     @endif
 
                     @if (session('role') == 'Peminjam')

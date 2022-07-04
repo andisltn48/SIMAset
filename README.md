@@ -1,2 +1,2 @@
 # SIMAset
-Sistem Informasi Manajemen Aset ITK
+Sistem Informasi Manajemen Inventaris ITK
