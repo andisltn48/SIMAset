@@ -32,7 +32,7 @@ class IterasiKeduaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('unit.get-data-unit'));
+        ->get(route('unit.get-data-unit',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -43,7 +43,7 @@ class IterasiKeduaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('unit.destroy',4));
+        ->delete(route('unit.destroy',8));
         
         $response->assertStatus(302);
     }
@@ -66,8 +66,8 @@ class IterasiKeduaTest extends TestCase
         ->first();
 
         $request = [
-            'kode' => '005',
-            'nama' => 'BUMNS'
+            'kode' => '007',
+            'nama' => 'BUMNS7'
         ];
 
         $response = $this->actingAs($user)

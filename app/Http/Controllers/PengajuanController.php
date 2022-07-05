@@ -272,7 +272,7 @@ class PengajuanController extends Controller
         if ($request->foto != NULL) {
             $fileFotoInventaris = $request->foto;
             $fileName_fotoInventaris = time().'_'.$fileFotoInventaris->getClientOriginalName();
-            $fileFotoInventaris->move(public_path('storage/foto-inventaris'), $fileName_fotoInventaris);
+            $fileFotoInventaris->move(public_path('storage\foto-inventaris'), $fileName_fotoInventaris);
 
             $fotoinventaris = $fileName_fotoInventaris;
         }
@@ -310,15 +310,6 @@ class PengajuanController extends Controller
         $cekdata = DataInventaris::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
         $cekdata2 = DataPengajuan::where('kode', $request->kode_barang)->where('nup', $current_nup)->get();
         if ($cekdata->count() == 0 AND $cekdata2->count() == 0 ) {
-            $fotoinventaris = NULL;
-
-            if ($request->foto != NULL) {
-                $fileFotoInventaris = $request->foto;
-                $fileName_fotoInventaris = time().'_'.$fileFotoInventaris->getClientOriginalName();
-                $fileFotoInventaris->move(public_path('storage/foto-inventaris'), $fileName_fotoInventaris);
-
-                $fotoinventaris = $fileName_fotoInventaris;
-            }
             $dataPengajuanSave = DataPengajuan::create([
                 'id_pengaju' => Auth::user()->id,
                 'nama_barang' => $request->nama_barang,
@@ -365,7 +356,7 @@ class PengajuanController extends Controller
             return redirect(route('pengajuan.form'))->with('success','Data Inventaris berhasil diajukan');
         } else {
             $message = 'Data Inventaris dengan Kode Barang: '.$request->kode_barang.' dan NUP: '.$request->nup_awal.' telah terdaftar atau telah diajukan!';
-            return redirect(route('pengajuan.form '))->with('error',$message);
+            return redirect(route('pengajuan.form'))->with('error',$message);
         }
 
     

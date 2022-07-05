@@ -20,7 +20,7 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-superadmin'));
+        ->get(route('manajemen-user.get-superadmin',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -30,8 +30,13 @@ class IterasiKeempatTest extends TestCase
         $user = User::where('role_id',1)
         ->first();
 
+        $request = [
+            'search' => [
+                'value' => 'test'
+            ]
+        ];
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-admin'));
+        ->get(route('manajemen-user.get-admin',$request));
         
         $response->assertStatus(200);
     }
@@ -42,7 +47,7 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-sarpras'));
+        ->get(route('manajemen-user.get-sarpras',['search'=>['value'=>'search data']]));
         
         $response->assertStatus(200);
     }
@@ -53,7 +58,7 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-peminjam'));
+        ->get(route('manajemen-user.get-peminjam',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -64,9 +69,20 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-pengaju'));
+        ->get(route('manajemen-user.get-pengaju',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
+    }
+
+    public function testHapusUser()
+    {
+        $user = User::where('role_id',1)
+        ->first();
+
+        $response = $this->actingAs($user)
+        ->delete(route('manajemen-user.destroy',29));
+        
+        $response->assertStatus(302);
     }
 
     public function testTambahUser()
@@ -120,17 +136,6 @@ class IterasiKeempatTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testHapusUser()
-    {
-        $user = User::where('role_id',1)
-        ->first();
-
-        $response = $this->actingAs($user)
-        ->delete(route('manajemen-user.destroy',19));
-        
-        $response->assertStatus(302);
-    }
-
     public function testUpdateProfileByUser()
     {
         $user = User::where('email','unit@gmail.com')
@@ -138,6 +143,23 @@ class IterasiKeempatTest extends TestCase
 
         $request = [
             'name' => 'AdminSIM-A',
+        ];
+
+        $response = $this->actingAs($user)
+        ->put(route('manajemen-profil.update',$user->id),$request);
+        
+        $response->assertStatus(302);
+    }
+
+    public function testUpdatePasswordByUser()
+    {
+        $user = User::where('email','unit@gmail.com')
+        ->first();
+
+        $request = [
+            'name' => 'Unit abis ganti pass', 
+            'password' => 'Unit12345',
+            'password_confirmation' => 'Unit12345',
         ];
 
         $response = $this->actingAs($user)

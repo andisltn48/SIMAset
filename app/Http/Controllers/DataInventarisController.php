@@ -150,15 +150,6 @@ class DataInventarisController extends Controller
         } else {
             $cekdata = DataInventaris::where('kode', $request->kode_barang)->where('nup', $request->nup_awal)->get();
             if ($cekdata->count() == 0) {
-              $fotoinventaris = NULL;
-
-              if ($request->foto != NULL) {
-                  $fileFotoInventaris = $request->foto;
-                  $fileName_fotoInventaris = time().'_'.$fileFotoInventaris->getClientOriginalName();
-                  $fileFotoInventaris->move(public_path('storage\foto-inventaris'), $fileName_fotoInventaris);
-
-                  $fotoinventaris = $fileName_fotoInventaris;
-              }
               $datainventaris_save = DataInventaris::create([
                   'nama_barang' => $request->nama_barang,
                   'kode' => $request->kode_barang,
@@ -377,10 +368,6 @@ class DataInventarisController extends Controller
     }
 
     public function getdatatable(Request $request){
-        function convert($harga)
-        {
-            return strrev(implode('.', str_split(strrev(strval($harga)), 3)));
-        };
 
         $datainventaris = DataInventaris::leftjoin('units', 'units.kode_unit', 'data_inventaris.unit')
             ->select('data_inventaris.*',  'units.nama_unit');

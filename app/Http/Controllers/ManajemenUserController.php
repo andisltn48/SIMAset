@@ -196,6 +196,7 @@ class ManajemenUserController extends Controller
       $user = User::where('role_id',2)
       ->select('users.*');
       $datatables = Datatables::of($user);
+      
       if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];

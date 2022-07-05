@@ -20,7 +20,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('data-ruangan.get-data-ruangan'));
+        ->get(route('data-ruangan.get-data-ruangan',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -31,7 +31,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $request = [
-            'kode_ruangan' => '000A',
+            'kode_ruangan' => '020A',
             'nama_ruangan' => 'Ini nama ruangan',
             'pj' => "--",
             'nip' => 4433332222,
@@ -51,7 +51,7 @@ class IterasiKetigaTest extends TestCase
 
         $request = [
             'kode_ruangan' => '009A',
-            'nama_ruangan' => 'Ini nama ruangan barus',
+            'nama_ruangan' => 'Ini nama ruangan baru nih',
             'pj' => "--",
             'nip' => 4433332222,
             'kode_gedung' => 209,
@@ -80,7 +80,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('data-ruangan.destroy',5));
+        ->delete(route('data-ruangan.destroy',7));
         
         $response->assertStatus(302);
     }

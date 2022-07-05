@@ -346,12 +346,6 @@ class PeminjamanController extends Controller
                 if ($datapeminjaman->status_permintaan == 'Belum Dikonfirmasi') {
                     return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
-                if ($datapeminjaman->status_permintaan == 'Disetujui') {
-                    return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
-                }
-                if ($datapeminjaman->status_permintaan == 'Ditolak') {
-                    return '<div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
-                }
             })
             ->escapeColumns([])
             ->addColumn('download_surat_peminjaman','peminjaman-user.button-datatable.download-surat-peminjaman')
@@ -374,12 +368,6 @@ class PeminjamanController extends Controller
             ->editColumn('status_permintaan', function(DataPeminjaman $datapeminjaman) {
                 if ($datapeminjaman->status_permintaan == 'Belum Dikonfirmasi') {
                     return '<div style="background: rgb(203, 214, 255); border-radius: 2rem;" class="p-2 text-dark"><i class="far fa-clock me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
-                }
-                if ($datapeminjaman->status_permintaan == 'Disetujui') {
-                    return '<div style="background: rgb(197, 255, 205); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
-                }
-                if ($datapeminjaman->status_permintaan == 'Ditolak') {
-                    return '<div style="background: rgb(255, 185, 185); border-radius: 2rem;" class="p-2 text-dark"><i class="fas fa-check-circle me-2"></i>'.$datapeminjaman->status_permintaan.'</div>';
                 }
             })
             ->escapeColumns([])
@@ -410,10 +398,10 @@ class PeminjamanController extends Controller
             ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
                 if ($datapeminjaman->status_peminjaman == 'Dalam Peminjaman') {
                     return '<div style="background: rgb(255,255,51); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
-                } elseif ($datapeminjaman->status_peminjaman == 'Ditolak') {
-                    return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_peminjaman.'</div>';
-                } else {
-                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
+                } elseif ($datapeminjaman->status_permintaan == 'Ditolak') {
+                    return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_permintaan.'</div>';
+                } elseif ($datapeminjaman->status_permintaan == 'Disetujui') {
+                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_permintaan.'</div>';
                 }
                 
             })
@@ -438,9 +426,9 @@ class PeminjamanController extends Controller
                 if ($datapeminjaman->status_peminjaman == 'Dalam Peminjaman') {
                     return '<div style="background: rgb(255,255,51); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
                 } elseif ($datapeminjaman->status_peminjaman == 'Ditolak') {
-                    return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_peminjaman.'</div>';
-                } else {
-                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
+                    return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_permintaan.'</div>';
+                } elseif ($datapeminjaman->status_permintaan == 'Disetujui') {
+                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_permintaan.'</div>';
                 }
                 
             })

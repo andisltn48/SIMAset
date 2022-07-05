@@ -5,6 +5,7 @@ namespace Tests\Unit\IterasiKelima;
 use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Http\UploadedFile;
 
 class IterasiKelimaTest extends TestCase
 {
@@ -20,12 +21,14 @@ class IterasiKelimaTest extends TestCase
         ->first();
 
         // dd($user);
+        $filename = 'foto-barang.jpg';
 
+        $file = UploadedFile::fake()->image($filename);
         $request = [
             'nama_barang' => 'kursi gaminggo',
             'jumlah_barang' => 1,
             'kode_barang' => 43252,
-            'nup_awal' => 9,
+            'nup_awal' => 17,
             'uraian_barang' => 'Kursi gimang untuk keperluan tidur',
             'harga_satuan' => 1000000,
             'harga_total' => 1000000,
@@ -41,6 +44,7 @@ class IterasiKelimaTest extends TestCase
             'kode_ruangan' => 'wdadwad',
             'kondisi' => 'wdadwad',
             'unit' => '001',
+            'foto' => $file,
             'status' => 'Aktif',
             'tahun_pengadaan' => '2033',
         ];
@@ -52,10 +56,30 @@ class IterasiKelimaTest extends TestCase
 
     public function testGetPengajuanDataInventaris()
     {
-        $user = User::where('role_id',5)
+        $user = User::where('email','unit@gmail.com')
         ->first();
 
-        $response = $this->actingAs($user)->get(route('pengajuan.getdatapengajuan'));
+        $response = $this->actingAs($user)->get(route('pengajuan.getdatapengajuan',['id'=>$user->id]));
+        
+        $response->assertStatus(200);
+    }
+
+    public function testGetPengajuanDataInventarisWithFilter()
+    {
+        $user = User::where('email','unit@gmail.com')
+        ->first();
+
+        $response = $this->actingAs($user)->get(route('pengajuan.getdatapengajuan',['status_pengajuan' => 'Belum dikonfirmasi']));
+        
+        $response->assertStatus(200);
+    }
+
+    public function testGetPengajuanDataInventarisWithSearch()
+    {
+        $user = User::where('email','unit@gmail.com')
+        ->first();
+
+        $response = $this->actingAs($user)->get(route('pengajuan.getdatapengajuan',['search' => ['value'=>'test'],'id'=>$user->id]));
         
         $response->assertStatus(200);
     }
@@ -71,7 +95,7 @@ class IterasiKelimaTest extends TestCase
         ];
 
 
-        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request',12), $request);
+        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request',16), $request);
         
         $response->assertStatus(302);
     }
@@ -87,18 +111,18 @@ class IterasiKelimaTest extends TestCase
         ];
 
 
-        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request',13), $request);
+        $response = $this->actingAs($user)->post(route('pengajuan.confirm-request',17), $request);
         
         $response->assertStatus(302);
     }
 
     public function testDeletePengajuanDataInventaris()
     {
-        $user = User::where('role_id',5)
+        $user = User::where('email','unit@gmail.com')
         ->first();
 
 
-        $response = $this->actingAs($user)->delete(route('pengajuan.destroy-pengajuan', 8));
+        $response = $this->actingAs($user)->delete(route('pengajuan.destroy-pengajuan', 11));
         
         $response->assertStatus(302);
     }
