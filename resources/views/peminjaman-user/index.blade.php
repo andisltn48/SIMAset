@@ -186,7 +186,7 @@
             // alert(tanggalawalpenggunaan);
 
             $.ajax({
-                url: "{{ route('peminjaman.get-free-aset') }}",
+                url: "{{ route('peminjaman.get-free-inventaris') }}",
                 type: "GET",
                 data: {
                     tanggal_awal_penggunaan: tanggalawalpenggunaan,
@@ -240,7 +240,7 @@
             // console.log(tanggalawalpenggunaan,tanggalakhirpenggunaan);
 
             $.ajax({
-                url: "{{ route('peminjaman.get-free-aset') }}",
+                url: "{{ route('peminjaman.get-free-inventaris') }}",
                 type: "GET",
                 cache: false,
                 beforeSend: function(){

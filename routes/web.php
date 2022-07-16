@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::post('/test','AktivitasSistemController@test')->name('test');
 
     Route::resource('laporan-inventaris', LaporanInventarisController::class);
+    Route::get('/get-laporan-data-inventaris','LaporanInventarisController@laporangetdatatable')->name('laporan-data-inventaris.getdatatable');
     
     Route::resource('manajemen-user', ManajemenUserController::class);
 });

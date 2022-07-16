@@ -21,6 +21,57 @@
         </div>
         <hr>
         <div class="row p-3">
+            <div class="col mb-lg-0 mb-4">
+                <div class="card z-index-2 h-100 bg-light">
+                    <div class="card-header pb-0 pt-3 bg-transparent">
+                        <div class="row">
+                            <div class="col">
+                                <div class="title-filter">
+                                    <p>Laporan data inventaris per ruangan</p>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-select select2" id="filter-koderuangan">    
+                                    <option selected value="">--Pilih Ruangan--</option>
+                                      @foreach ($dataruangan as $data)
+                                        @if ($data == $currentTahun)
+                                        <option  value="{{ $data->kode_ruangan }}">{{ $data->kode_ruangan }} ||
+                                            {{ $data->nama_ruangan }}</option>
+                                        @else
+                                        <option value="{{ $data->kode_ruangan }}">{{ $data->kode_ruangan }} ||
+                                            {{ $data->nama_ruangan }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2 me-1 ms-1">
+                                <table id="tableDataInventaris" class="table table-bordered display nowrap" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Barang</th>
+                                            <th>Kode Barang</th>
+                                            <th>Uraian Barang</th>
+                                            <th>NUP</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Total Harga</th>
+                                            <th>Asal Perolehan</th>
+                                            <th>Unit</th>
+                                            <th>Kondisi</th>
+                                            <th>Updatet At</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3">
             <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card z-index-2 h-100 bg-light">
                     <div class="card-header pb-0 pt-3 bg-transparent">
@@ -107,9 +158,67 @@
     </div>
 
     <script>
+        
+        let koderuangan = $('#filter-koderuangan').val();
+        let tableDataInventaris = $('#tableDataInventaris').DataTable({
+            language: {
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left"></i>',
+                    'next': '<i class="fa fa-angle-right"></i>'
+                },
+                searchPlaceholder: "Cari nama barang"
+            },
+            pagingType: $(window).width() < 768 ? "simple" : "simple_numbers",
+            order: [
+                [10, "desc"]
+            ],
+            scrollX: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('laporan-data-inventaris.getdatatable') }}",
+                data: function(d) {
+                    d.koderuangan = koderuangan;
+                }
+            },
+            columns: [{
+                data: 'DT_RowIndex',
+                name: 'DT_Row_Index',
+                orderable: false,
+                searchable: false
+            }, {
+                width: '5vw',
+                data: 'nama_barang',
+                name: 'nama_barang'
+            }, {
+                data: 'kode'
+            }, {
+                data: 'uraian_barang'
+            }, {
+                data: 'nup'
+            }, {
+                data: 'harga_satuan'
+            }, {
+                data: 'harga_total'
+            }, {
+                data: 'asal_perolehan'
+            }, {
+                data: 'nama_unit'
+            }, {
+                data: 'kondisi'
+            }, {
+                data: 'updated_at'
+            }],
+        });
+
         $(".select2").select2();
 
 
+        $('#filter-koderuangan').on('change', function() {
+                koderuangan = $('#filter-koderuangan').val()
+                console.log(koderuangan);
+                tableDataInventaris.ajax.reload(null, false)
+            });
         // window.alert(id);
         let table = $('#tableListAktivitas').DataTable({
             language: {

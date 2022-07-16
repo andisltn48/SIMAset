@@ -330,7 +330,7 @@ class PeminjamanController extends Controller
     public function get_data_permintaan_peminjaman(Request $request)
     {
         if ($request->id != NULL) {
-            $datapeminjaman = DataPeminjaman::where('status_permintaan','Belum Dikonfirmasi')->where('id_peminjam', $request->id);
+            $datapeminjaman = DataPeminjaman::where('status_permintaan','Belum Dikonfirmasi')->where('id_peminjam', $request->id)->select('data_peminjaman.*');
             $datatables = Datatables::of($datapeminjaman);
             if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
@@ -383,7 +383,7 @@ class PeminjamanController extends Controller
     public function get_data_peminjaman(Request $request)
     {
         if ($request->id != NULL) {
-            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_permintaan', '!=', 'Belum Dikonfirmasi');
+            $datapeminjaman = DataPeminjaman::where('id_peminjam', $request->id)->where('status_permintaan', '!=', 'Belum Dikonfirmasi')->select('data_peminjaman.*');
             $datatables = Datatables::of($datapeminjaman);
             if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
@@ -400,8 +400,8 @@ class PeminjamanController extends Controller
                     return '<div style="background: rgb(255,255,51); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
                 } elseif ($datapeminjaman->status_permintaan == 'Ditolak') {
                     return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_permintaan.'</div>';
-                } elseif ($datapeminjaman->status_permintaan == 'Disetujui') {
-                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_permintaan.'</div>';
+                } elseif ($datapeminjaman->status_peminjaman == 'Peminjaman Selesai') {
+                    return '<div style="background: rgb(69, 94, 217); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_peminjaman.'</div>';
                 }
                 
             })
@@ -410,7 +410,7 @@ class PeminjamanController extends Controller
             ->addColumn('list_barang','peminjaman-user.button-datatable.detail-barang')
             ->toJson();
         } else {
-            $datapeminjaman = DataPeminjaman::where('status_permintaan','!=','Belum Dikonfirmasi');
+            $datapeminjaman = DataPeminjaman::where('status_permintaan','!=','Belum Dikonfirmasi')->select('data_peminjaman.*');
             $datatables = Datatables::of($datapeminjaman);
             if (isset($request->search['value'])) {
                 $datatables->filter(function ($query) {
@@ -425,10 +425,10 @@ class PeminjamanController extends Controller
             ->editColumn('status_peminjaman', function(DataPeminjaman $datapeminjaman) {
                 if ($datapeminjaman->status_peminjaman == 'Dalam Peminjaman') {
                     return '<div style="background: rgb(255,255,51); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_peminjaman.'</div>';
-                } elseif ($datapeminjaman->status_peminjaman == 'Ditolak') {
+                } elseif ($datapeminjaman->status_permintaan == 'Ditolak') {
                     return '<div style="background: rgb(255,0,0); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_permintaan.'</div>';
-                } elseif ($datapeminjaman->status_permintaan == 'Disetujui') {
-                    return '<div style="background: rgb(50,205,50); border-radius: 2rem;" class="p-2 text-center text-dark">'.$datapeminjaman->status_permintaan.'</div>';
+                } elseif ($datapeminjaman->status_peminjaman == 'Peminjaman Selesai') {
+                    return '<div style="background: rgb(69, 94, 217); border-radius: 2rem;" class="p-2 text-center text-white">'.$datapeminjaman->status_peminjaman.'</div>';
                 }
                 
             })

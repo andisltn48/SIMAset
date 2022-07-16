@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DataInventaris;
 use App\DataPeminjaman;
+use Yajra\Datatables\Datatables;
 use App\ListBarangPinjam;
+use App\DataRuangan;
 
 class LaporanInventarisController extends Controller
 {
@@ -20,6 +22,9 @@ class LaporanInventarisController extends Controller
         {
             return strrev(implode('.', str_split(strrev(strval($harga)), 3)));
         };
+
+        
+        $dataruangan = DataRuangan::all();
 
         function RemoveSpecialChar($str) {
             $res = str_replace( array( '.' ), '', $str);
@@ -127,6 +132,7 @@ class LaporanInventarisController extends Controller
         $listYears = array_reverse($listYears);
 
         return view('laporan-inventaris.index', compact('jumlahinventaris',
+        'dataruangan',
         'kondisiInventarisBaik',
         'kondisiInventarisRusakRingan',
         'kondisiInventarisRusakBerat',
@@ -149,6 +155,27 @@ class LaporanInventarisController extends Controller
         'hargaInventarisByTahun',
         'listTotalHargaPerYears',
         'listYears'));
+    }
+
+    public function laporangetdatatable(Request $request){
+
+        $datainventaris = DataInventaris::leftjoin('units', 'units.kode_unit', 'data_inventaris.unit')
+            ->where('kode_ruangan', $request->koderuangan)
+            ->select('data_inventaris.*',  'units.nama_unit');
+        
+        $datatables = Datatables::of($datainventaris);
+
+        if (isset($request->search['value'])) {
+            $datatables->filter(function ($query) {
+                    $keyword = request()->get('search')['value'];
+                    $query->where('nama_barang', 'like', "%" . $keyword . "%");
+
+        });}
+        $datatables->orderColumn('updated_at', function ($query, $order) {
+            $query->orderBy('data_inventaris.updated_at', $order);
+        });
+        return $datatables->addIndexColumn()
+        ->toJson();
     }
 
     /**
