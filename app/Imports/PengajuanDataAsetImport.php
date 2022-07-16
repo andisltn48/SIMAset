@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\DetailLogImportPengajuan;
 use App\DataPengajuan;
-use App\DataAset;
+use App\DataInventaris;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class PengajuanDataAsetImport implements ToModel,WithValidation , WithHeadingRow, SkipsEmptyRows, SkipsOnFailure, SkipsOnError, WithCalculatedFormulas
+class PengajuanDataInventarisImport implements ToModel,WithValidation , WithHeadingRow, SkipsEmptyRows, SkipsOnFailure, SkipsOnError, WithCalculatedFormulas
 {
     protected $id_import;
     use Importable, SkipsFailures, SkipsErrors;
@@ -36,7 +36,7 @@ class PengajuanDataAsetImport implements ToModel,WithValidation , WithHeadingRow
             }
 
             for ($current_nup; $current_nup <= $last_nup ; $current_nup++) {
-                $test_nup = DataAset::where('kode',$row["kode_barang"])->where('nup', $current_nup)->get();
+                $test_nup = DataInventaris::where('kode',$row["kode_barang"])->where('nup', $current_nup)->get();
                 $test_nup2 = DataPengajuan::where('kode',$row["kode_barang"])->where('nup', $current_nup)->get();
                 // dd($test_nup->count());
                 if ($test_nup->count()  == 0 AND $test_nup2->count()  == 0) {
@@ -89,7 +89,7 @@ class PengajuanDataAsetImport implements ToModel,WithValidation , WithHeadingRow
             }
         }
          else {
-            $test_nup = DataAset::where('kode',$row["kode_barang"])->where('nup', $row["nup_awal"])->get();
+            $test_nup = DataInventaris::where('kode',$row["kode_barang"])->where('nup', $row["nup_awal"])->get();
             $test_nup2 = DataPengajuan::where('kode',$row["kode_barang"])->where('nup', $row["nup_awal"])->get();
                 // dd($test_nup->count());
                 if ($test_nup->count()  == 0 AND $test_nup2->count()  == 0) {

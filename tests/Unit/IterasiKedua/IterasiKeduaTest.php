@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class IterasiKeduaTest extends TestCase
 {
-    // use WithoutMiddleware;
+    use WithoutMiddleware;
     /**
      * A basic unit test example.
      *
@@ -32,7 +32,7 @@ class IterasiKeduaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('unit.get-data-unit'));
+        ->get(route('unit.get-data-unit',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -40,22 +40,21 @@ class IterasiKeduaTest extends TestCase
     public function testHapusUnit()
     {
         $user = User::where('role_id',1)
-        ->orWhere('role_id',2)
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('unit.destroy',17));
+        ->delete(route('unit.destroy',8));
         
         $response->assertStatus(302);
     }
 
-    public function testLihatLaporanAset()
+    public function testLihatLaporanInventaris()
     {
         $user = User::where('role_id',1)
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('laporan-aset.index'));
+        ->get(route('laporan-inventaris.index'));
         
         $response->assertStatus(200);
     }
@@ -67,8 +66,8 @@ class IterasiKeduaTest extends TestCase
         ->first();
 
         $request = [
-            'kode' => '005',
-            'nama' => 'BUMNS'
+            'kode' => '007',
+            'nama' => 'BUMNS7'
         ];
 
         $response = $this->actingAs($user)
@@ -89,7 +88,7 @@ class IterasiKeduaTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-        ->put(route('unit.update',18), $request);
+        ->put(route('unit.update',2), $request);
         
         $response->assertStatus(302);
     }

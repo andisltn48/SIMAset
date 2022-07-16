@@ -196,6 +196,7 @@ class ManajemenUserController extends Controller
       $user = User::where('role_id',2)
       ->select('users.*');
       $datatables = Datatables::of($user);
+      
       if (isset($request->search['value'])) {
           $datatables->filter(function ($query) {
             $keyword = request()->get('search')['value'];
@@ -215,7 +216,7 @@ class ManajemenUserController extends Controller
 
     public function get_sarpras(Request $request)
     {
-      $user = User::where('role_id',4)
+      $user = User::where('role_id',3)
       ->select('users.*');
       $datatables = Datatables::of($user);
       if (isset($request->search['value'])) {
@@ -235,7 +236,7 @@ class ManajemenUserController extends Controller
 
     public function get_peminjam(Request $request)
     {
-      $user = User::where('role_id',5)
+      $user = User::where('role_id',4)
       ->select('users.*');
       $datatables = Datatables::of($user);
       if (isset($request->search['value'])) {

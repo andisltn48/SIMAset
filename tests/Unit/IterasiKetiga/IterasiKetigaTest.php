@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class IterasiKetigaTest extends TestCase
 {
-    // use WithoutMiddleware;
+    use WithoutMiddleware;
     /**
      * A basic unit test example.
      *
@@ -20,7 +20,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('data-ruangan.get-data-ruangan'));
+        ->get(route('data-ruangan.get-data-ruangan',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -31,7 +31,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $request = [
-            'kode_ruangan' => '000A',
+            'kode_ruangan' => '020A',
             'nama_ruangan' => 'Ini nama ruangan',
             'pj' => "--",
             'nip' => 4433332222,
@@ -51,14 +51,25 @@ class IterasiKetigaTest extends TestCase
 
         $request = [
             'kode_ruangan' => '009A',
-            'nama_ruangan' => 'Ini nama ruangan barus',
+            'nama_ruangan' => 'Ini nama ruangan baru nih',
             'pj' => "--",
             'nip' => 4433332222,
             'kode_gedung' => 209,
         ];
 
         $response = $this->actingAs($user)
-        ->put(route('data-ruangan.update',73), $request);
+        ->put(route('data-ruangan.update',2), $request);
+        
+        $response->assertStatus(302);
+    }
+
+    public function testHapusDataRuanganAlreadyUse()
+    {
+        $user = User::where('role_id',1)
+        ->first();
+
+        $response = $this->actingAs($user)
+        ->delete(route('data-ruangan.destroy',2));
         
         $response->assertStatus(302);
     }
@@ -69,7 +80,7 @@ class IterasiKetigaTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->delete(route('data-ruangan.destroy',27));
+        ->delete(route('data-ruangan.destroy',7));
         
         $response->assertStatus(302);
     }

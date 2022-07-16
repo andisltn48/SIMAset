@@ -40,7 +40,7 @@
                     </div>
 					<span class="login100-form-title p-b-26">
                         <div class="text-primary text-center mt-2 fw-bolder">SIM-<span
-                            class="text-dark">Aset</span>
+                            class="text-dark">Inventaris</span>
                         </div>
 					</span>
                     @if (session('error'))
@@ -82,6 +82,11 @@
 					<div class="text-center p-t-50">
 						<span class="">
 							<a href="{{route('register')}}">Daftar untuk peminjam</a>
+						</span>
+					</div>
+					<div class="text-center">
+						<span class="">
+							<a href="{{route('forget.password.get')}}">Lupa password</a>
 						</span>
 					</div>
 				</form>

@@ -1,4 +1,4 @@
-<x-app-layout title="Daftar Pengajuan">
+<x-app-layout title="Daftar Pencatatan">
     <div class="card shadow p-3 mb-5 bg-white rounded mobile-margin" style="border-radius: 0.7rem !important">
         @if (session('error'))
             <div id="alert-div" class="alert alert-danger alert-dismissible show fade">
@@ -16,27 +16,27 @@
         @endif
         <div class="row header-peminjaman">
             <div class="col-12 col-md-8 title">
-                <h5 class="fw-bold">Daftar Pengajuan Aset</h5>
+                <h5 class="fw-bold">Daftar Pencatatan Inventaris</h5>
             </div>
             {{-- <div class="col button" style="text-align: end">
                 <a href="{{ route('peminjaman.list-peminjaman-admin') }}"><button
-                        class="btn btn-block btn-primary">Daftar Aset </button></a>
+                        class="btn btn-block btn-primary">Daftar Inventaris </button></a>
             </div> --}}
         </div>
         <hr>
         <div class="row p-3">
-            <table id="tableListPengajuan" class=" ps-1 table table-bordered display">
+            <table id="tableListPencatatan" class=" ps-1 table table-bordered display">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>No Pengajuan</th>
+                        <th>No Pencatatan</th>
                         <th>Nama Barang</th>
                         <th>Kode Barang</th>
                         <th>Uraian Barang</th>
                         <th>NUP</th>
                         <th>Harga Satuan</th>
                         <th>Total Harga</th>
-                        <th>Status Pengajuan</th>
+                        <th>Status Pencatatan</th>
                         <th>Asal Perolehan</th>
                         <th>Unit</th>
                         <th>Kondisi</th>
@@ -53,7 +53,7 @@
             <div class="modal-content">
                 <!-- heading modal -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Detail data aset</h4>
+                    <h4 class="modal-title">Detail data inventaris</h4>
                     <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-times"></i></span>
                     </button>
@@ -64,7 +64,7 @@
                     <table class="mt-4 table table-hover table-borderless ">
                         <tbody>
                             <div class="text-center">
-                                <img id="foto-aset" class="img-thumbnail" alt="">
+                                <img id="foto-inventaris" class="img-thumbnail" alt="">
                             </div>
                             <tr>
                                 <th style="width: 25vw; height:7vh">Nama Barang</th>
@@ -186,7 +186,7 @@
             <div class="modal-content">
                 <!-- heading modal -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Konfirmasi Pengajuan</h4>
+                    <h4 class="modal-title">Konfirmasi Pencatatan</h4>
                     <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-times"></i></span>
                     </button>
@@ -230,7 +230,7 @@
 
 
         // window.alert(id);
-        let table = $('#tableListPengajuan').DataTable({
+        let table = $('#tableListPencatatan').DataTable({
             language: {
                 'paginate': {
                     'previous': '<i class="fa fa-angle-left"></i>',

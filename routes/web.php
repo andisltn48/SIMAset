@@ -36,7 +36,8 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin']], f
     Route::get('/get-aktivitas-sistem','AktivitasSistemController@get_aktivitas')->name('aktivitas-sistem.get-aktivitas');
     Route::post('/test','AktivitasSistemController@test')->name('test');
 
-    Route::resource('laporan-aset', LaporanAsetController::class);
+    Route::resource('laporan-inventaris', LaporanInventarisController::class);
+    Route::get('/get-laporan-data-inventaris','LaporanInventarisController@laporangetdatatable')->name('laporan-data-inventaris.getdatatable');
     
     Route::resource('manajemen-user', ManajemenUserController::class);
 });
@@ -58,17 +59,17 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin']], function(){
-    //route data aset
-    Route::resource('data-aset', DataAsetController::class);
-    Route::get('/impor-aset','DataAsetController@import')->name('data-aset.import');
-    Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
-    Route::get('/import-data-aset','DataAsetController@getdataimport')->name('data-aset.getdataimport');
-    Route::get('/detail-import-aset','DataAsetController@getdatadetailimport')->name('data-aset.getdatadetailimport');
-    Route::get('/template-import','DataAsetController@import_template')->name('data-aset.import-template');
-    Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
-    Route::get('/detail-import/{id}','DataAsetController@detail_riwayat_import')->name('data-aset.detail-riwayat-import');
-    Route::post('/destroy-log-import/{id}','DataAsetController@destroy_log_import')->name('data-aset.destroy-log-import');
-    Route::post('/data-aset-import','DataAsetController@import_data')->name('data-aset.import-data-aset');
+    //route data inventaris
+    Route::resource('data-inventaris', DataInventarisController::class);
+    Route::get('/impor-inventaris','DataInventarisController@import')->name('data-inventaris.import');
+    Route::get('/get-data-inventaris','DataInventarisController@getdatatable')->name('data-inventaris.getdatatable');
+    Route::get('/import-data-inventaris','DataInventarisController@getdataimport')->name('data-inventaris.getdataimport');
+    Route::get('/detail-import-inventaris','DataInventarisController@getdatadetailimport')->name('data-inventaris.getdatadetailimport');
+    Route::get('/template-import','DataInventarisController@import_template')->name('data-inventaris.import-template');
+    Route::get('/filter-data','DataInventarisController@filter_data')->name('data-inventaris.filter-data-inventaris');
+    Route::get('/detail-import/{id}','DataInventarisController@detail_riwayat_import')->name('data-inventaris.detail-riwayat-import');
+    Route::post('/destroy-log-import/{id}','DataInventarisController@destroy_log_import')->name('data-inventaris.destroy-log-import');
+    Route::post('/data-inventaris-import','DataInventarisController@import_data')->name('data-inventaris.import-data-inventaris');
 
     //route ruangan
     Route::resource('data-ruangan', ManajemenRuanganController::class);
@@ -100,19 +101,19 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Super Admin,Admin,Sarpras']], function(){
-    //route data aset
-    Route::get('data-aset', 'DataAsetController@index')->name('data-aset.index');
-    Route::get('/get-data-aset','DataAsetController@getdatatable')->name('data-aset.getdatatable');
-    Route::get('/filter-data','DataAsetController@filter_data')->name('data-aset.filter-data-aset');
-    Route::get('/get-ruangan','DataAsetController@get_ruangan')->name('data-aset.get-ruangan');
-    Route::get('/export-data-aset','DataAsetController@export_excel')->name('data-aset.export_excel');
+    //route data inventaris
+    Route::get('data-inventaris', 'DataInventarisController@index')->name('data-inventaris.index');
+    Route::get('/get-data-inventaris','DataInventarisController@getdatatable')->name('data-inventaris.getdatatable');
+    Route::get('/filter-data','DataInventarisController@filter_data')->name('data-inventaris.filter-data-inventaris');
+    Route::get('/get-ruangan','DataInventarisController@get_ruangan')->name('data-inventaris.get-ruangan');
+    Route::get('/export-data-inventaris','DataInventarisController@export_excel')->name('data-inventaris.export_excel');
 
 });
 
 Route::group(['middleware' => ['auth','emailverified','cekrole:Unit,Peminjam']], function(){
     //route peminjaman
     Route::get('/form-peminjaman','PeminjamanController@formpeminjaman')->name('peminjaman.form');
-    Route::get('/get-free-aset','PeminjamanController@get_free_aset')->name('peminjaman.get-free-aset');
+    Route::get('/get-free-inventaris','PeminjamanController@get_free_inventaris')->name('peminjaman.get-free-inventaris');
     Route::get('/template-surat','PeminjamanController@templatesurat')->name('peminjaman.template-surat');
     Route::get('/temporary-data','PeminjamanController@temporary_data')->name('peminjaman.temporary-data');
     Route::post('/store-permintaan','PeminjamanController@storepermintaan')->name('peminjaman.store-permintaan');
@@ -136,9 +137,9 @@ Route::group(['middleware' => ['auth','emailverified','cekrole:Unit']], function
     Route::get('/get-pengajuan','PengajuanController@get_data_pengajuan_user')->name('pengajuan.getdatapengajuan');
     Route::get('/import-pengajuan','PengajuanController@import_index')->name('pengajuan.import');
     Route::get('/template-import-pengajuan','PengajuanController@import_template')->name('pengajuan.import-template');
-    Route::post('/pengajuan-data-aset-import','PengajuanController@import_data')->name('pengajuan.import-data-aset');
-    Route::get('/import-pengajuan-data-aset','PengajuanController@getdataimport')->name('pengajuan.getdataimport');
-    Route::get('/detail-import-aset-pengajuan','PengajuanController@getdatadetailimport')->name('pengajuan.getdatadetailimport');
+    Route::post('/pengajuan-data-inventaris-import','PengajuanController@import_data')->name('pengajuan.import-data-inventaris');
+    Route::get('/import-pengajuan-data-inventaris','PengajuanController@getdataimport')->name('pengajuan.getdataimport');
+    Route::get('/detail-import-inventaris-pengajuan','PengajuanController@getdatadetailimport')->name('pengajuan.getdatadetailimport');
     Route::get('/detail-import-pengajuan/{id}','PengajuanController@detail_riwayat_import')->name('pengajuan.detail-riwayat-import');
     Route::post('/destroy-log-import-pengajuan/{id}','PengajuanController@destroy_log_import')->name('pengajuan.destroy-log-import');
     Route::delete('/destroy-pengajuan/{id}','PengajuanController@destroy')->name('pengajuan.destroy-pengajuan');

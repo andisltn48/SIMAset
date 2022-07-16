@@ -66,7 +66,7 @@
 
                             </div>
                             <div class="text-primary text-center mt-2 fs-3 fw-bolder">SIM-<span
-                                    class="text-dark">Aset</span>
+                                    class="text-dark">Inventaris</span>
                             </div>
                             <div class=" text-center mt-2 fs-6 fw-bolder"><span
                                     class="text-dark">Masukkan password baru</span>

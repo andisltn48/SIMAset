@@ -37,7 +37,7 @@ class AuthController extends Controller
             if ($role->name == 'Unit') {
                 return redirect('form-pengajuan');
             }
-            return redirect('data-aset');
+            return redirect('data-inventaris');
         }
         return redirect('/')->with('error', 'Email atau Password anda salah!');
     }
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'remember_token' => \Str::random(50),
-            'role_id' => '5',
+            'role_id' => '4',
         ]);
 
         $activity = AktivitasSistem::create([
@@ -150,11 +150,13 @@ class AuthController extends Controller
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
         $currUser = User::where('email', $request->email)->first();
+        
+        $role = Roles::find($currUser->role_id);
         $activity = AktivitasSistem::create([
             'user_id' => $currUser->id,
             'user_activity' => $currUser->name.' melakukan perubahan password',
 
-            'user_role' => session('role'),
+            'user_role' => $role->name,
         ]);
 
         return redirect('/')->with('success', 'Anda telah berhasil mengubah password anda');

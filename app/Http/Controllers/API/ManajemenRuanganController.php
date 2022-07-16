@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use \stdClass;
 use App\AktivitasSistem;
 use App\DataRuangan;
-use App\DataAset;
+use App\DataInventaris;
 use App\Roles;
 Use Validator;
 Use Auth;
@@ -148,9 +148,9 @@ class ManajemenRuanganController extends Controller
           'kode_gedung' => $request->kode_gedung,
         ]);
 
-        $dataaset = DataAset::where('kode_ruangan', $currentKodeRuangan->kode_ruangan)->get();
-        // dd($dataaset);
-        foreach ($dataaset as $key => $value) {
+        $datainventaris = DataInventaris::where('kode_ruangan', $currentKodeRuangan->kode_ruangan)->get();
+        // dd($datainventaris);
+        foreach ($datainventaris as $key => $value) {
             $value->update([
                 'kode_ruangan' => $request->kode_ruangan,
                 'ruangan' => $request->nama_ruangan
@@ -183,8 +183,8 @@ class ManajemenRuanganController extends Controller
             ], 404);
         }
 
-        $dataaset = DataAset::where('kode_ruangan', $dataruangan->kode_ruangan)->first();
-        if ($dataaset == NULL) {
+        $datainventaris = DataInventaris::where('kode_ruangan', $dataruangan->kode_ruangan)->first();
+        if ($datainventaris == NULL) {
             if ($dataruangan) {
                 $dataruangan->delete();
                 $activity = AktivitasSistem::create([

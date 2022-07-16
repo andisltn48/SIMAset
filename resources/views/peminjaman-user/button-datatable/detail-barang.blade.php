@@ -4,7 +4,7 @@
                 class="fas fa-clipboard-list me-2"></i>Lihat Daftar Barang</a>
     </div>
     {{-- <div>
-        <a href="{{ route('data-aset.edit', $model->id) }}"><button class="btn me-1 btn-block btn-warning"
+        <a href="{{ route('data-inventaris.edit', $model->id) }}"><button class="btn me-1 btn-block btn-warning"
                 style="width: 5vw;">Edit</button></a>
     </div> --}}
 </div>

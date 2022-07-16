@@ -7,7 +7,7 @@ use \stdClass;
 use App\DataRuangan;
 use App\Roles;
 use App\AktivitasSistem;
-use App\DataAset;
+use App\DataInventaris;
 use Auth;
 use Yajra\Datatables\Datatables;
 use App\Imports\DataRuanganImport;
@@ -113,9 +113,9 @@ class ManajemenRuanganController extends Controller
           'kode_gedung' => $request->kode_gedung,
         ]);
 
-        $dataaset = DataAset::where('kode_ruangan', $currentKodeRuangan->kode_ruangan)->get();
-        // dd($dataaset);
-        foreach ($dataaset as $key => $value) {
+        $datainventaris = DataInventaris::where('kode_ruangan', $currentKodeRuangan->kode_ruangan)->get();
+        // dd($datainventaris);
+        foreach ($datainventaris as $key => $value) {
             $value->update([
                 'kode_ruangan' => $request->kode_ruangan,
                 'ruangan' => $request->nama_ruangan
@@ -140,8 +140,8 @@ class ManajemenRuanganController extends Controller
     public function destroy($id)
     {
         $dataruangan = DataRuangan::where('id', $id)->first();
-        $dataaset = DataAset::where('kode_ruangan', $dataruangan->kode_ruangan)->first();
-        if ($dataaset == NULL) {
+        $datainventaris = DataInventaris::where('kode_ruangan', $dataruangan->kode_ruangan)->first();
+        if ($datainventaris == NULL) {
             if ($dataruangan) {
                 $dataruangan->delete();
                 $activity = AktivitasSistem::create([

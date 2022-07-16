@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class IterasiKeempatTest extends TestCase
 {
-    // use WithoutMiddleware;
+    use WithoutMiddleware;
     /**
      * A basic unit test example.
      *
@@ -20,7 +20,7 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-superadmin'));
+        ->get(route('manajemen-user.get-superadmin',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -30,19 +30,13 @@ class IterasiKeempatTest extends TestCase
         $user = User::where('role_id',1)
         ->first();
 
+        $request = [
+            'search' => [
+                'value' => 'test'
+            ]
+        ];
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-admin'));
-        
-        $response->assertStatus(200);
-    }
-
-    public function testLihatDaftarBmn()
-    {
-        $user = User::where('role_id',1)
-        ->first();
-
-        $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-bmn'));
+        ->get(route('manajemen-user.get-admin',$request));
         
         $response->assertStatus(200);
     }
@@ -53,7 +47,7 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-sarpras'));
+        ->get(route('manajemen-user.get-sarpras',['search'=>['value'=>'search data']]));
         
         $response->assertStatus(200);
     }
@@ -64,7 +58,7 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-peminjam'));
+        ->get(route('manajemen-user.get-peminjam',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
     }
@@ -75,9 +69,20 @@ class IterasiKeempatTest extends TestCase
         ->first();
 
         $response = $this->actingAs($user)
-        ->get(route('manajemen-user.get-pengaju'));
+        ->get(route('manajemen-user.get-pengaju',['search'=>['value'=>'testing']]));
         
         $response->assertStatus(200);
+    }
+
+    public function testHapusUser()
+    {
+        $user = User::where('role_id',1)
+        ->first();
+
+        $response = $this->actingAs($user)
+        ->delete(route('manajemen-user.destroy',29));
+        
+        $response->assertStatus(302);
     }
 
     public function testTambahUser()
@@ -109,29 +114,52 @@ class IterasiKeempatTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-        ->put(route('manajemen-user.update',48),$request);
+        ->put(route('manajemen-user.update',15),$request);
         
         $response->assertStatus(302);
     }
 
-    public function testHapusUser()
+    public function testUpdatePasswordUser()
     {
         $user = User::where('role_id',1)
         ->first();
 
+        $request = [
+            'name' => 'test Update Password', 
+            'password' => 'userTesting12345',
+            'password_confirmation' => 'userTesting12345',
+        ];
+
         $response = $this->actingAs($user)
-        ->delete(route('manajemen-user.destroy',47));
+        ->put(route('manajemen-user.update',15),$request);
         
         $response->assertStatus(302);
     }
 
     public function testUpdateProfileByUser()
     {
-        $user = User::where('email','admin@gmail.com')
+        $user = User::where('email','unit@gmail.com')
         ->first();
 
         $request = [
             'name' => 'AdminSIM-A',
+        ];
+
+        $response = $this->actingAs($user)
+        ->put(route('manajemen-profil.update',$user->id),$request);
+        
+        $response->assertStatus(302);
+    }
+
+    public function testUpdatePasswordByUser()
+    {
+        $user = User::where('email','unit@gmail.com')
+        ->first();
+
+        $request = [
+            'name' => 'Unit abis ganti pass', 
+            'password' => 'Unit12345',
+            'password_confirmation' => 'Unit12345',
         ];
 
         $response = $this->actingAs($user)

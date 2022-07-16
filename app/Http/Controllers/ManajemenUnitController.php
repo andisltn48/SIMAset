@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Unit;
-use App\DataAset;
+use App\DataInventaris;
 use App\Roles;
 use Auth;
 use App\AktivitasSistem;
@@ -119,8 +119,8 @@ class ManajemenUnitController extends Controller
     public function destroy($id)
     {
         $unit = Unit::find($id);
-        $dataAset = DataAset::where('unit',$unit->kode_unit)->first();
-        if (!$dataAset) {
+        $dataInventaris = DataInventaris::where('unit',$unit->kode_unit)->first();
+        if (!$dataInventaris) {
             $unit->delete();
 
             $activity = AktivitasSistem::create([
